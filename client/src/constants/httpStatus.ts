@@ -1,4 +1,5 @@
 export const HttpStatus = {
     ENTITY_ERROR_STATUS: 422,
     UNAUTHORIZED_STATUS: 401,
+    INTERNALS_SERVER_sTATUS: 500,
 };

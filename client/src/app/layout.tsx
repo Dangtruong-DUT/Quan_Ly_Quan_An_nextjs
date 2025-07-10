@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
-import { ModeToggle } from "@/components/ModeToggle";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
+import AppProvider from "@/app/app-provider";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -22,10 +23,12 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${inter.variable} antialiased`}>
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <ModeToggle />
-                    {children}
-                </ThemeProvider>
+                <AppProvider>
+                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                        {children}
+                        <Toaster />
+                    </ThemeProvider>
+                </AppProvider>
             </body>
         </html>
     );
