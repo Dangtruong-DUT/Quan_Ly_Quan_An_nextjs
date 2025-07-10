@@ -13,11 +13,7 @@ import Link from "next/link";
 import { useLogoutMutation } from "@/app/queries/useAuth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
-const account = {
-    name: "Nguyễn Văn A",
-    avatar: "https://i.pravatar.cc/150",
-};
+import { useAccountProfile } from "@/app/queries/useAccount";
 
 export default function DropdownAvatar() {
     const router = useRouter();
@@ -33,6 +29,9 @@ export default function DropdownAvatar() {
             router.refresh();
         }
     };
+
+    const { data } = useAccountProfile();
+    const account = data?.payload.data || { avatar: undefined, name: "USER" };
 
     return (
         <DropdownMenu>
