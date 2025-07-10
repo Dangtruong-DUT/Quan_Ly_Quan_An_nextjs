@@ -6,3 +6,9 @@ export function useLoginMutation() {
         mutationFn: AuthRequestApi.login,
     });
 }
+
+export function useLogoutMutation() {
+    return useMutation({
+        mutationFn: AuthRequestApi.logout,
+    });
+}
