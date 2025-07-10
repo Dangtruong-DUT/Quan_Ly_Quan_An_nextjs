@@ -10,10 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginMutation } from "@/app/queries/useAuth";
 import { handleErrorApi } from "@/lib/utils";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-    const router = useRouter();
+    // const router = useRouter();
     const { mutateAsync: login, isPending } = useLoginMutation();
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
@@ -27,8 +27,8 @@ export default function LoginForm() {
         try {
             const res = await login(data);
             toast.success(res.payload.message);
-            router.refresh();
-            router.push("/");
+            // router.refresh();
+            // router.push("/");
         } catch (error) {
             handleErrorApi(error, form.setError);
         }
