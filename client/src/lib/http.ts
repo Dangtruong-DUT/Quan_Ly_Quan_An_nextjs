@@ -175,7 +175,7 @@ class Http {
                     await fetch("/api/auth/logout", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: undefined,
+                        body: null,
                     });
                 } catch (logoutError) {
                     console.error("Logout request failed:", logoutError);
