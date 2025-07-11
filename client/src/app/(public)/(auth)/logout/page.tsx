@@ -24,5 +24,5 @@ export default function LogoutPage({
             handleLogout();
         }
     }, [logoutMutate, accessToken, refreshToken]);
-    return <div>Logout</div>;
+    return <div></div>;
 }

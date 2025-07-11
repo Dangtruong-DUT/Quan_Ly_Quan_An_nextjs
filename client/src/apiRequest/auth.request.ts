@@ -1,5 +1,11 @@
 import http from "@/lib/http";
-import { LoginBodyType, LoginResType, LogoutBodyType } from "@/schemaValidations/auth.schema";
+import {
+    LoginBodyType,
+    LoginResType,
+    LogoutBodyType,
+    RefreshTokenBodyType,
+    RefreshTokenResType,
+} from "@/schemaValidations/auth.schema";
 
 const AuthRequestApi = {
     nextLogin: (body: LoginBodyType) => http.post<LoginResType>("/auth/login", body),
@@ -17,5 +23,10 @@ const AuthRequestApi = {
         http.post("/api/auth/logout", null, {
             baseUrl: "",
         }),
+    refreshToken: () =>
+        http.post<RefreshTokenResType>("/api/auth/refresh-token", null, {
+            baseUrl: "",
+        }),
+    nextRefreshToken: (body: RefreshTokenBodyType) => http.post<RefreshTokenResType>("/auth/refresh-token", body, {}),
 };
 export default AuthRequestApi;
