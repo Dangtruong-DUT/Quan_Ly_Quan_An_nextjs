@@ -4,8 +4,7 @@ import { AccountResType, ChangePasswordBodyType, UpdateMeBodyType } from "@/sche
 const AccountRequestApi = {
     me: () => http.get<AccountResType>("/accounts/me"),
     nextMe: (accessToken: string) =>
-        http.get<AccountResType>("/account/me", {
-            baseUrl: "",
+        http.get<AccountResType>("/accounts/me", {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

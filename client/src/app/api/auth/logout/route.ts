@@ -10,14 +10,15 @@ export async function POST(request: NextRequest) {
         const cookiesStore = await cookies();
         const accessToken = cookiesStore.get("accessToken")?.value;
         const refreshToken = cookiesStore.get("refreshToken")?.value;
-        if (!accessToken || !refreshToken) {
+        cookiesStore.delete("accessToken");
+        cookiesStore.delete("refreshToken");
+        if (!refreshToken || !accessToken) {
             return NextResponse.json(
                 { message: "No access or refresh token found." },
                 { status: HttpStatus.UNAUTHORIZED_STATUS }
             );
         }
-        cookiesStore.delete("accessToken");
-        cookiesStore.delete("refreshToken");
+
         const res = await AuthRequestApi.nextLogout(
             {
                 refreshToken,
