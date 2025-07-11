@@ -8,6 +8,10 @@ import { useForm } from "react-hook-form";
 import { ChangePasswordBody, ChangePasswordBodyType } from "@/schemaValidations/account.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { useCallback } from "react";
+import { useChangePasswordMutation } from "@/app/queries/useAccount";
+import { handleErrorApi } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function ChangePasswordForm() {
     const form = useForm<ChangePasswordBodyType>({
@@ -18,10 +22,30 @@ export default function ChangePasswordForm() {
             confirmPassword: "",
         },
     });
-
+    const { mutateAsync: changePasswordMutate } = useChangePasswordMutation();
+    const handleSubmit = useCallback(
+        async (data: ChangePasswordBodyType) => {
+            try {
+                const res = await changePasswordMutate(data);
+                toast.success(res.payload.message || "Password changed successfully");
+                form.reset();
+            } catch (error) {
+                handleErrorApi(error, form.setError);
+            }
+        },
+        [form, changePasswordMutate]
+    );
+    const onReset = useCallback(() => {
+        form.reset();
+    }, [form]);
     return (
         <Form {...form}>
-            <form noValidate className="grid auto-rows-max items-start gap-4 md:gap-8">
+            <form
+                noValidate
+                className="grid auto-rows-max items-start gap-4 md:gap-8"
+                onSubmit={form.handleSubmit(handleSubmit)}
+                onReset={onReset}
+            >
                 <Card className="overflow-hidden" x-chunk="dashboard-07-chunk-4">
                     <CardHeader>
                         <CardTitle>Change password</CardTitle>
@@ -60,7 +84,7 @@ export default function ChangePasswordForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid gap-3">
-                                            <Label htmlFor="confirmPassword">Confirm new your password</Label>
+                                            <Label htmlFor="confirmPassword">Confirm your new password</Label>
                                             <Input id="confirmPassword" type="password" className="w-full" {...field} />
                                             <FormMessage />
                                         </div>
@@ -68,10 +92,12 @@ export default function ChangePasswordForm() {
                                 )}
                             />
                             <div className=" items-center gap-2 md:ml-auto flex">
-                                <Button variant="outline" size="sm">
+                                <Button variant="outline" size="sm" type="reset">
                                     Cancel
                                 </Button>
-                                <Button size="sm">Save</Button>
+                                <Button size="sm" type="submit">
+                                    Save
+                                </Button>
                             </div>
                         </div>
                     </CardContent>

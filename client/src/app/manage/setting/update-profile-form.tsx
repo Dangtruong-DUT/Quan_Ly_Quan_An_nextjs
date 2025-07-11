@@ -74,6 +74,11 @@ export default function UpdateProfileForm() {
         () => (file != null ? URL.createObjectURL(file) : user?.avatar ?? undefined),
         [file, user?.avatar]
     );
+    const onReset = useCallback(() => {
+        form.reset();
+        setFile(null);
+    }, [form]);
+
     return (
         <Form {...form}>
             <form
@@ -81,6 +86,7 @@ export default function UpdateProfileForm() {
                 className="grid auto-rows-max items-start gap-4 md:gap-8"
                 onSubmit={form.handleSubmit(handleSubmit)}
                 method="POST"
+                onReset={onReset}
             >
                 <Card x-chunk="dashboard-07-chunk-0">
                     <CardHeader>
@@ -145,19 +151,11 @@ export default function UpdateProfileForm() {
                             />
 
                             <div className=" items-center gap-2 md:ml-auto flex">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    type="reset"
-                                    onClick={() => {
-                                        form.reset();
-                                        setFile(null);
-                                    }}
-                                >
+                                <Button variant="outline" size="sm" type="reset">
                                     Cancel
                                 </Button>
                                 <Button size="sm" type="submit" disabled={isLoading}>
-                                    Save
+                                    {isLoading ? "Saving" : "Save"}
                                 </Button>
                             </div>
                         </div>

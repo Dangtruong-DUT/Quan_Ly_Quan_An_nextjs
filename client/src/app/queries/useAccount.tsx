@@ -14,3 +14,9 @@ export function useUpdateAccountProfileMutation() {
         mutationFn: AccountRequestApi.updateMe,
     });
 }
+
+export function useChangePasswordMutation() {
+    return useMutation({
+        mutationFn: AccountRequestApi.changePassword,
+    });
+}
