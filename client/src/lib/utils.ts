@@ -52,8 +52,7 @@ export async function handleRefreshToken(params?: {
 
     // If the refresh token is expired or the access token is still valid, skip the refresh logic
     if (decodeRefreshToken.exp <= currentTime) {
-        clientSessionToken.accessToken = null;
-        clientSessionToken.refreshToken = null;
+        clientSessionToken.clear();
         return params?.onRefreshTokenExpired?.();
     }
     // If the access token is still valid for more than 1/3 of its lifetime, skip the refresh logic

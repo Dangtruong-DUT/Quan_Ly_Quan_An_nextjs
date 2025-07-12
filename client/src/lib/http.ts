@@ -109,6 +109,13 @@ class SessionToken {
         }
         this._refreshToken = value;
     }
+    clear() {
+        if (!isClient) {
+            throw new Error("Cannot clear session token on the server side.");
+        }
+        this.accessToken = null;
+        this.refreshToken = null;
+    }
 }
 
 export const clientSessionToken = SessionToken.getInstance();
@@ -180,8 +187,7 @@ class Http {
                 } catch (logoutError) {
                     console.error("Logout request failed:", logoutError);
                 } finally {
-                    clientSessionToken.accessToken = null;
-                    clientSessionToken.refreshToken = null;
+                    clientSessionToken.clear();
                     // Redirect to login page có thể dẫn đến vòng lặp vô hạn nếu không xử lý đúng
                     //khi trang login có yêu cầu cần token
                     // window.location.href = "/";
@@ -318,14 +324,13 @@ http.useResponse((response, url) => {
     if (!isClient) return response;
 
     const isAuth = ["auth/login", "auth/register"].some((endpoint) => url.includes(endpoint));
-    if (isAuth && response.status === 200) {
+    if (isAuth && response.status === HttpStatus.OK_STATUS) {
         const { accessToken, refreshToken } = (response.payload as LoginResType).data;
         clientSessionToken.accessToken = accessToken || null;
         clientSessionToken.refreshToken = refreshToken || null;
     }
-    if (url.includes("auth/logout") && response.status === 200) {
-        clientSessionToken.accessToken = null;
-        clientSessionToken.refreshToken = null;
+    if (url.includes("auth/logout") && response.status === HttpStatus.OK_STATUS) {
+        clientSessionToken.clear();
     }
     return response;
 });

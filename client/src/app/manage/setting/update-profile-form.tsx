@@ -9,7 +9,7 @@ import { UpdateMeBody, UpdateMeBodyType } from "@/schemaValidations/account.sche
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccountProfile, useUpdateAccountProfileMutation } from "@/app/queries/useAccount";
 import { useUploadMediaMutation } from "@/app/queries/useMedia";
 import { handleErrorApi } from "@/lib/utils";
@@ -78,7 +78,11 @@ export default function UpdateProfileForm() {
         form.reset();
         setFile(null);
     }, [form]);
-
+    const handleChangeAvatar = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0] || null;
+        setFile(selectedFile);
+        form.setValue("avatar", selectedFile ? URL.createObjectURL(selectedFile) : "");
+    }, []);
     return (
         <Form {...form}>
             <form
@@ -112,14 +116,7 @@ export default function UpdateProfileForm() {
                                                 accept="image/*"
                                                 className="hidden"
                                                 ref={avatarPreviewRef}
-                                                onChange={(e) => {
-                                                    const selectedFile = e.target.files?.[0] || null;
-                                                    setFile(selectedFile);
-                                                    form.setValue(
-                                                        "avatar",
-                                                        selectedFile ? URL.createObjectURL(selectedFile) : ""
-                                                    );
-                                                }}
+                                                onChange={handleChangeAvatar}
                                             />
                                             <button
                                                 className="flex aspect-square w-[100px] items-center justify-center rounded-md border border-dashed"

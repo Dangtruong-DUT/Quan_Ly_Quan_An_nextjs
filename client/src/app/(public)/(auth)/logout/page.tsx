@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppContext } from "@/app/app-provider";
 import { useLogoutMutation } from "@/app/queries/useAuth";
 import { clientSessionToken } from "@/lib/http";
 import { handleErrorApi } from "@/lib/utils";
@@ -11,22 +12,30 @@ export default function LogoutPage({
 }: {
     searchParams: Promise<{ accessToken?: string; refreshToken?: string }>;
 }) {
+    const router = useRouter();
+    const { setIsAuthenticated } = useAppContext();
     const { accessToken, refreshToken } = use(searchParams);
     const { mutateAsync: logoutMutate } = useLogoutMutation();
-    const router = useRouter();
     useEffect(() => {
         const handleLogout = async () => {
             try {
                 await logoutMutate();
-                router.refresh();
-                router.push("/");
+                setIsAuthenticated(false);
             } catch (error) {
                 handleErrorApi(error);
+            } finally {
+                router.refresh();
+                router.push("/");
             }
         };
-        if (clientSessionToken.accessToken === accessToken || clientSessionToken.refreshToken === refreshToken) {
+        if (
+            (accessToken && clientSessionToken.accessToken === accessToken) ||
+            (refreshToken && clientSessionToken.refreshToken === refreshToken)
+        ) {
             handleLogout();
+        } else {
+            router.push("/");
         }
-    }, [logoutMutate, accessToken, refreshToken, router]);
+    }, [logoutMutate, accessToken, refreshToken, router, setIsAuthenticated]);
     return <div></div>;
 }

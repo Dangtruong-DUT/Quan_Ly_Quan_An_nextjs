@@ -19,7 +19,9 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
     }
     if (isPrivatePath && !isAuthenticated) {
-        return NextResponse.redirect(new URL("/login", request.url));
+        const url = new URL("/login", request.url);
+        url.searchParams.set("clearToken", "true");
+        return NextResponse.redirect(url);
     }
     if (isUnAuthPath && isAuthenticated) {
         return NextResponse.redirect(new URL("/", request.url));

@@ -15,9 +15,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAccountProfile } from "@/app/queries/useAccount";
 import { useCallback } from "react";
+import { useAppContext } from "@/app/app-provider";
 
 export default function DropdownAvatar() {
     const router = useRouter();
+    const { setIsAuthenticated } = useAppContext();
     const { mutateAsync: logoutMutateAsync, isPending } = useLogoutMutation();
     const handleLogout = useCallback(async () => {
         try {
@@ -25,11 +27,12 @@ export default function DropdownAvatar() {
         } catch (error) {
             console.error("Logout failed:", error);
         } finally {
+            setIsAuthenticated(false);
             toast.success("Logout successful");
             router.refresh();
             router.push("/");
         }
-    }, [logoutMutateAsync, router]);
+    }, [logoutMutateAsync, router, setIsAuthenticated]);
 
     const { data } = useAccountProfile();
     const account = data?.payload.data || { avatar: undefined, name: "USER" };

@@ -11,8 +11,11 @@ import { useLoginMutation } from "@/app/queries/useAuth";
 import { handleErrorApi } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useAppContext } from "@/app/app-provider";
+import { useCallback } from "react";
 
 export default function LoginForm() {
+    const { setIsAuthenticated } = useAppContext();
     const router = useRouter();
     const { mutateAsync: login, isPending } = useLoginMutation();
     const form = useForm<LoginBodyType>({
@@ -22,17 +25,21 @@ export default function LoginForm() {
             password: "",
         },
     });
-    const onSubmit = async (data: LoginBodyType) => {
-        if (isPending) return;
-        try {
-            const res = await login(data);
-            toast.success(res.payload.message);
-            router.refresh();
-            router.push("/manage/dashboard");
-        } catch (error) {
-            handleErrorApi(error, form.setError);
-        }
-    };
+    const onSubmit = useCallback(
+        async (data: LoginBodyType) => {
+            if (isPending) return;
+            try {
+                const res = await login(data);
+                toast.success(res.payload.message);
+                setIsAuthenticated(true);
+                router.push("/manage/dashboard");
+                router.refresh();
+            } catch (error) {
+                handleErrorApi(error, form.setError);
+            }
+        },
+        [form, isPending, login, router, setIsAuthenticated]
+    );
     return (
         <Card className=" max-w-md w-full">
             <CardHeader>
