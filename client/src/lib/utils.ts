@@ -1,4 +1,7 @@
-import { EntityError, httpError } from "@/lib/http";
+import AuthRequestApi from "@/apiRequest/auth.request";
+import { clientSessionToken, EntityError, httpError } from "@/lib/http";
+import { decodeJwt } from "@/lib/jwt";
+import { JwtPayload } from "@/types/jwt";
 import { clsx, type ClassValue } from "clsx";
 import { UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
@@ -31,4 +34,29 @@ export function handleErrorApiOnNextServer(error: unknown) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((error as any).digest?.includes("NEXT_REDIRECT")) throw error;
     console.error("Error fetching data:", error);
+}
+
+export async function handleRefreshToken(params?: { onSuccess?: () => void; onError?: (error: unknown) => void }) {
+    const accessToken = clientSessionToken.accessToken;
+    const refreshToken = clientSessionToken.refreshToken;
+    // If no tokens are available, skip the refresh logic
+    if (!accessToken || !refreshToken) return;
+
+    const decodeAccessToken = decodeJwt<JwtPayload>(accessToken);
+    const decodeRefreshToken = decodeJwt<JwtPayload>(refreshToken);
+    const currentTime = Math.floor(Date.now() / 1000);
+    // If the refresh token is expired or the access token is still valid, skip the refresh logic
+    if (decodeRefreshToken.exp <= currentTime) return;
+    // If the access token is still valid for more than 1/3 of its lifetime, skip the refresh logic
+    if (decodeAccessToken.exp - currentTime > (decodeAccessToken.exp - decodeAccessToken.iat) / 3) return;
+
+    try {
+        const res = await AuthRequestApi.refreshToken();
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = res.payload.data;
+        clientSessionToken.accessToken = newAccessToken;
+        clientSessionToken.refreshToken = newRefreshToken;
+        params?.onSuccess?.();
+    } catch (error) {
+        params?.onError?.(error);
+    }
 }

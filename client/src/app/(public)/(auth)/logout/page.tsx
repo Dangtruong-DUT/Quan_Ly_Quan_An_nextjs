@@ -3,6 +3,7 @@
 import { useLogoutMutation } from "@/app/queries/useAuth";
 import { clientSessionToken } from "@/lib/http";
 import { handleErrorApi } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
 export default function LogoutPage({
@@ -12,10 +13,13 @@ export default function LogoutPage({
 }) {
     const { accessToken, refreshToken } = use(searchParams);
     const { mutateAsync: logoutMutate } = useLogoutMutation();
+    const router = useRouter();
     useEffect(() => {
         const handleLogout = async () => {
             try {
                 await logoutMutate();
+                router.refresh();
+                router.push("/");
             } catch (error) {
                 handleErrorApi(error);
             }
@@ -23,6 +27,6 @@ export default function LogoutPage({
         if (clientSessionToken.accessToken === accessToken || clientSessionToken.refreshToken === refreshToken) {
             handleLogout();
         }
-    }, [logoutMutate, accessToken, refreshToken]);
+    }, [logoutMutate, accessToken, refreshToken, router]);
     return <div></div>;
 }

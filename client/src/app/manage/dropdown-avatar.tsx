@@ -14,21 +14,22 @@ import { useLogoutMutation } from "@/app/queries/useAuth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAccountProfile } from "@/app/queries/useAccount";
+import { useCallback } from "react";
 
 export default function DropdownAvatar() {
     const router = useRouter();
     const { mutateAsync: logoutMutateAsync, isPending } = useLogoutMutation();
-    const handleLogout = async () => {
+    const handleLogout = useCallback(async () => {
         try {
             await logoutMutateAsync();
         } catch (error) {
             console.error("Logout failed:", error);
         } finally {
             toast.success("Logout successful");
-            router.push("/");
             router.refresh();
+            router.push("/");
         }
-    };
+    }, [logoutMutateAsync, router]);
 
     const { data } = useAccountProfile();
     const account = data?.payload.data || { avatar: undefined, name: "USER" };
@@ -48,13 +49,13 @@ export default function DropdownAvatar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                     <Link href={"/manage/setting"} className="cursor-pointer">
-                        Cài đặt
+                        Setting
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>Hỗ trợ</DropdownMenuItem>
+                <DropdownMenuItem>Helper</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} disabled={isPending}>
-                    Đăng xuất
+                    Logout
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

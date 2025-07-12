@@ -3,6 +3,7 @@ import { HttpStatus } from "@/constants/httpStatus";
 import { httpError } from "@/lib/http";
 import { decodeJwt } from "@/lib/jwt";
 import { LoginBodyType } from "@/schemaValidations/auth.schema";
+import { JwtPayload } from "@/types/jwt";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,8 +13,8 @@ export async function POST(request: NextRequest) {
     try {
         const { payload } = await AuthRequestApi.nextLogin(body);
         const { accessToken, refreshToken } = payload.data;
-        const decodedAccessToken = decodeJwt<{ exp: number }>(accessToken);
-        const decodedRefreshToken = decodeJwt<{ exp: number }>(refreshToken);
+        const decodedAccessToken = decodeJwt<JwtPayload>(accessToken);
+        const decodedRefreshToken = decodeJwt<JwtPayload>(refreshToken);
         cookieStory.set("accessToken", accessToken, {
             httpOnly: true,
             sameSite: "lax",
