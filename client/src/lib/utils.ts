@@ -36,7 +36,11 @@ export function handleErrorApiOnNextServer(error: unknown) {
     console.error("Error fetching data:", error);
 }
 
-export async function handleRefreshToken(params?: { onSuccess?: () => void; onError?: (error: unknown) => void }) {
+export async function handleRefreshToken(params?: {
+    onSuccess?: () => void;
+    onError?: (error: unknown) => void;
+    onRefreshTokenExpired?: () => void;
+}) {
     const accessToken = clientSessionToken.accessToken;
     const refreshToken = clientSessionToken.refreshToken;
     // If no tokens are available, skip the refresh logic
@@ -44,9 +48,14 @@ export async function handleRefreshToken(params?: { onSuccess?: () => void; onEr
 
     const decodeAccessToken = decodeJwt<JwtPayload>(accessToken);
     const decodeRefreshToken = decodeJwt<JwtPayload>(refreshToken);
-    const currentTime = Math.floor(Date.now() / 1000);
+    const currentTime = Date.now() / 1000 - 1; // Subtract 1 second to account for any potential delay in token expiration checks
+
     // If the refresh token is expired or the access token is still valid, skip the refresh logic
-    if (decodeRefreshToken.exp <= currentTime) return;
+    if (decodeRefreshToken.exp <= currentTime) {
+        clientSessionToken.accessToken = null;
+        clientSessionToken.refreshToken = null;
+        return params?.onRefreshTokenExpired?.();
+    }
     // If the access token is still valid for more than 1/3 of its lifetime, skip the refresh logic
     if (decodeAccessToken.exp - currentTime > (decodeAccessToken.exp - decodeAccessToken.iat) / 3) return;
 

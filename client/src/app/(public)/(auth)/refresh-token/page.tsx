@@ -1,5 +1,6 @@
 "use client";
 
+import { clientSessionToken } from "@/lib/http";
 import { handleRefreshToken } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
@@ -12,7 +13,7 @@ export default function RefreshTokenPage({
     const { redirect, refreshToken } = use(searchParams);
     const router = useRouter();
     useEffect(() => {
-        if (redirect && refreshToken) {
+        if (redirect && refreshToken === clientSessionToken.refreshToken) {
             handleRefreshToken({
                 onSuccess: () => {
                     router.push(redirect);
@@ -20,6 +21,9 @@ export default function RefreshTokenPage({
                 onError: (error) => {
                     router.push("/login");
                     console.error("Error during token refresh:", error);
+                },
+                onRefreshTokenExpired: () => {
+                    router.push("/login");
                 },
             });
         } else {

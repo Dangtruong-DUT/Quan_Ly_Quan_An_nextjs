@@ -1,7 +1,7 @@
 "use client";
 
 import { handleRefreshToken } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 
 const EXCLUDE_PATHS = ["/login", "/register", "/logout", "/refresh-token"];
@@ -9,6 +9,7 @@ const EXCLUDE_PATHS = ["/login", "/register", "/logout", "/refresh-token"];
 // This is set to 1 seconds (1000 milliseconds)
 const TIMEOUT_REFRESH_TOKEN = 1000;
 export function RefreshToken() {
+    const router = useRouter();
     const pathname = usePathname();
     const interValIdRef = useRef<NodeJS.Timeout | null>(null);
     const refreshToken = useCallback(() => {
@@ -20,8 +21,15 @@ export function RefreshToken() {
                     interValIdRef.current = null;
                 }
             },
+            onRefreshTokenExpired: () => {
+                router.push("/login");
+                if (interValIdRef.current) {
+                    clearInterval(interValIdRef.current);
+                    interValIdRef.current = null;
+                }
+            },
         });
-    }, [interValIdRef]);
+    }, [interValIdRef, router]);
     useEffect(() => {
         // If the pathname is not in the excluded paths, skip the refresh token logic
         // Skip refresh token logic for excluded paths
