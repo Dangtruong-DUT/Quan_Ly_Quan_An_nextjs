@@ -30,7 +30,7 @@ import { AccountListResType, AccountType } from "@/schemaValidations/account.sch
 import AddEmployee from "@/app/manage/accounts/add-employee";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import EditEmployee from "@/app/manage/accounts/edit-employee";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, use, useContext, useEffect, useState } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -161,9 +161,9 @@ function AlertDialogDeleteAccount({
 }
 // Số lượng item trên 1 trang
 const PAGE_SIZE = 10;
-export default function AccountTable() {
-    const searchParam = useSearchParams();
-    const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
+export default function AccountTable({ searchParam }: { searchParam: Promise<{ page?: number }> }) {
+    const { page: pageParam } = use(searchParam);
+    const page = pageParam ? Number(pageParam) : 1;
     const pageIndex = page - 1;
     // const params = Object.fromEntries(searchParam.entries())
     const [employeeIdEdit, setEmployeeIdEdit] = useState<number | undefined>();
