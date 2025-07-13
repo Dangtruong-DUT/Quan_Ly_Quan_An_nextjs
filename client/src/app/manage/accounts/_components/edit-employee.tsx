@@ -22,7 +22,6 @@ import { Switch } from "@/components/ui/switch";
 export default function EditEmployee({
     id,
     setId,
-    onSubmitSuccess,
 }: {
     id?: number | undefined;
     setId: (value: number | undefined) => void;
@@ -35,6 +34,7 @@ export default function EditEmployee({
         defaultValues: {
             name: "",
             email: "",
+            role: "Employee",
             avatar: undefined,
             password: undefined,
             confirmPassword: undefined,
