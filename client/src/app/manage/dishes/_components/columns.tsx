@@ -1,4 +1,17 @@
+import { DishItem, useDishTableContext } from "@/app/manage/dishes/context/DishTableContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { getVietnameseDishStatus } from "@/helpers/common";
+import { formatCurrency } from "@/utils/formatting/formatCurrency";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
 const columns: ColumnDef<DishItem>[] = [
@@ -44,7 +57,7 @@ const columns: ColumnDef<DishItem>[] = [
         id: "actions",
         enableHiding: false,
         cell: function Actions({ row }) {
-            const { setDishIdEdit, setDishDelete } = useContext(DishTableContext);
+            const { setDishIdEdit, setDishDelete } = useDishTableContext();
             const openEditDish = () => {
                 setDishIdEdit(row.original.id);
             };
@@ -64,7 +77,9 @@ const columns: ColumnDef<DishItem>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={openEditDish}>Sửa</DropdownMenuItem>
-                        <DropdownMenuItem onClick={openDeleteDish}>Xóa</DropdownMenuItem>
+                        <DropdownMenuItem onClick={openDeleteDish} className="text-red-500">
+                            Xóa
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

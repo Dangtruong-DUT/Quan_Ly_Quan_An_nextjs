@@ -50,12 +50,14 @@ export function useAddEmployeeMutation() {
         },
     });
 }
-export function useEditEmployeeMutation() {
+export function useEditEmployeeMutation({ id }: { id?: number }) {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: clientRequestAccountApi.EditEmployee,
+
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["accountList"] });
+            if (id != undefined) queryClient.invalidateQueries({ queryKey: ["employeeDetail", id] });
         },
     });
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import clientRequestAuthApi from "@/api/clientToServer/auth";
 import { useAppContext } from "@/app/app-provider";
 import { handleRefreshToken } from "@/helpers/auth";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
@@ -32,6 +33,7 @@ export default function RefreshTokenPage({
             });
         } else {
             router.push("/");
+            clientRequestAuthApi.logout();
         }
     });
     return <></>;
