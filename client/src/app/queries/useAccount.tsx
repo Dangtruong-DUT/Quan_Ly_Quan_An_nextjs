@@ -33,11 +33,12 @@ export function useGetAccountList() {
     });
 }
 
-export function useGetEmployeeDetail(id: number) {
+export function useGetEmployeeDetail({ id }: { id?: number }) {
     return useQuery({
         queryKey: ["employeeDetail", id],
-        queryFn: () => AccountRequestApi.getEmployeeDetail(id),
+        queryFn: () => AccountRequestApi.getEmployeeDetail(id!),
         staleTime: 1000 * 60 * 5,
+        enabled: Boolean(id),
     });
 }
 export function useAddEmployeeMutation() {

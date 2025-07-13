@@ -78,11 +78,14 @@ export default function UpdateProfileForm() {
         form.reset();
         setFile(null);
     }, [form]);
-    const handleChangeAvatar = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0] || null;
-        setFile(selectedFile);
-        form.setValue("avatar", selectedFile ? URL.createObjectURL(selectedFile) : "");
-    }, []);
+    const handleChangeAvatar = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const selectedFile = e.target.files?.[0] || null;
+            setFile(selectedFile);
+            form.setValue("avatar", selectedFile ? URL.createObjectURL(selectedFile) : "");
+        },
+        [form]
+    );
     return (
         <Form {...form}>
             <form

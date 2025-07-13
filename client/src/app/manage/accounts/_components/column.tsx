@@ -70,8 +70,14 @@ const columns: ColumnDef<AccountType>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={openEditEmployee}>Sửa</DropdownMenuItem>
-                        <DropdownMenuItem onClick={openDeleteEmployee}>Xóa</DropdownMenuItem>
+                        <DropdownMenuItem onClick={openEditEmployee}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={openDeleteEmployee}
+                            className="text-red-500
+                        "
+                        >
+                            Delete
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

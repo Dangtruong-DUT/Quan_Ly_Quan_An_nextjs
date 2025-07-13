@@ -31,10 +31,10 @@ export default function AlertDialogDeleteAccount({
                 <AlertDialogHeader>
                     <AlertDialogTitle>Delete this Employee?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Account
+                        Account{" "}
                         <span className="bg-foreground text-primary-foreground rounded px-1">
                             {employeeDelete?.name}
-                        </span>
+                        </span>{" "}
                         will be deleted permanently.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
