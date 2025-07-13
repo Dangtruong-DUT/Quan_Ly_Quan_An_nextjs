@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, createContext, use, useCallback, useEffect, useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RefreshToken } from "@/components/refresh-token";
-import { clientSessionToken } from "@/lib/http";
+import { clientSessionToken } from "@/service/storage/clientSessionToken";
 
 type AppContextType = {
     isAuthenticated: boolean;

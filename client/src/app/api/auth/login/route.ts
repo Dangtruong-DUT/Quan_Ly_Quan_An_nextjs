@@ -1,9 +1,9 @@
-import AuthRequestApi from "@/apiRequest/auth.request";
+import nextRequestAuthApi from "@/api/nextToBackend/auth";
 import { HttpStatus } from "@/constants/httpStatus";
-import { httpError } from "@/lib/http";
-import { decodeJwt } from "@/lib/jwt";
-import { LoginBodyType } from "@/schemaValidations/auth.schema";
+import { httpError } from "@/service/api/http";
 import { JwtPayload } from "@/types/jwt";
+import { decodeJwt } from "@/utils/jwt";
+import { LoginBodyType } from "@/utils/validation/auth.schema";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as LoginBodyType;
     const cookieStory = await cookies();
     try {
-        const { payload } = await AuthRequestApi.nextLogin(body);
+        const { payload } = await nextRequestAuthApi.nextLogin(body);
         const { accessToken, refreshToken } = payload.data;
         const decodedAccessToken = decodeJwt<JwtPayload>(accessToken);
         const decodedRefreshToken = decodeJwt<JwtPayload>(refreshToken);

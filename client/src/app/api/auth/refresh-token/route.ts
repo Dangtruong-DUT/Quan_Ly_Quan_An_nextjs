@@ -1,8 +1,8 @@
-import AuthRequestApi from "@/apiRequest/auth.request";
+import nextRequestAuthApi from "@/api/nextToBackend/auth";
 import { HttpStatus } from "@/constants/httpStatus";
-import { httpError } from "@/lib/http";
-import { decodeJwt } from "@/lib/jwt";
+import { httpError } from "@/service/api/http";
 import { JwtPayload } from "@/types/jwt";
+import { decodeJwt } from "@/utils/jwt";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -16,7 +16,7 @@ export async function POST() {
         });
     }
     try {
-        const { payload } = await AuthRequestApi.nextRefreshToken({
+        const { payload } = await nextRequestAuthApi.nextRefreshToken({
             refreshToken: oldRefreshToken,
         });
         const { accessToken, refreshToken } = payload.data;

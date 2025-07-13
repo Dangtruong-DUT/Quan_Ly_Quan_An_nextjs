@@ -10,12 +10,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useLogoutMutation } from "@/app/queries/useAuth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useAccountProfile } from "@/app/queries/useAccount";
 import { useCallback } from "react";
 import { useAppContext } from "@/app/app-provider";
+import { useLogoutMutation } from "@/hooks/data/useAuth";
+import { useAccountProfile } from "@/hooks/data/useAccount";
 
 export default function DropdownAvatar() {
     const router = useRouter();

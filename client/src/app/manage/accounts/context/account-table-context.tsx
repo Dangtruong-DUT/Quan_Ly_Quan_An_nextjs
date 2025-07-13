@@ -1,7 +1,7 @@
 "use client";
 
+import { AccountListResType } from "@/utils/validation/account.schema";
 import { useContext, useState, createContext } from "react";
-import { AccountListResType } from "@/schemaValidations/account.schema";
 
 export type AccountItem = AccountListResType["data"][0];
 

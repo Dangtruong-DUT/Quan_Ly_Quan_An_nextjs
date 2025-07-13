@@ -1,9 +1,9 @@
 "use client";
 
 import { useAppContext } from "@/app/app-provider";
-import { useLogoutMutation } from "@/app/queries/useAuth";
-import { clientSessionToken } from "@/lib/http";
-import { handleErrorApi } from "@/lib/utils";
+import { useLogoutMutation } from "@/hooks/data/useAuth";
+import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { handleErrorApi } from "@/utils/handleError";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 

@@ -22,7 +22,7 @@ import { useSearchParams } from "next/navigation";
 import { useAccountTableContext } from "@/app/manage/accounts/context/account-table-context";
 import EditEmployee from "@/app/manage/accounts/_components/edit-employee";
 import AddEmployee from "@/app/manage/accounts/_components/add-employee";
-import { useGetAccountList } from "@/app/queries/useAccount";
+import { useGetAccountList } from "@/hooks/data/useAccount";
 
 const PAGE_SIZE = 10;
 export default function AccountTable() {

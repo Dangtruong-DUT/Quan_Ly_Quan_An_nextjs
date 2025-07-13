@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useForm } from "react-hook-form";
-import { ChangePasswordBody, ChangePasswordBodyType } from "@/schemaValidations/account.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useCallback } from "react";
-import { useChangePasswordMutation } from "@/app/queries/useAccount";
-import { handleErrorApi } from "@/lib/utils";
 import { toast } from "sonner";
+import { ChangePasswordBody, ChangePasswordBodyType } from "@/utils/validation/account.schema";
+import { useChangePasswordMutation } from "@/hooks/data/useAccount";
+import { handleErrorApi } from "@/utils/handleError";
 
 export default function ChangePasswordForm() {
     const form = useForm<ChangePasswordBodyType>({

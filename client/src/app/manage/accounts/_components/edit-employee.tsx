@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UpdateEmployeeAccountBody, UpdateEmployeeAccountBodyType } from "@/schemaValidations/account.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -18,10 +17,11 @@ import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
-import { useEditEmployeeMutation, useGetEmployeeDetail } from "@/app/queries/useAccount";
-import { useUploadMediaMutation } from "@/app/queries/useMedia";
 import { toast } from "sonner";
-import { handleErrorApi } from "@/lib/utils";
+import { useUploadMediaMutation } from "@/hooks/data/useMedia";
+import { useEditEmployeeMutation, useGetEmployeeDetail } from "@/hooks/data/useAccount";
+import { UpdateEmployeeAccountBody, UpdateEmployeeAccountBodyType } from "@/utils/validation/account.schema";
+import { handleErrorApi } from "@/utils/handleError";
 
 export default function EditEmployee({
     id,

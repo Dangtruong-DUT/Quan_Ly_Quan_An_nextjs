@@ -1,8 +1,8 @@
-import MediaRequestApi from "@/apiRequest/media.request";
+import clientRequestMediaApi from "@/api/clientToServer/media";
 import { useMutation } from "@tanstack/react-query";
 
 export function useUploadMediaMutation() {
     return useMutation({
-        mutationFn: MediaRequestApi.upload,
+        mutationFn: clientRequestMediaApi.upload,
     });
 }

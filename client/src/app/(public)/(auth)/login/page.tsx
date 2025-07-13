@@ -1,7 +1,7 @@
 "use client";
 
 import LoginForm from "@/app/(public)/(auth)/login/login-form";
-import { clientSessionToken } from "@/lib/http";
+import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { use, useEffect } from "react";
 
 export default function Login({ searchParams }: { searchParams: Promise<{ clearToken?: boolean }> }) {

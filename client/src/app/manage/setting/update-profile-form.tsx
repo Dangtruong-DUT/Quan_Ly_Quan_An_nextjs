@@ -5,15 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { UpdateMeBody, UpdateMeBodyType } from "@/schemaValidations/account.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useAccountProfile, useUpdateAccountProfileMutation } from "@/app/queries/useAccount";
-import { useUploadMediaMutation } from "@/app/queries/useMedia";
-import { handleErrorApi } from "@/lib/utils";
 import { toast } from "sonner";
+import { UpdateMeBody, UpdateMeBodyType } from "@/utils/validation/account.schema";
+import { useAccountProfile, useUpdateAccountProfileMutation } from "@/hooks/data/useAccount";
+import { useUploadMediaMutation } from "@/hooks/data/useMedia";
+import { handleErrorApi } from "@/utils/handleError";
 
 export default function UpdateProfileForm() {
     const [file, setFile] = useState<File | null>(null);
