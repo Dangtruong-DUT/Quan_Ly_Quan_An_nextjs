@@ -1,6 +1,6 @@
-import AuthRequestApi from "@/apiRequest/auth.request";
+import nextRequestAuthApi from "@/api/nextToBackend/auth";
 import { HttpStatus } from "@/constants/httpStatus";
-import { httpError } from "@/lib/http";
+import { httpError } from "@/service/api/http";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const res = await AuthRequestApi.nextLogout(
+        const res = await nextRequestAuthApi.nextLogout(
             {
                 refreshToken,
             },

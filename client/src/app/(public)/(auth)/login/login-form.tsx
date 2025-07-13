@@ -5,14 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginMutation } from "@/app/queries/useAuth";
-import { handleErrorApi } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "@/app/app-provider";
 import { useCallback } from "react";
+import { useLoginMutation } from "@/hooks/data/useAuth";
+import { LoginBody, LoginBodyType } from "@/utils/validation/auth.schema";
+import { handleErrorApi } from "@/utils/handleError";
 
 export default function LoginForm() {
     const { setIsAuthenticated } = useAppContext();

@@ -1,5 +1,5 @@
-import AccountRequestApi from "@/apiRequest/account.request";
-import { handleErrorApiOnNextServer } from "@/lib/utils";
+import nextRequestAccountApi from "@/api/nextToBackend/accounts";
+import { handleErrorApiOnNextServer } from "@/utils/handleError";
 import { cookies } from "next/headers";
 
 export default async function DashboardPage() {
@@ -7,7 +7,7 @@ export default async function DashboardPage() {
     const accessToken = cookiesStore.get("accessToken")?.value;
     let name = "";
     try {
-        const res = await AccountRequestApi.nextMe(accessToken!);
+        const res = await nextRequestAccountApi.nexMe(accessToken!);
         name = res.payload.data.name;
     } catch (error) {
         handleErrorApiOnNextServer(error);

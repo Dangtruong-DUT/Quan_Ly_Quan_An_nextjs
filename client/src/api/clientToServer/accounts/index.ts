@@ -1,4 +1,4 @@
-import http from "@/lib/http";
+import http from "@/service/api/http";
 import {
     AccountListResType,
     AccountResType,
@@ -6,16 +6,10 @@ import {
     CreateEmployeeAccountBodyType,
     UpdateEmployeeAccountBodyType,
     UpdateMeBodyType,
-} from "@/schemaValidations/account.schema";
+} from "@/utils/validation/account.schema";
 
-const AccountRequestApi = {
+const clientRequestAccountApi = {
     me: () => http.get<AccountResType>("/accounts/me"),
-    nextMe: (accessToken: string) =>
-        http.get<AccountResType>("/accounts/me", {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }),
     updateMe: (body: UpdateMeBodyType) => http.put<AccountResType>("/accounts/me", body),
     changePassword: (body: ChangePasswordBodyType) => http.put<AccountResType>("/accounts/change-password", body),
     list: () => http.get<AccountListResType>("/accounts"),
@@ -25,4 +19,4 @@ const AccountRequestApi = {
     DeleteEmployee: (id: number) => http.delete(`/accounts/detail/${id}`),
     getEmployeeDetail: (id: number) => http.get<AccountResType>(`/accounts/detail/${id}`),
 };
-export default AccountRequestApi;
+export default clientRequestAccountApi;

@@ -1,6 +1,5 @@
 "use client";
 import { AccountItem } from "@/app/manage/accounts/context/account-table-context";
-import { useDeleteEmployeeMutation } from "@/app/queries/useAccount";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,7 +10,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { handleErrorApi } from "@/lib/utils";
+import { useDeleteEmployeeMutation } from "@/hooks/data/useAccount";
+import { handleErrorApi } from "@/utils/handleError";
 import { useCallback } from "react";
 import { toast } from "sonner";
 

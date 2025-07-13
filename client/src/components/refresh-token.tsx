@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppContext } from "@/app/app-provider";
-import { handleRefreshToken } from "@/lib/utils";
+import { handleRefreshToken } from "@/helpers/auth";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 

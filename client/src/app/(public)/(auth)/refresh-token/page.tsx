@@ -1,8 +1,8 @@
 "use client";
 
 import { useAppContext } from "@/app/app-provider";
-import { clientSessionToken } from "@/lib/http";
-import { handleRefreshToken } from "@/lib/utils";
+import { handleRefreshToken } from "@/helpers/auth";
+import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 

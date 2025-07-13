@@ -11,17 +11,17 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CreateEmployeeAccountBody, CreateEmployeeAccountBodyType } from "@/schemaValidations/account.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle, Upload } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAddEmployeeMutation } from "@/app/queries/useAccount";
-import { handleErrorApi } from "@/lib/utils";
-import { useUploadMediaMutation } from "@/app/queries/useMedia";
 import { toast } from "sonner";
+import { useAddEmployeeMutation } from "@/hooks/data/useAccount";
+import { useUploadMediaMutation } from "@/hooks/data/useMedia";
+import { CreateEmployeeAccountBody, CreateEmployeeAccountBodyType } from "@/utils/validation/account.schema";
+import { handleErrorApi } from "@/utils/handleError";
 
 export default function AddEmployee() {
     const { mutateAsync: addAccountMutate, isPending: isAddingAccount } = useAddEmployeeMutation();

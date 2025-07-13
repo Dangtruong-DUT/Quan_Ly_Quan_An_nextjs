@@ -1,10 +1,10 @@
-import AccountRequestApi from "@/apiRequest/account.request";
+import clientRequestAccountApi from "@/api/clientToServer/accounts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useAccountProfile() {
     return useQuery({
         queryKey: ["accountProfile"],
-        queryFn: AccountRequestApi.me,
+        queryFn: clientRequestAccountApi.me,
         staleTime: 1000 * 60 * 5,
     });
 }
@@ -12,7 +12,7 @@ export function useAccountProfile() {
 export function useUpdateAccountProfileMutation() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: AccountRequestApi.updateMe,
+        mutationFn: clientRequestAccountApi.updateMe,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["accountProfile"] });
         },
@@ -21,14 +21,14 @@ export function useUpdateAccountProfileMutation() {
 
 export function useChangePasswordMutation() {
     return useMutation({
-        mutationFn: AccountRequestApi.changePassword,
+        mutationFn: clientRequestAccountApi.changePassword,
     });
 }
 
 export function useGetAccountList() {
     return useQuery({
         queryKey: ["accountList"],
-        queryFn: AccountRequestApi.list,
+        queryFn: clientRequestAccountApi.list,
         staleTime: 1000 * 60 * 5,
     });
 }
@@ -36,7 +36,7 @@ export function useGetAccountList() {
 export function useGetEmployeeDetail({ id }: { id?: number }) {
     return useQuery({
         queryKey: ["employeeDetail", id],
-        queryFn: () => AccountRequestApi.getEmployeeDetail(id!),
+        queryFn: () => clientRequestAccountApi.getEmployeeDetail(id!),
         staleTime: 1000 * 60 * 5,
         enabled: Boolean(id),
     });
@@ -44,7 +44,7 @@ export function useGetEmployeeDetail({ id }: { id?: number }) {
 export function useAddEmployeeMutation() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: AccountRequestApi.AddEmployee,
+        mutationFn: clientRequestAccountApi.AddEmployee,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["accountList"] });
         },
@@ -53,7 +53,7 @@ export function useAddEmployeeMutation() {
 export function useEditEmployeeMutation() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: AccountRequestApi.EditEmployee,
+        mutationFn: clientRequestAccountApi.EditEmployee,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["accountList"] });
         },
@@ -63,7 +63,7 @@ export function useEditEmployeeMutation() {
 export function useDeleteEmployeeMutation() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: AccountRequestApi.DeleteEmployee,
+        mutationFn: clientRequestAccountApi.DeleteEmployee,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["accountList"] });
         },
