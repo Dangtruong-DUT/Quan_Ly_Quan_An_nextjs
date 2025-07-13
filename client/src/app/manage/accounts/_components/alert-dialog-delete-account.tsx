@@ -1,5 +1,6 @@
 "use client";
 import { AccountItem } from "@/app/manage/accounts/context/account-table-context";
+import { useDeleteEmployeeMutation } from "@/app/queries/useAccount";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -10,6 +11,9 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { handleErrorApi } from "@/lib/utils";
+import { useCallback } from "react";
+import { toast } from "sonner";
 
 export default function AlertDialogDeleteAccount({
     employeeDelete,
@@ -18,6 +22,20 @@ export default function AlertDialogDeleteAccount({
     employeeDelete: AccountItem | null;
     setEmployeeDelete: (value: AccountItem | null) => void;
 }) {
+    const { mutateAsync } = useDeleteEmployeeMutation();
+
+    const handleDelete = useCallback(async () => {
+        if (employeeDelete) {
+            try {
+                await mutateAsync(employeeDelete.id);
+                setEmployeeDelete(null);
+                toast.success(`Employee ${employeeDelete.name} deleted successfully`);
+            } catch (error) {
+                handleErrorApi(error);
+            }
+        }
+    }, [employeeDelete, mutateAsync, setEmployeeDelete]);
+
     return (
         <AlertDialog
             open={Boolean(employeeDelete)}
@@ -40,7 +58,7 @@ export default function AlertDialogDeleteAccount({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

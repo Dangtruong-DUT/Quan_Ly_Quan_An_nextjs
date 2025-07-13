@@ -74,7 +74,7 @@ export default function AccountTable() {
 
     return (
         <div className="w-full">
-            <EditEmployee id={employeeIdEdit} setId={setEmployeeIdEdit} onSubmitSuccess={() => {}} />
+            <EditEmployee id={employeeIdEdit} setId={setEmployeeIdEdit} />
             <AlertDialogDeleteAccount employeeDelete={employeeDelete} setEmployeeDelete={setEmployeeDelete} />
             <div className="flex items-center py-4">
                 <Input

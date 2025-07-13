@@ -22,11 +22,11 @@ import { useEditEmployeeMutation, useGetEmployeeDetail } from "@/app/queries/use
 import { useUploadMediaMutation } from "@/app/queries/useMedia";
 import { toast } from "sonner";
 import { handleErrorApi } from "@/lib/utils";
-import { set } from "zod";
 
 export default function EditEmployee({
     id,
     setId,
+    onSubmitSuccess,
 }: {
     id?: number | undefined;
     setId: (value: number | undefined) => void;
@@ -85,6 +85,7 @@ export default function EditEmployee({
                 form.reset();
                 setFile(null);
                 setId(undefined);
+                onSubmitSuccess?.();
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
