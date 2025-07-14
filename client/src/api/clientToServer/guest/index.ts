@@ -1,4 +1,5 @@
 import http from "@/service/api/http";
+import { RefreshTokenResType } from "@/utils/validation/auth.schema";
 import { GuestLoginBodyType, GuestLoginResType } from "@/utils/validation/guest.schema";
 
 const clientRequestGuestApi = {
@@ -11,7 +12,7 @@ const clientRequestGuestApi = {
             baseUrl: "",
         }),
     refreshToken: () =>
-        http.post("/api/guest/auth/refresh-token", null, {
+        http.post<RefreshTokenResType>("/api/guest/auth/refresh-token", null, {
             baseUrl: "",
         }),
 };

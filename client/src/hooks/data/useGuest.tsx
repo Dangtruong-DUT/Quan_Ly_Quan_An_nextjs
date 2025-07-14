@@ -8,7 +8,7 @@ export function useGuestLoginMutation() {
     });
 }
 // This hook is used to handle guest logout functionality
-export function useLogoutMutation() {
+export function useGuestLogoutMutation() {
     return useMutation({
         mutationFn: clientRequestGuestApi.logout,
     });
