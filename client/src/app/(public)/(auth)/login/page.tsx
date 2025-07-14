@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function Login() {
     return (
-        <div className="flex items-center justify-center">
+        <div>
             <Card className=" max-w-md w-full">
                 <CardHeader>
                     <CardTitle className="text-2xl">Đăng nhập</CardTitle>
