@@ -7,13 +7,22 @@ import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GuestLoginBody, GuestLoginBodyType } from "@/utils/validation/guest.schema";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { handleErrorApi } from "@/utils/handleError";
+import { useGuestLoginMutation } from "@/hooks/data/useGuest";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useAppContext } from "@/app/app-provider";
 
 export default function GuestLoginForm() {
     const searchParams = useSearchParams();
     const params = useParams<{ number: string }>();
     const token = searchParams.get("token") || "";
     const tableNumber = Number(params.number);
+
+    const router = useRouter();
+    const { mutateAsync: loginMutate, isPending } = useGuestLoginMutation();
+    const { setRole } = useAppContext();
 
     const form = useForm<GuestLoginBodyType>({
         resolver: zodResolver(GuestLoginBody),
@@ -25,13 +34,35 @@ export default function GuestLoginForm() {
     });
 
     useEffect(() => {
+        if (!token) {
+            router.push("/");
+            toast.error("Token không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.");
+        }
+
         form.setValue("token", token);
         form.setValue("tableNumber", tableNumber);
-    }, [token, tableNumber, form]);
+    }, [token, tableNumber, form, router]);
+
+    const handleLogin = useCallback(
+        async (data: GuestLoginBodyType) => {
+            if (isPending) return;
+            try {
+                const res = await loginMutate(data);
+                const { role } = res.payload.data.guest;
+                setRole(role);
+                router.push("/guest/menu");
+            } catch (error) {
+                handleErrorApi(error, form.setError);
+            }
+        },
+        [loginMutate, form, isPending, router, setRole]
+    );
+
+    const onSubmit = form.handleSubmit(handleLogin, console.warn);
 
     return (
         <Form {...form}>
-            <form className=" flex-shrink-0 " noValidate>
+            <form className=" flex-shrink-0 " noValidate onSubmit={onSubmit}>
                 <div className="grid gap-4">
                     <FormField
                         control={form.control}
@@ -47,7 +78,7 @@ export default function GuestLoginForm() {
                         )}
                     />
 
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full" disabled={isPending}>
                         Đăng nhập
                     </Button>
                 </div>

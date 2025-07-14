@@ -1,7 +1,7 @@
 import nextRequestGuestApi from "@/api/nextToBackend/guest";
 import { HttpStatus } from "@/constants/httpStatus";
 import { httpError } from "@/service/api/http";
-import { JwtPayload } from "@/types/jwt";
+import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { GuestLoginBodyType } from "@/utils/validation/guest.schema";
 import { cookies } from "next/headers";
@@ -13,8 +13,8 @@ export async function POST(request: NextRequest) {
     try {
         const { payload } = await nextRequestGuestApi.nextGuestLogin(body);
         const { accessToken, refreshToken } = payload.data;
-        const decodedAccessToken = decodeJwt<JwtPayload>(accessToken);
-        const decodedRefreshToken = decodeJwt<JwtPayload>(refreshToken);
+        const decodedAccessToken = decodeJwt<TokenPayload>(accessToken);
+        const decodedRefreshToken = decodeJwt<TokenPayload>(refreshToken);
         cookieStory.set("accessToken", accessToken, {
             httpOnly: true,
             sameSite: "lax",

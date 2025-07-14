@@ -13,7 +13,7 @@ export default function RefreshTokenPage({
     searchParams: Promise<{ redirect?: string; refreshToken?: string }>;
 }) {
     const { redirect, refreshToken } = use(searchParams);
-    const { setIsAuthenticated } = useAppContext();
+    const { setRole } = useAppContext();
     const router = useRouter();
     useEffect(() => {
         if (redirect && clientSessionToken.refreshToken && refreshToken === clientSessionToken.refreshToken) {
@@ -22,12 +22,12 @@ export default function RefreshTokenPage({
                     router.push(redirect);
                 },
                 onError: (error) => {
-                    setIsAuthenticated(false);
+                    setRole(undefined);
                     router.push("/login");
                     console.error("Error during token refresh:", error);
                 },
                 onRefreshTokenExpired: () => {
-                    setIsAuthenticated(false);
+                    setRole(undefined);
                     router.push("/login");
                 },
             });

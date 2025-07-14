@@ -23,7 +23,7 @@ export default function LoginForm() {
         }
     }, [clearToken]);
 
-    const { setIsAuthenticated } = useAppContext();
+    const { setRole } = useAppContext();
     const router = useRouter();
     const { mutateAsync: login, isPending } = useLoginMutation();
     const form = useForm<LoginBodyType>({
@@ -38,15 +38,17 @@ export default function LoginForm() {
             if (isPending) return;
             try {
                 const res = await login(data);
+                const role = res.payload.data.account.role;
+                setRole(role);
                 router.push("/manage/dashboard");
                 toast.success(res.payload.message);
-                setIsAuthenticated(true);
+
                 router.refresh();
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [form, isPending, login, router, setIsAuthenticated]
+        [form, isPending, login, router, setRole]
     );
     return (
         <Form {...form}>

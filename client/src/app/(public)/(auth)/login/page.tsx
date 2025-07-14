@@ -5,7 +5,7 @@ import { Suspense } from "react";
 export default function Login() {
     return (
         <div>
-            <Card className=" max-w-md w-full">
+            <Card className=" mx-auto max-w-md w-full">
                 <CardHeader>
                     <CardTitle className="text-2xl">Đăng nhập</CardTitle>
                     <CardDescription>Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống</CardDescription>

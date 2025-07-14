@@ -1,6 +1,6 @@
 import clientRequestAuthApi from "@/api/clientToServer/auth";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
-import { JwtPayload } from "@/types/jwt";
+import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 
 /**
@@ -23,8 +23,8 @@ export async function handleRefreshToken(params?: {
     // If no tokens are available, skip the refresh logic
     if (!accessToken || !refreshToken) return;
 
-    const decodeAccessToken = decodeJwt<JwtPayload>(accessToken);
-    const decodeRefreshToken = decodeJwt<JwtPayload>(refreshToken);
+    const decodeAccessToken = decodeJwt<TokenPayload>(accessToken);
+    const decodeRefreshToken = decodeJwt<TokenPayload>(refreshToken);
     const currentTime = Date.now() / 1000 - 1; // Subtract 1 second to account for any potential delay in token expiration checks
 
     // If the refresh token is expired or the access token is still valid, skip the refresh logic

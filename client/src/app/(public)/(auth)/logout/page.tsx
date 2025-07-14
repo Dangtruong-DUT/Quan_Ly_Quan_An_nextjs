@@ -13,14 +13,14 @@ export default function LogoutPage({
     searchParams: Promise<{ accessToken?: string; refreshToken?: string }>;
 }) {
     const router = useRouter();
-    const { setIsAuthenticated } = useAppContext();
+    const { setRole } = useAppContext();
     const { accessToken, refreshToken } = use(searchParams);
     const { mutateAsync: logoutMutate } = useLogoutMutation();
     useEffect(() => {
         const handleLogout = async () => {
             try {
                 await logoutMutate();
-                setIsAuthenticated(false);
+                setRole(undefined);
             } catch (error) {
                 handleErrorApi(error);
             } finally {
@@ -36,6 +36,6 @@ export default function LogoutPage({
         } else {
             router.push("/");
         }
-    }, [logoutMutate, accessToken, refreshToken, router, setIsAuthenticated]);
+    }, [logoutMutate, accessToken, refreshToken, router, setRole]);
     return <div></div>;
 }

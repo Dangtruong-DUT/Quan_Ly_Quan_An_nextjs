@@ -3,7 +3,7 @@ import { GuestLoginBodyType, GuestLoginResType } from "@/utils/validation/guest.
 
 const clientRequestGuestApi = {
     login: (body: GuestLoginBodyType) =>
-        http.post<GuestLoginResType>("/api/guest/auth/logout", body, {
+        http.post<GuestLoginResType>("/api/guest/auth/login", body, {
             baseUrl: "",
         }),
     logout: () =>
