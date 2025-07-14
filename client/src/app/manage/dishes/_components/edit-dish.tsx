@@ -99,7 +99,7 @@ export default function EditDish({
                 handleErrorApi(error, form.setError);
             }
         },
-        [id, isLoading, uploadMediaMutate, editDishMutate, file, dish, onSubmitSuccess, onReset]
+        [id, isLoading, uploadMediaMutate, editDishMutate, file, dish, onSubmitSuccess, onReset, form]
     );
 
     return (

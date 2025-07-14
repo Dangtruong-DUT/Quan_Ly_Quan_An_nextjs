@@ -74,7 +74,7 @@ export default function AddDish() {
                 handleErrorApi(error, form.setError);
             }
         },
-        [file, isLoading, form]
+        [file, isLoading, form, uploadMediaMutate, addDishMutate, onReset]
     );
 
     return (
@@ -85,7 +85,7 @@ export default function AddDish() {
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Create New Dish</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
+            <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto" onCloseAutoFocus={onReset}>
                 <DialogHeader>
                     <DialogTitle>Create New Dish</DialogTitle>
                 </DialogHeader>

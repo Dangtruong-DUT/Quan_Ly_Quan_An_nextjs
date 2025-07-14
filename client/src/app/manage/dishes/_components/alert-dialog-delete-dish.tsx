@@ -1,6 +1,8 @@
 import { DishItem } from "@/app/manage/dishes/context/DishTableContext";
 import {
     AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
@@ -9,7 +11,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDeleteDishMutation } from "@/hooks/data/useDishes";
 import { handleErrorApi } from "@/utils/handleError";
-import { AlertDialogAction, AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { useCallback } from "react";
 import { toast } from "sonner";
 

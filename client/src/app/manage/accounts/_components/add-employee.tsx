@@ -89,7 +89,7 @@ export default function AddEmployee() {
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add new employee</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
+            <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto" onCloseAutoFocus={onReset}>
                 <DialogHeader>
                     <DialogTitle>Add new employee</DialogTitle>
                     <DialogDescription>Name, email, password are required</DialogDescription>
