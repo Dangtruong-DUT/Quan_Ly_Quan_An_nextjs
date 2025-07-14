@@ -1,19 +1,21 @@
-"use client";
-
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import LoginForm from "@/app/(public)/(auth)/login/login-form";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
-import { use, useEffect } from "react";
+import { Suspense } from "react";
 
-export default function Login({ searchParams }: { searchParams: Promise<{ clearToken?: boolean }> }) {
-    const { clearToken } = use(searchParams);
-    useEffect(() => {
-        if (clearToken) {
-            clientSessionToken.clear();
-        }
-    }, [clearToken]);
+export default function Login() {
     return (
         <div className="flex items-center justify-center">
-            <LoginForm />
+            <Card className=" max-w-md w-full">
+                <CardHeader>
+                    <CardTitle className="text-2xl">Đăng nhập</CardTitle>
+                    <CardDescription>Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Suspense>
+                        <LoginForm />
+                    </Suspense>
+                </CardContent>
+            </Card>
         </div>
     );
 }

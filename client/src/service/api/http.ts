@@ -183,23 +183,25 @@ class Http {
 
         const fullUrl = url.startsWith("http") ? url : `${baseUrl}${url}`;
 
-        let finalOptions = options || {};
-        finalOptions = await this.applyRequestInterceptors(finalOptions);
+        const interceptedOptions = await this.applyRequestInterceptors(options || {});
 
-        const body = finalOptions.body instanceof FormData ? finalOptions.body : JSON.stringify(finalOptions.body);
+        const fetchOptions = {
+            ...interceptedOptions,
+            method,
+        };
 
-        const baseHeaders: Record<string, string> =
-            finalOptions.body instanceof FormData
-                ? {}
-                : {
-                      "Content-Type": "application/json",
-                  };
+        const isFormData = fetchOptions.body instanceof FormData;
+        const body = isFormData ? fetchOptions.body : JSON.stringify(fetchOptions.body);
+
+        const baseHeaders: Record<string, string> = isFormData ? {} : { "Content-Type": "application/json" };
+
         const mergedHeaders: HeadersInit = {
             ...baseHeaders,
-            ...(finalOptions.headers as Record<string, string> | undefined),
+            ...(fetchOptions.headers as Record<string, string> | undefined),
         };
+
         const response = await fetch(fullUrl, {
-            method,
+            ...fetchOptions,
             headers: mergedHeaders,
             body,
         });

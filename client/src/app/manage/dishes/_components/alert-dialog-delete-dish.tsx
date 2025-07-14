@@ -1,3 +1,4 @@
+import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
 import { DishItem } from "@/app/manage/dishes/context/DishTableContext";
 import {
     AlertDialog,
@@ -28,6 +29,7 @@ export default function AlertDialogDeleteDish({
                 const res = await deleteDishMutate(dishDelete.id);
                 toast.success(res.payload.message);
                 setDishDelete(null);
+                await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error);
             }

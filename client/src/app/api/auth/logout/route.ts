@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         if (!refreshToken || !accessToken) {
             return NextResponse.json(
                 { message: "No access or refresh token found." },
-                { status: HttpStatus.UNAUTHORIZED_STATUS }
+                { status: HttpStatus.OK_STATUS }
             );
         }
 

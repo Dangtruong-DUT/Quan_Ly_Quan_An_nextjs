@@ -16,7 +16,7 @@ export default function RefreshTokenPage({
     const { setIsAuthenticated } = useAppContext();
     const router = useRouter();
     useEffect(() => {
-        if (redirect && refreshToken === clientSessionToken.refreshToken) {
+        if (redirect && clientSessionToken.refreshToken && refreshToken === clientSessionToken.refreshToken) {
             handleRefreshToken({
                 onSuccess: () => {
                     router.push(redirect);
@@ -32,8 +32,8 @@ export default function RefreshTokenPage({
                 },
             });
         } else {
-            router.push("/");
             clientRequestAuthApi.logout();
+            router.push("/login");
         }
     });
     return <></>;

@@ -18,6 +18,7 @@ import { useAddDishMutation } from "@/hooks/data/useDishes";
 import { handleErrorApi } from "@/utils/handleError";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { toast } from "sonner";
+import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
 
 export default function AddDish() {
     const { mutateAsync: addDishMutate, isPending: isAddingDish } = useAddDishMutation();
@@ -70,6 +71,7 @@ export default function AddDish() {
                 const res = await addDishMutate(body);
                 toast.success(res.payload.message);
                 onReset();
+                await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }

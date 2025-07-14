@@ -18,6 +18,10 @@ const columns: ColumnDef<TableItem>[] = [
         accessorKey: "number",
         header: "Số bàn",
         cell: ({ row }) => <div className="capitalize">{row.getValue("number")}</div>,
+        filterFn: (rows, columnsId, filterValue) => {
+            if (!filterValue) return true;
+            return String(rows.getValue(columnsId)) === filterValue;
+        },
     },
     {
         accessorKey: "capacity",

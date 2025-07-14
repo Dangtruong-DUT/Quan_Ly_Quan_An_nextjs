@@ -10,7 +10,7 @@ export async function POST() {
     const cookiesStore = await cookies();
     const oldRefreshToken = cookiesStore.get("refreshToken")?.value;
     if (!oldRefreshToken) {
-        return new Response(JSON.stringify({ message: "No access or refresh token found." }), {
+        return new Response(JSON.stringify({ message: "No refresh token found." }), {
             status: HttpStatus.UNAUTHORIZED_STATUS,
             headers: { "Content-Type": "application/json" },
         });
