@@ -12,7 +12,7 @@ const TIMEOUT_REFRESH_TOKEN = 5 * 60 * 1000;
 export function RefreshToken() {
     const router = useRouter();
     const pathname = usePathname();
-    const { setIsAuthenticated } = useAppContext();
+    const { setRole } = useAppContext();
     const interValIdRef = useRef<NodeJS.Timeout | null>(null);
     const refreshToken = useCallback(() => {
         handleRefreshToken({
@@ -25,14 +25,14 @@ export function RefreshToken() {
             },
             onRefreshTokenExpired: () => {
                 router.push("/login");
-                setIsAuthenticated(false);
+                setRole(undefined);
                 if (interValIdRef.current) {
                     clearInterval(interValIdRef.current);
                     interValIdRef.current = null;
                 }
             },
         });
-    }, [interValIdRef, router, setIsAuthenticated]);
+    }, [interValIdRef, router, setRole]);
     useEffect(() => {
         // If the pathname is not in the excluded paths, skip the refresh token logic
         // Skip refresh token logic for excluded paths

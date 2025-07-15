@@ -12,7 +12,7 @@ import {
 } from "@tanstack/react-table";
 
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useSearchParams } from "next/navigation";
 import AutoPagination from "@/components/auto-pagination";
@@ -32,7 +32,7 @@ export default function DishTable() {
     const pageIndex = page - 1;
     const { dishIdEdit, setDishIdEdit, dishDelete, setDishDelete } = useDishTableContext();
     const { data: resFromServer } = useGetDishes();
-    const data = resFromServer?.payload.data || [];
+    const data = useMemo(() => resFromServer?.payload.data || [], [resFromServer]);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
