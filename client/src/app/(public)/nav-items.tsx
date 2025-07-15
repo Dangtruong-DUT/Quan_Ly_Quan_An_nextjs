@@ -1,13 +1,10 @@
 "use client";
 
+import GuestConfirmLogout from "@/app/(public)/alert-diaglog-guest-logout";
 import { useAppContext } from "@/app/app-provider";
 import { Role } from "@/constants/type";
-import { useGuestLogoutMutation } from "@/hooks/data/useGuest";
-import { cn } from "@/lib/utils";
 import { RoleType } from "@/types/jwt";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
 
 export type MenuItemType = {
     title: string;
@@ -26,21 +23,8 @@ const menuItems: MenuItemType[] = [
 ];
 
 export default function NavItems({ className }: { className?: string }) {
-    const { isAuth, role, setRole } = useAppContext();
-    const router = useRouter();
-    const { mutateAsync: logoutMutate } = useGuestLogoutMutation();
+    const { isAuth, role } = useAppContext();
 
-    const handleLogout = useCallback(async () => {
-        try {
-            await logoutMutate();
-        } catch (error) {
-            console.error("Logout failed:", error);
-        } finally {
-            setRole(undefined);
-            router.refresh();
-            router.push("/");
-        }
-    }, [logoutMutate, router, setRole]);
     return (
         <>
             {menuItems.map((item) => {
@@ -59,11 +43,7 @@ export default function NavItems({ className }: { className?: string }) {
                     </Link>
                 );
             })}
-            {role == Role.Guest && (
-                <button className={cn(className, "cursor-pointer")} onClick={handleLogout}>
-                    Đăng xuất
-                </button>
-            )}
+            {role == Role.Guest && <GuestConfirmLogout className={className} />}
         </>
     );
 }

@@ -6,8 +6,10 @@ import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
 import socket from "@/service/socket/socket";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
+import { UpdateOrderResType } from "@/utils/validation/order.schema";
 import Image from "next/image";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function OrderCard() {
     const { data, refetch: refetchOrder } = useGuestGetOrderListQuery();
@@ -28,8 +30,11 @@ export default function OrderCard() {
             console.log("Disconnected from socket server");
         }
 
-        function onOrderUpdate() {
+        function onOrderUpdate(data: UpdateOrderResType["data"]) {
             refetchOrder();
+            toast.message(`Đơn hàng ${data.dishSnapshot.name} đã được cập nhật`, {
+                description: `Trạng thái đơn hàng hiện tại: ${getVietnameseOrderStatus(data.status)}`,
+            });
         }
 
         socket.on("update-order", onOrderUpdate);
