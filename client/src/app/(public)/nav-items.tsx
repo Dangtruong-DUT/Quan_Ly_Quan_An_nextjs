@@ -20,6 +20,7 @@ export type MenuItemType = {
 const menuItems: MenuItemType[] = [
     { title: "Trang chủ", href: "/" },
     { title: "Menu", href: "/guest/menu", role: [Role.Guest] },
+    { title: "Đơn hàng", href: "/guest/order", role: [Role.Guest] },
     { title: "Đăng nhập", href: "/login", hideWhenLogin: true },
     { title: "Quản lý", href: "/manage/dashboard", role: [Role.Owner, Role.Employee] },
 ];
