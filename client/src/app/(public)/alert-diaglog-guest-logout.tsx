@@ -26,9 +26,8 @@ export default function GuestConfirmLogout({ className }: { className?: string }
         } catch (error) {
             console.error("Logout failed:", error);
         } finally {
-            setRole(undefined);
-            router.refresh();
             router.push("/");
+            setRole(undefined);
         }
     }, [logoutMutate, router, setRole]);
 
