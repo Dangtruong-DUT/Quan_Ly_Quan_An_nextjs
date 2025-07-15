@@ -30,6 +30,8 @@ import orderTableColumns from "@/app/manage/orders/_components/order-table/colum
 import { useOrderService } from "@/app/manage/orders/_components/order.service";
 import { DataTable } from "@/components/ui/data-table";
 import { useOrderTableContext } from "@/app/manage/orders/context/order-table-provider";
+import { useGetOrderListQuery } from "@/hooks/data/useOrder";
+import { useGetTables } from "@/hooks/data/useTables";
 
 export type StatusCountObject = Record<(typeof OrderStatusValues)[number], number>;
 export type Statics = {
@@ -49,10 +51,15 @@ export default function OrderTable() {
     const [toDate, setToDate] = useState(initToDate);
     const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
     const pageIndex = page - 1;
+    const { data: orderListQuery } = useGetOrderListQuery({
+        fromDate,
+        toDate,
+    });
+    const { data: tableListQuery } = useGetTables();
+    const orderList = orderListQuery?.payload.data || [];
+    const tableList = tableListQuery?.payload.data || [];
+    const tableListSortedByNumber = tableList.sort((a, b) => a.number - b.number);
 
-    const orderList: any = [];
-    const tableList: any = [];
-    const tableListSortedByNumber = tableList.sort((a: any, b: any) => a.number - b.number);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

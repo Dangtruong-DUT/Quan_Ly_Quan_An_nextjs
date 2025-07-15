@@ -9,7 +9,6 @@ import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { TablesDialog } from "@/app/manage/orders/tables-dialog";
 import { Switch } from "@/components/ui/switch";
 import Quantity from "@/app/guest/menu/quantity";
 import Image from "next/image";
@@ -21,6 +20,7 @@ import { GuestLoginBody, GuestLoginBodyType } from "@/utils/validation/guest.sch
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import GuestsDialog from "@/app/manage/orders/_components/guests-dialog";
+import TablesDialog from "@/app/manage/orders/_components/tables-dialog";
 
 export default function AddOrder() {
     const [open, setOpen] = useState(false);

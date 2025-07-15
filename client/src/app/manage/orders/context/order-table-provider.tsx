@@ -1,3 +1,5 @@
+"use client";
+
 import { OrderObjectByGuestID } from "@/app/manage/orders/_components/order-table/order-table";
 import { OrderStatusValues } from "@/constants/type";
 import React, { createContext, useCallback, useState } from "react";

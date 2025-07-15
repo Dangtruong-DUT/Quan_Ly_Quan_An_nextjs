@@ -1,4 +1,5 @@
 import clientRequestOrderApi from "@/api/clientToServer/order";
+import { GetOrdersQueryParamsType } from "@/utils/validation/order.schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateOrderMutation() {
@@ -10,9 +11,17 @@ export function useUpdateOrderMutation() {
         },
     });
 }
-export function useGetOrderListQuery() {
+export function useGetOrderListQuery(queryParams?: GetOrdersQueryParamsType) {
     return useQuery({
-        queryKey: ["orderList"],
-        queryFn: clientRequestOrderApi.getOrderList,
+        queryKey: ["orderList", queryParams],
+        queryFn: () => clientRequestOrderApi.getOrderList(queryParams),
+    });
+}
+
+export function useGetOrderDetailQuery(orderId?: number) {
+    return useQuery({
+        queryKey: ["orderDetail", orderId],
+        queryFn: () => clientRequestOrderApi.getOrderDetail(orderId!),
+        enabled: !!orderId,
     });
 }
