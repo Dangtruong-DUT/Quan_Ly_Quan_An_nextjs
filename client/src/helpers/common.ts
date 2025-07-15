@@ -1,5 +1,6 @@
 import envConfig from "@/config/app.config";
 import { DishStatus, OrderStatus, TableStatus } from "@/constants/type";
+import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
 
 export const getVietnameseDishStatus = (status: (typeof DishStatus)[keyof typeof DishStatus]) => {
     switch (status) {
@@ -40,4 +41,12 @@ export const getVietnameseTableStatus = (status: (typeof TableStatus)[keyof type
 
 export const getTableLink = ({ token, tableNumber }: { token: string; tableNumber: number }) => {
     return envConfig.NEXT_PUBLIC_URL + "/tables/" + tableNumber + "?token=" + token;
+};
+
+export const OrderStatusIcon = {
+    [OrderStatus.Pending]: Loader,
+    [OrderStatus.Processing]: CookingPot,
+    [OrderStatus.Rejected]: BookX,
+    [OrderStatus.Delivered]: Truck,
+    [OrderStatus.Paid]: HandCoins,
 };
