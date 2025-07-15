@@ -90,7 +90,7 @@ export default function EditEmployee({
                 handleErrorApi(error, form.setError);
             }
         },
-        [file, form, uploadImageMutateAsync, updateProfileMutateAsync, data, isLoading, setFile, setId]
+        [file, form, uploadImageMutateAsync, updateProfileMutateAsync, data, isLoading, setFile, setId, onSubmitSuccess]
     );
 
     const avatar = form.watch("avatar");

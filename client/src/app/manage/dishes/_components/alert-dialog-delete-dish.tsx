@@ -1,6 +1,9 @@
+import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
 import { DishItem } from "@/app/manage/dishes/context/DishTableContext";
 import {
     AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
@@ -9,7 +12,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDeleteDishMutation } from "@/hooks/data/useDishes";
 import { handleErrorApi } from "@/utils/handleError";
-import { AlertDialogAction, AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
@@ -27,6 +29,7 @@ export default function AlertDialogDeleteDish({
                 const res = await deleteDishMutate(dishDelete.id);
                 toast.success(res.payload.message);
                 setDishDelete(null);
+                await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error);
             }

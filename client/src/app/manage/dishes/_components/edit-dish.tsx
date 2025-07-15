@@ -25,6 +25,7 @@ import { useEditDishMutation, useGetDishDetail } from "@/hooks/data/useDishes";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { handleErrorApi } from "@/utils/handleError";
 import { toast } from "sonner";
+import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
 
 export default function EditDish({
     id,
@@ -95,11 +96,12 @@ export default function EditDish({
                 toast.success(res.payload.message);
                 onSubmitSuccess?.();
                 onReset();
+                await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [id, isLoading, uploadMediaMutate, editDishMutate, file, dish, onSubmitSuccess, onReset]
+        [id, isLoading, uploadMediaMutate, editDishMutate, file, dish, onSubmitSuccess, onReset, form]
     );
 
     return (

@@ -4,10 +4,13 @@ import { ReactNode, createContext, use, useCallback, useEffect, useState } from 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RefreshToken } from "@/components/refresh-token";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { RoleType, TokenPayload } from "@/types/jwt";
+import { decodeJwt } from "@/utils/jwt";
 
 type AppContextType = {
-    isAuthenticated: boolean;
-    setIsAuthenticated: (value: boolean) => void;
+    role: RoleType | undefined;
+    setRole: (role: RoleType | undefined) => void;
+    isAuth: boolean;
 };
 
 const queryClient = new QueryClient({
@@ -19,29 +22,34 @@ const queryClient = new QueryClient({
     },
 });
 
-const AppContext = createContext<AppContextType>({ isAuthenticated: false, setIsAuthenticated: () => {} });
+const AppContext = createContext<AppContextType>({ role: undefined, setRole: () => {}, isAuth: false });
 
 export function useAppContext() {
     return use(AppContext);
 }
 
 export default function AppProvider({ children }: { children: ReactNode }) {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [role, setRole] = useState<RoleType | undefined>(undefined);
 
     useEffect(() => {
-        setIsAuthenticated(Boolean(clientSessionToken.refreshToken));
+        if (clientSessionToken.refreshToken == null) return;
+        const { role } = decodeJwt<TokenPayload>(clientSessionToken.refreshToken);
+        setRole(role);
     }, []);
-    const handleSetIsAuthenticated = useCallback(
-        (value: boolean) => {
-            setIsAuthenticated(value);
-            if (!value) {
+    const handleSetRole = useCallback(
+        (value: RoleType | undefined) => {
+            setRole(value);
+            if (value === undefined) {
                 clientSessionToken.clear();
             }
         },
-        [setIsAuthenticated]
+        [setRole]
     );
+
+    const isAuth = Boolean(role);
+
     return (
-        <AppContext value={{ setIsAuthenticated: handleSetIsAuthenticated, isAuthenticated }}>
+        <AppContext value={{ role, setRole: handleSetRole, isAuth }}>
             <QueryClientProvider client={queryClient}>
                 {children}
                 <RefreshToken />

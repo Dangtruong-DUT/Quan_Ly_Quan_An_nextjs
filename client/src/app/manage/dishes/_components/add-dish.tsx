@@ -18,6 +18,7 @@ import { useAddDishMutation } from "@/hooks/data/useDishes";
 import { handleErrorApi } from "@/utils/handleError";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { toast } from "sonner";
+import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
 
 export default function AddDish() {
     const { mutateAsync: addDishMutate, isPending: isAddingDish } = useAddDishMutation();
@@ -70,11 +71,12 @@ export default function AddDish() {
                 const res = await addDishMutate(body);
                 toast.success(res.payload.message);
                 onReset();
+                await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [file, isLoading, form]
+        [file, isLoading, form, uploadMediaMutate, addDishMutate, onReset]
     );
 
     return (
@@ -85,7 +87,7 @@ export default function AddDish() {
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Create New Dish</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
+            <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto" onCloseAutoFocus={onReset}>
                 <DialogHeader>
                     <DialogTitle>Create New Dish</DialogTitle>
                 </DialogHeader>

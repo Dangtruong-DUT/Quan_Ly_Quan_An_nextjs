@@ -1,6 +1,8 @@
 import clientRequestAuthApi from "@/api/clientToServer/auth";
+import clientRequestGuestApi from "@/api/clientToServer/guest";
+import { Role } from "@/constants/type";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
-import { JwtPayload } from "@/types/jwt";
+import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 
 /**
@@ -20,14 +22,15 @@ export async function handleRefreshToken(params?: {
 }) {
     const accessToken = clientSessionToken.accessToken;
     const refreshToken = clientSessionToken.refreshToken;
-    // If no tokens are available, skip the refresh logic
     if (!accessToken || !refreshToken) return;
 
-    const decodeAccessToken = decodeJwt<JwtPayload>(accessToken);
-    const decodeRefreshToken = decodeJwt<JwtPayload>(refreshToken);
-    const currentTime = Date.now() / 1000 - 1; // Subtract 1 second to account for any potential delay in token expiration checks
+    const decodeAccessToken = decodeJwt<TokenPayload>(accessToken);
+    const decodeRefreshToken = decodeJwt<TokenPayload>(refreshToken);
 
-    // If the refresh token is expired or the access token is still valid, skip the refresh logic
+    const refreshFn =
+        decodeRefreshToken.role === Role.Guest ? clientRequestGuestApi.refreshToken : clientRequestAuthApi.refreshToken;
+
+    const currentTime = Date.now() / 1000 - 1; // Subtract 1 second to account for any potential delay in token expiration checks
     if (decodeRefreshToken.exp <= currentTime) {
         clientSessionToken.clear();
         return params?.onRefreshTokenExpired?.();
@@ -36,7 +39,8 @@ export async function handleRefreshToken(params?: {
     if (decodeAccessToken.exp - currentTime > (decodeAccessToken.exp - decodeAccessToken.iat) / 3) return;
 
     try {
-        const res = await clientRequestAuthApi.refreshToken();
+        const res = await refreshFn();
+
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = res.payload.data;
         clientSessionToken.accessToken = newAccessToken;
         clientSessionToken.refreshToken = newRefreshToken;

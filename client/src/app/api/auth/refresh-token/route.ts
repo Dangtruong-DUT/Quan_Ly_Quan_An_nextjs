@@ -1,7 +1,7 @@
 import nextRequestAuthApi from "@/api/nextToBackend/auth";
 import { HttpStatus } from "@/constants/httpStatus";
 import { httpError } from "@/service/api/http";
-import { JwtPayload } from "@/types/jwt";
+import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -10,7 +10,7 @@ export async function POST() {
     const cookiesStore = await cookies();
     const oldRefreshToken = cookiesStore.get("refreshToken")?.value;
     if (!oldRefreshToken) {
-        return new Response(JSON.stringify({ message: "No access or refresh token found." }), {
+        return new Response(JSON.stringify({ message: "No refresh token found." }), {
             status: HttpStatus.UNAUTHORIZED_STATUS,
             headers: { "Content-Type": "application/json" },
         });
@@ -20,8 +20,8 @@ export async function POST() {
             refreshToken: oldRefreshToken,
         });
         const { accessToken, refreshToken } = payload.data;
-        const decodedAccessToken = decodeJwt<JwtPayload>(accessToken);
-        const decodedRefreshToken = decodeJwt<JwtPayload>(refreshToken);
+        const decodedAccessToken = decodeJwt<TokenPayload>(accessToken);
+        const decodedRefreshToken = decodeJwt<TokenPayload>(refreshToken);
         cookiesStore.set("accessToken", accessToken, {
             httpOnly: true,
             sameSite: "lax",

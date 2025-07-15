@@ -1,3 +1,4 @@
+import envConfig from "@/config/app.config";
 import { DishStatus, OrderStatus, TableStatus } from "@/constants/type";
 
 export const getVietnameseDishStatus = (status: (typeof DishStatus)[keyof typeof DishStatus]) => {
@@ -35,4 +36,8 @@ export const getVietnameseTableStatus = (status: (typeof TableStatus)[keyof type
         default:
             return "Ẩn";
     }
+};
+
+export const getTableLink = ({ token, tableNumber }: { token: string; tableNumber: number }) => {
+    return envConfig.NEXT_PUBLIC_URL + "/tables/" + tableNumber + "?token=" + token;
 };

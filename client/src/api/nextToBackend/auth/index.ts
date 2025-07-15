@@ -15,6 +15,6 @@ const nextRequestAuthApi = {
                 Authorization: `Bearer ${accessToken}`,
             },
         }),
-    nextRefreshToken: (body: RefreshTokenBodyType) => http.post<RefreshTokenResType>("/auth/refresh-token", body, {}),
+    nextRefreshToken: (body: RefreshTokenBodyType) => http.post<RefreshTokenResType>("/auth/refresh-token", body),
 };
 export default nextRequestAuthApi;
