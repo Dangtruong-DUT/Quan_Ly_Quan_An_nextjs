@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AutoPagination from "@/components/auto-pagination";
 import { useEffect, useState } from "react";
 import {
-    ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
-    flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
@@ -18,50 +15,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { endOfDay, format, startOfDay } from "date-fns";
 import { GetListGuestsResType } from "@/utils/validation/account.schema";
-import { simpleMatchText } from "@/utils/common";
-import { formatDateTimeToLocaleString } from "@/utils/formatting/formatTime";
-
-type GuestItem = GetListGuestsResType["data"][0];
-
-export const columns: ColumnDef<GuestItem>[] = [
-    {
-        accessorKey: "name",
-        header: "Tên",
-        cell: ({ row }) => (
-            <div className="capitalize">
-                {row.getValue("name")} | (#{row.original.id})
-            </div>
-        ),
-        filterFn: (row, columnId, filterValue: string) => {
-            if (filterValue === undefined) return true;
-            return simpleMatchText(row.original.name + String(row.original.id), String(filterValue));
-        },
-    },
-    {
-        accessorKey: "tableNumber",
-        header: "Số bàn",
-        cell: ({ row }) => <div className="capitalize">{row.getValue("tableNumber")}</div>,
-        filterFn: (row, columnId, filterValue: string) => {
-            if (filterValue === undefined) return true;
-            return simpleMatchText(String(row.original.tableNumber), String(filterValue));
-        },
-    },
-    {
-        accessorKey: "createdAt",
-        header: () => <div>Tạo</div>,
-        cell: ({ row }) => (
-            <div className="flex items-center space-x-4 text-sm">
-                {formatDateTimeToLocaleString(row.getValue("createdAt"))}
-            </div>
-        ),
-    },
-];
+import { GuestItem } from "@/app/manage/orders/_components/guests-dialog/columns";
+import columns from "@/app/manage/orders/_components/guests-dialog/columns";
+import { DataTable } from "@/components/ui/data-table";
 
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 
-export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem) => void }) {
+export default function GuestsDialog({}: { onChoose: (guest: GuestItem) => void }) {
     const [open, setOpen] = useState(false);
     const [fromDate, setFromDate] = useState(initFromDate);
     const [toDate, setToDate] = useState(initToDate);
@@ -71,8 +33,8 @@ export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [pagination, setPagination] = useState({
-        pageIndex: 0, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-        pageSize: PAGE_SIZE, //default page size
+        pageIndex: 0,
+        pageSize: PAGE_SIZE,
     });
 
     const table = useReactTable({
@@ -103,11 +65,6 @@ export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem
             pageSize: PAGE_SIZE,
         });
     }, [table]);
-
-    const choose = (guest: GuestItem) => {
-        onChoose(guest);
-        setOpen(false);
-    };
 
     const resetDateFilter = () => {
         setFromDate(initFromDate);
@@ -163,54 +120,7 @@ export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem
                                 className="w-[80px]"
                             />
                         </div>
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    {table.getHeaderGroups().map((headerGroup) => (
-                                        <TableRow key={headerGroup.id}>
-                                            {headerGroup.headers.map((header) => {
-                                                return (
-                                                    <TableHead key={header.id}>
-                                                        {header.isPlaceholder
-                                                            ? null
-                                                            : flexRender(
-                                                                  header.column.columnDef.header,
-                                                                  header.getContext()
-                                                              )}
-                                                    </TableHead>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    ))}
-                                </TableHeader>
-                                <TableBody>
-                                    {table.getRowModel().rows?.length ? (
-                                        table.getRowModel().rows.map((row) => (
-                                            <TableRow
-                                                key={row.id}
-                                                data-state={row.getIsSelected() && "selected"}
-                                                onClick={() => {
-                                                    choose(row.original);
-                                                }}
-                                                className="cursor-pointer"
-                                            >
-                                                {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id}>
-                                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                                No results.
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
+                        <DataTable columns={columns} table={table} />
                         <div className="flex items-center justify-end space-x-2 py-4">
                             <div className="text-xs text-muted-foreground py-4 flex-1 ">
                                 Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}

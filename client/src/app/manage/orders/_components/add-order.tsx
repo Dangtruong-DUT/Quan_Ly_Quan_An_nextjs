@@ -1,4 +1,5 @@
 "use client";
+
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { PlusCircle } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -10,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { TablesDialog } from "@/app/manage/orders/tables-dialog";
 import { Switch } from "@/components/ui/switch";
-import GuestsDialog from "@/app/manage/orders/guests-dialog";
 import Quantity from "@/app/guest/menu/quantity";
 import Image from "next/image";
 import { DishStatus } from "@/constants/type";
@@ -20,6 +20,7 @@ import { DishListResType } from "@/utils/validation/dish.schema";
 import { GuestLoginBody, GuestLoginBodyType } from "@/utils/validation/guest.schema";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
+import GuestsDialog from "@/app/manage/orders/_components/guests-dialog";
 
 export default function AddOrder() {
     const [open, setOpen] = useState(false);
@@ -43,8 +44,6 @@ export default function AddOrder() {
             tableNumber: 0,
         },
     });
-    const name = form.watch("name");
-    const tableNumber = form.watch("tableNumber");
 
     const handleQuantityChange = (dishId: number, quantity: number) => {
         setOrders((prevOrders) => {

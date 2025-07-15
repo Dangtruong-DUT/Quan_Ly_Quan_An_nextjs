@@ -8,12 +8,12 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DishesDialog } from "@/app/manage/orders/dishes-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 import { DishListResType } from "@/utils/validation/dish.schema";
 import { UpdateOrderBody, UpdateOrderBodyType } from "@/utils/validation/order.schema";
 import { getVietnameseOrderStatus } from "@/helpers/common";
+import DishesDialog from "@/app/manage/orders/_components/dishes-dialog";
 
 const fakeOrderDetail = {
     id: 30,
@@ -57,14 +57,12 @@ const fakeOrderDetail = {
 export default function EditOrder({
     id,
     setId,
-    onSubmitSuccess,
 }: {
     id?: number | undefined;
     setId: (value: number | undefined) => void;
     onSubmitSuccess?: () => void;
 }) {
     const [selectedDish, setSelectedDish] = useState<DishListResType["data"][0]>(fakeOrderDetail.dishSnapshot as any);
-    const orderDetail = fakeOrderDetail;
     const form = useForm<UpdateOrderBodyType>({
         resolver: zodResolver(UpdateOrderBody),
         defaultValues: {

@@ -1,4 +1,8 @@
-import { OrderObjectByGuestID, ServingGuestByTableNumber, Statics } from "@/app/manage/orders/order-table";
+import {
+    OrderObjectByGuestID,
+    ServingGuestByTableNumber,
+    Statics,
+} from "@/app/manage/orders/_components/order-table/order-table";
 import { OrderStatus } from "@/constants/type";
 import { GetOrdersResType } from "@/utils/validation/order.schema";
 import { useMemo } from "react";

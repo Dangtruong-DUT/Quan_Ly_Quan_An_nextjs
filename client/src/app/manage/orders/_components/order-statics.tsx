@@ -6,10 +6,10 @@ import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { Badge } from "@/components/ui/badge";
 import { ServingGuestByTableNumber, Statics, StatusCountObject } from "@/app/manage/orders/order-table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import OrderGuestDetail from "@/app/manage/orders/order-guest-detail";
 import { TableListResType } from "@/utils/validation/table.schema";
 import { cn } from "@/lib/utils";
 import { getVietnameseOrderStatus, OrderStatusIcon } from "@/helpers/common";
+import OrderGuestDetail from "@/app/manage/orders/_components/order-guest-detail";
 
 // Ví dụ:
 // const statics: Statics = {

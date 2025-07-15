@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { OrderStatus } from "@/constants/type";
 import { getVietnameseOrderStatus, OrderStatusIcon } from "@/helpers/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
-import { formatDateTimeToLocaleString } from "@/utils/formatting/formatTime";
+import { formatDateTimeToLocaleString, formatDateTimeToTimeString } from "@/utils/formatting/formatTime";
 import { GetOrdersResType } from "@/utils/validation/order.schema";
 import Image from "next/image";
 import { Fragment } from "react";

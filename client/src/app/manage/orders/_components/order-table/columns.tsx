@@ -12,18 +12,17 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useContext } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { OrderTableContext } from "@/app/manage/orders/order-table";
-import OrderGuestDetail from "@/app/manage/orders/order-guest-detail";
 import { GetOrdersResType } from "@/utils/validation/order.schema";
 import { simpleMatchText } from "@/utils/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import { getVietnameseOrderStatus } from "@/helpers/common";
 import { formatDateTimeToLocaleString } from "@/utils/formatting/formatTime";
+import { useOrderTableContext } from "@/app/manage/orders/context/order-table-provider";
+import OrderGuestDetail from "@/app/manage/orders/_components/order-guest-detail";
 
 type OrderItem = GetOrdersResType["data"][0];
 const orderTableColumns: ColumnDef<OrderItem>[] = [
@@ -40,7 +39,7 @@ const orderTableColumns: ColumnDef<OrderItem>[] = [
         id: "guestName",
         header: "Khách hàng",
         cell: function Cell({ row }) {
-            const { orderObjectByGuestId } = useContext(OrderTableContext);
+            const { orderObjectByGuestId } = useOrderTableContext();
             const guest = row.original.guest;
             return (
                 <div>
@@ -121,7 +120,7 @@ const orderTableColumns: ColumnDef<OrderItem>[] = [
         accessorKey: "status",
         header: "Trạng thái",
         cell: function Cell({ row }) {
-            const { changeStatus } = useContext(OrderTableContext);
+            const { changeStatus } = useOrderTableContext();
             const changeOrderStatus = async (status: (typeof OrderStatusValues)[number]) => {
                 changeStatus({
                     orderId: row.original.id,
@@ -175,7 +174,8 @@ const orderTableColumns: ColumnDef<OrderItem>[] = [
         id: "actions",
         enableHiding: false,
         cell: function Actions({ row }) {
-            const { setOrderIdEdit } = useContext(OrderTableContext);
+            const { setOrderIdEdit } = useOrderTableContext();
+
             const openEditOrder = () => {
                 setOrderIdEdit(row.original.id);
             };

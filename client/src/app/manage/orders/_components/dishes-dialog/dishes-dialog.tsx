@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AutoPagination from "@/components/auto-pagination";
 import { useEffect, useState } from "react";
 import {
-    ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
-    flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
@@ -16,11 +13,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import { DishListResType } from "@/utils/validation/dish.schema";
-import { formatCurrency } from "@/utils/formatting/formatCurrency";
-import { getVietnameseDishStatus } from "@/helpers/common";
-import { simpleMatchText } from "@/utils/common";
+import { DataTable } from "@/components/ui/data-table";
+import columns from "@/app/manage/orders/_components/dishes-dialog/columns";
 
 type DishItem = DishListResType["data"][0];
 const fakeData = [
@@ -55,41 +50,9 @@ const fakeData = [
         updatedAt: "2024-06-01T03:45:43.148Z",
     },
 ] as unknown as DishItem[];
-export const columns: ColumnDef<DishItem>[] = [
-    {
-        id: "dishName",
-        header: "Món ăn",
-        cell: ({ row }) => (
-            <div className="flex items-center space-x-4">
-                <Image
-                    src={row.original.image}
-                    alt={row.original.name}
-                    width={50}
-                    height={50}
-                    className="rounded-md object-cover w-[50px] h-[50px]"
-                />
-                <span>{row.original.name}</span>
-            </div>
-        ),
-        filterFn: (row, columnId, filterValue: string) => {
-            if (filterValue === undefined) return true;
-            return simpleMatchText(String(row.original.name), String(filterValue));
-        },
-    },
-    {
-        accessorKey: "price",
-        header: "Giá cả",
-        cell: ({ row }) => <div className="capitalize">{formatCurrency(row.getValue("price"))}</div>,
-    },
-    {
-        accessorKey: "status",
-        header: "Trạng thái",
-        cell: ({ row }) => <div>{getVietnameseDishStatus(row.getValue("status"))}</div>,
-    },
-];
 
 const PAGE_SIZE = 10;
-export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void }) {
+export function DishesDialog({}: { onChoose: (dish: DishItem) => void }) {
     const [open, setOpen] = useState(false);
     const data = fakeData;
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -97,8 +60,8 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [pagination, setPagination] = useState({
-        pageIndex: 0, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
-        pageSize: PAGE_SIZE, //default page size
+        pageIndex: 0,
+        pageSize: PAGE_SIZE,
     });
 
     const table = useReactTable({
@@ -130,11 +93,6 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
         });
     }, [table]);
 
-    const choose = (dish: DishItem) => {
-        onChoose(dish);
-        setOpen(false);
-    };
-
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -154,52 +112,7 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
                                 className="max-w-sm"
                             />
                         </div>
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    {table.getHeaderGroups().map((headerGroup) => (
-                                        <TableRow key={headerGroup.id}>
-                                            {headerGroup.headers.map((header) => {
-                                                return (
-                                                    <TableHead key={header.id}>
-                                                        {header.isPlaceholder
-                                                            ? null
-                                                            : flexRender(
-                                                                  header.column.columnDef.header,
-                                                                  header.getContext()
-                                                              )}
-                                                    </TableHead>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    ))}
-                                </TableHeader>
-                                <TableBody>
-                                    {table.getRowModel().rows?.length ? (
-                                        table.getRowModel().rows.map((row) => (
-                                            <TableRow
-                                                key={row.id}
-                                                data-state={row.getIsSelected() && "selected"}
-                                                onClick={() => choose(row.original)}
-                                                className="cursor-pointer"
-                                            >
-                                                {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id}>
-                                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                                No results.
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
+                        <DataTable table={table} columns={columns} />
                         <div className="flex items-center justify-end space-x-2 py-4">
                             <div className="text-xs text-muted-foreground py-4 flex-1 ">
                                 Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
