@@ -4,12 +4,45 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
+import socket from "@/service/socket/socket";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function OrderCard() {
-    const { data } = useGuestGetOrderListQuery();
+    const { data, refetch: refetchOrder } = useGuestGetOrderListQuery();
     const orders = data?.payload.data || [];
+
+    console.log("orders", orders);
+
+    useEffect(() => {
+        if (socket.connected) {
+            onConnect();
+        }
+
+        function onConnect() {
+            console.log(socket.id, "Connected to socket server");
+        }
+
+        function onDisconnect() {
+            console.log("Disconnected from socket server");
+        }
+
+        function onOrderUpdate() {
+            refetchOrder();
+        }
+
+        socket.on("update-order", onOrderUpdate);
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+            socket.off("connect", onConnect);
+            socket.off("disconnect", onDisconnect);
+            socket.off("update-order", onOrderUpdate);
+        };
+    }, []);
+
     if (orders.length === 0) {
         return <p className="text-center text-gray-500">Bạn chưa có đơn hàng nào.</p>;
     }
