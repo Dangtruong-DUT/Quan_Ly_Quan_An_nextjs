@@ -35,3 +35,13 @@ export function usePayForGuestOrdersMutation() {
         },
     });
 }
+
+export function useCreateOrdersMutation() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: clientRequestOrderApi.createOrders,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orderList"] });
+        },
+    });
+}
