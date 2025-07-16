@@ -48,9 +48,9 @@ export default function GuestLoginForm() {
             if (isPending) return;
             try {
                 const res = await loginMutate(data);
+                router.push("/guest/menu");
                 const { role } = res.payload.data.guest;
                 setRole(role);
-                router.push("/guest/menu");
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }

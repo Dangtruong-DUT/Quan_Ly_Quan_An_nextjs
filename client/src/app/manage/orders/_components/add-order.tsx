@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { PlusCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -15,27 +15,34 @@ import Image from "next/image";
 import { DishStatus } from "@/constants/type";
 import { GetListGuestsResType } from "@/utils/validation/account.schema";
 import { CreateOrdersBodyType } from "@/utils/validation/order.schema";
-import { DishListResType } from "@/utils/validation/dish.schema";
 import { GuestLoginBody, GuestLoginBodyType } from "@/utils/validation/guest.schema";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import GuestsDialog from "@/app/manage/orders/_components/guests-dialog";
 import TablesDialog from "@/app/manage/orders/_components/tables-dialog";
+import { useGetDishes } from "@/hooks/data/useDishes";
 
 export default function AddOrder() {
     const [open, setOpen] = useState(false);
     const [selectedGuest, setSelectedGuest] = useState<GetListGuestsResType["data"][0] | null>(null);
     const [isNewGuest, setIsNewGuest] = useState(true);
     const [orders, setOrders] = useState<CreateOrdersBodyType["orders"]>([]);
-    const dishes: DishListResType["data"] = [];
+
+    const { data } = useGetDishes();
+    const dishesMapObj = useMemo(() => {
+        const dishList = data?.payload.data || [];
+        return dishList.reduce((acc, dish) => {
+            acc[dish.id] = dish;
+            return acc;
+        }, {} as Record<number, (typeof dishList)[0]>);
+    }, [data]);
 
     const totalPrice = useMemo(() => {
-        return dishes.reduce((result, dish) => {
-            const order = orders.find((order) => order.dishId === dish.id);
-            if (!order) return result;
-            return result + order.quantity * dish.price;
+        return orders.reduce((sum, order) => {
+            const dish = dishesMapObj[order.dishId];
+            return sum + (dish ? dish.price * order.quantity : 0);
         }, 0);
-    }, [dishes, orders]);
+    }, [dishesMapObj, orders]);
 
     const form = useForm<GuestLoginBodyType>({
         resolver: zodResolver(GuestLoginBody),
@@ -45,20 +52,23 @@ export default function AddOrder() {
         },
     });
 
-    const handleQuantityChange = (dishId: number, quantity: number) => {
-        setOrders((prevOrders) => {
-            if (quantity === 0) {
-                return prevOrders.filter((order) => order.dishId !== dishId);
-            }
-            const index = prevOrders.findIndex((order) => order.dishId === dishId);
-            if (index === -1) {
-                return [...prevOrders, { dishId, quantity }];
-            }
-            const newOrders = [...prevOrders];
-            newOrders[index] = { ...newOrders[index], quantity };
-            return newOrders;
-        });
-    };
+    const handleQuantityChange = useCallback(
+        (dishId: number, quantity: number) => {
+            setOrders((prevOrders) => {
+                if (quantity === 0) {
+                    return prevOrders.filter((order) => order.dishId !== dishId);
+                }
+                const index = prevOrders.findIndex((order) => order.dishId === dishId);
+                if (index === -1) {
+                    return [...prevOrders, { dishId, quantity }];
+                }
+                const newOrders = [...prevOrders];
+                newOrders[index] = { ...newOrders[index], quantity };
+                return newOrders;
+            });
+        },
+        [setOrders]
+    );
 
     const handleOrder = async () => {};
 
@@ -146,7 +156,7 @@ export default function AddOrder() {
                         </div>
                     </div>
                 )}
-                {dishes
+                {Object.values(dishesMapObj)
                     .filter((dish) => dish.status !== DishStatus.Hidden)
                     .map((dish) => (
                         <div
@@ -177,8 +187,9 @@ export default function AddOrder() {
                             </div>
                             <div className="flex-shrink-0 ml-auto flex justify-center items-center">
                                 <Quantity
+                                    disable={dish.status === DishStatus.Unavailable}
                                     onChange={(value) => handleQuantityChange(dish.id, value)}
-                                    value={orders.find((order) => order.dishId === dish.id)?.quantity ?? 0}
+                                    initialValue={0}
                                 />
                             </div>
                         </div>

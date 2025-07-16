@@ -15,8 +15,6 @@ export default function OrderCard() {
     const { data, refetch: refetchOrder } = useGuestGetOrderListQuery();
     const orders = data?.payload.data || [];
 
-    console.log("orders", orders);
-
     useEffect(() => {
         if (socket.connected) {
             onConnect();
@@ -46,7 +44,7 @@ export default function OrderCard() {
             socket.off("disconnect", onDisconnect);
             socket.off("update-order", onOrderUpdate);
         };
-    }, []);
+    }, [refetchOrder]);
 
     if (orders.length === 0) {
         return <p className="text-center text-gray-500">Bạn chưa có đơn hàng nào.</p>;

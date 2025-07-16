@@ -1,68 +1,35 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useState } from "react";
+
 import { DishListResType } from "@/utils/validation/dish.schema";
 import { UpdateOrderBody, UpdateOrderBodyType } from "@/utils/validation/order.schema";
+
+import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { getVietnameseOrderStatus } from "@/helpers/common";
+import { useGetOrderDetailQuery } from "@/hooks/data/useOrder";
 import DishesDialog from "@/app/manage/orders/_components/dishes-dialog";
 
-const fakeOrderDetail = {
-    id: 30,
-    guestId: 70,
-    guest: {
-        id: 70,
-        name: "An",
-        tableNumber: 2,
-        createdAt: "2024-07-11T04:30:32.728Z",
-        updatedAt: "2024-07-11T05:00:34.131Z",
-    },
-    tableNumber: 2,
-    dishSnapshotId: 36,
-    dishSnapshot: {
-        id: 36,
-        name: "Spaghetti 5",
-        price: 50000,
-        image: "http://localhost:4000/static/e0001b7e08604e0dbabf0d8f95e6174a.jpg",
-        description: "Mỳ ý",
-        status: "Available",
-        dishId: 2,
-        createdAt: "2024-07-11T04:30:57.450Z",
-        updatedAt: "2024-07-11T04:30:57.450Z",
-    },
-    quantity: 1,
-    orderHandlerId: null,
-    orderHandler: null,
-    status: "Paid",
-    createdAt: "2024-07-11T04:30:57.450Z",
-    updatedAt: "2024-07-11T04:31:38.806Z",
-    table: {
-        number: 2,
-        capacity: 10,
-        status: "Reserved",
-        token: "667f3b1ce5e4429990dacea1809d20e7",
-        createdAt: "2024-06-21T06:52:26.847Z",
-        updatedAt: "2024-07-03T04:36:51.130Z",
-    },
+type EditOrderProps = {
+    id?: number;
+    setId: (id: number | undefined) => void;
+    onSubmitSuccess?: () => void;
 };
 
-export default function EditOrder({
-    id,
-    setId,
-}: {
-    id?: number | undefined;
-    setId: (value: number | undefined) => void;
-    onSubmitSuccess?: () => void;
-}) {
-    const [selectedDish, setSelectedDish] = useState<DishListResType["data"][0]>(fakeOrderDetail.dishSnapshot as any);
+export default function EditOrder({ id, setId }: EditOrderProps) {
+    const { data } = useGetOrderDetailQuery(id);
+    const [selectedDish, setSelectedDish] = useState<DishListResType["data"][number] | undefined>(undefined);
+
     const form = useForm<UpdateOrderBodyType>({
         resolver: zodResolver(UpdateOrderBody),
         defaultValues: {
@@ -72,118 +39,107 @@ export default function EditOrder({
         },
     });
 
-    const onSubmit = async (values: UpdateOrderBodyType) => {};
+    useEffect(() => {
+        if (data?.payload) {
+            setSelectedDish(data.payload.data.dishSnapshot);
+        }
+    }, [data]);
 
-    const reset = () => {
+    const onSubmit = async (values: UpdateOrderBodyType) => {
+        console.log("Submitting:", values);
+        // Call update API here
+    };
+
+    const handleClose = () => {
         setId(undefined);
     };
 
     return (
-        <Dialog
-            open={Boolean(id)}
-            onOpenChange={(value) => {
-                if (!value) {
-                    reset();
-                }
-            }}
-        >
+        <Dialog open={Boolean(id)} onOpenChange={(open) => !open && handleClose()}>
             <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
                 <DialogHeader>
                     <DialogTitle>Cập nhật đơn hàng</DialogTitle>
                 </DialogHeader>
-                <Form {...form}>
-                    <form
-                        noValidate
-                        className="grid auto-rows-max items-start gap-4 md:gap-8"
-                        id="edit-order-form"
-                        onSubmit={form.handleSubmit(onSubmit, console.log)}
-                    >
-                        <div className="grid gap-4 py-4">
-                            <FormField
-                                control={form.control}
-                                name="dishId"
-                                render={({ field }) => (
-                                    <FormItem className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                        <FormLabel>Món ăn</FormLabel>
-                                        <div className="flex items-center col-span-2 space-x-4">
-                                            <Avatar className="aspect-square w-[50px] h-[50px] rounded-md object-cover">
-                                                <AvatarImage src={selectedDish?.image} />
-                                                <AvatarFallback className="rounded-none">
-                                                    {selectedDish?.name}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div>{selectedDish?.name}</div>
-                                        </div>
 
-                                        <DishesDialog
-                                            onChoose={(dish) => {
-                                                field.onChange(dish.id);
-                                                setSelectedDish(dish);
+                <Form {...form}>
+                    <form id="edit-order-form" onSubmit={form.handleSubmit(onSubmit)} noValidate className="grid gap-6">
+                        {/* Món ăn */}
+                        <FormField
+                            control={form.control}
+                            name="dishId"
+                            render={({ field }) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>Món ăn</FormLabel>
+                                    <div className="col-span-2 flex items-center gap-4">
+                                        <Avatar className="w-[50px] h-[50px]">
+                                            <AvatarImage src={selectedDish?.image} />
+                                            <AvatarFallback>{selectedDish?.name}</AvatarFallback>
+                                        </Avatar>
+                                        <div>{selectedDish?.name}</div>
+                                    </div>
+                                    <DishesDialog
+                                        onChoose={(dish) => {
+                                            field.onChange(dish.id);
+                                            setSelectedDish(dish);
+                                        }}
+                                    />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Số lượng */}
+                        <FormField
+                            control={form.control}
+                            name="quantity"
+                            render={({ field }) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="quantity">Số lượng</Label>
+                                    <div className="col-span-3">
+                                        <Input
+                                            id="quantity"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
+                                            className="w-16 text-center"
+                                            value={field.value}
+                                            onChange={(e) => {
+                                                const value = Number(e.target.value);
+                                                if (!isNaN(value)) field.onChange(value);
                                             }}
                                         />
-                                    </FormItem>
-                                )}
-                            />
+                                        <FormMessage />
+                                    </div>
+                                </FormItem>
+                            )}
+                        />
 
-                            <FormField
-                                control={form.control}
-                                name="quantity"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="quantity">Số lượng</Label>
-                                            <div className="col-span-3 w-full space-y-2">
-                                                <Input
-                                                    id="quantity"
-                                                    inputMode="numeric"
-                                                    pattern="[0-9]*"
-                                                    className="w-16 text-center"
-                                                    {...field}
-                                                    value={field.value}
-                                                    onChange={(e) => {
-                                                        let value = e.target.value;
-                                                        const numberValue = Number(value);
-                                                        if (isNaN(numberValue)) {
-                                                            return;
-                                                        }
-                                                        field.onChange(numberValue);
-                                                    }}
-                                                />
-                                                <FormMessage />
-                                            </div>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="status"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <FormLabel>Trạng thái</FormLabel>
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <FormControl className="col-span-3">
-                                                    <SelectTrigger className="w-[200px]">
-                                                        <SelectValue placeholder="Trạng thái" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {OrderStatusValues.map((status) => (
-                                                        <SelectItem key={status} value={status}>
-                                                            {getVietnameseOrderStatus(status)}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
+                        {/* Trạng thái */}
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem className="grid grid-cols-4 items-center gap-4">
+                                    <FormLabel>Trạng thái</FormLabel>
+                                    <Select value={field.value} onValueChange={field.onChange}>
+                                        <FormControl className="col-span-3">
+                                            <SelectTrigger className="w-[200px]">
+                                                <SelectValue placeholder="Chọn trạng thái" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {OrderStatusValues.map((status) => (
+                                                <SelectItem key={status} value={status}>
+                                                    {getVietnameseOrderStatus(status)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </form>
                 </Form>
+
                 <DialogFooter>
                     <Button type="submit" form="edit-order-form">
                         Lưu

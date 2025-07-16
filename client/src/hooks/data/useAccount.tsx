@@ -71,3 +71,11 @@ export function useDeleteEmployeeMutation() {
         },
     });
 }
+
+export function useGetListGuestQuery(queryParams?: { fromDate?: Date; toDate?: Date }) {
+    return useQuery({
+        queryKey: ["guestList", queryParams],
+        queryFn: () => clientRequestAccountApi.getListGuest(queryParams),
+        staleTime: 1000 * 60 * 5,
+    });
+}

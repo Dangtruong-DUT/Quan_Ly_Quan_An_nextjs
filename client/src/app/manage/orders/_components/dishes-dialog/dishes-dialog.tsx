@@ -21,7 +21,7 @@ import { useGetDishes } from "@/hooks/data/useDishes";
 type DishItem = DishListResType["data"][0];
 
 const PAGE_SIZE = 10;
-export function DishesDialog({}: { onChoose: (dish: DishItem) => void }) {
+export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void }) {
     const [open, setOpen] = useState(false);
     const { data: dishListData } = useGetDishes();
     const data = dishListData?.payload.data || [];
@@ -47,6 +47,9 @@ export function DishesDialog({}: { onChoose: (dish: DishItem) => void }) {
         onRowSelectionChange: setRowSelection,
         onPaginationChange: setPagination,
         autoResetPageIndex: false,
+        enableMultiRowSelection: false,
+        enableRowSelection: true,
+        getRowId: (row) => String(row.id),
         state: {
             sorting,
             columnFilters,
@@ -62,6 +65,13 @@ export function DishesDialog({}: { onChoose: (dish: DishItem) => void }) {
             pageSize: PAGE_SIZE,
         });
     }, [table]);
+    const selectedRow = table.getSelectedRowModel().rows[0];
+    useEffect(() => {
+        if (selectedRow) {
+            onChoose(selectedRow.original as DishItem);
+            setOpen(false);
+        }
+    }, [selectedRow, onChoose]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

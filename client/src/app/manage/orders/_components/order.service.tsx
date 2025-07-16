@@ -1,11 +1,15 @@
-import {
-    OrderObjectByGuestID,
-    ServingGuestByTableNumber,
-    Statics,
-} from "@/app/manage/orders/_components/order-table/order-table";
-import { OrderStatus } from "@/constants/type";
+import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { GetOrdersResType } from "@/utils/validation/order.schema";
 import { useMemo } from "react";
+
+export type StatusCountObject = Record<(typeof OrderStatusValues)[number], number>;
+export type Statics = {
+    status: StatusCountObject;
+    table: Record<number, Record<number, StatusCountObject>>;
+};
+
+export type OrderObjectByGuestID = Record<number, GetOrdersResType["data"]>;
+export type ServingGuestByTableNumber = Record<number, OrderObjectByGuestID>;
 
 export const useOrderService = (orderList: GetOrdersResType["data"]) => {
     const result = useMemo(() => {
@@ -60,6 +64,7 @@ export const useOrderService = (orderList: GetOrdersResType["data"]) => {
             for (const guestId in guestObject) {
                 const guestOrders = guestObject[guestId];
                 const isServingGuest = guestOrders.some((order) =>
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     [OrderStatus.Pending, OrderStatus.Processing, OrderStatus.Delivered].includes(order.status as any)
                 );
                 if (isServingGuest) {

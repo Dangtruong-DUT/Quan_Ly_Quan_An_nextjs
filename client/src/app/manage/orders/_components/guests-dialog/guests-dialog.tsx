@@ -14,20 +14,25 @@ import {
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { endOfDay, format, startOfDay } from "date-fns";
-import { GetListGuestsResType } from "@/utils/validation/account.schema";
 import { GuestItem } from "@/app/manage/orders/_components/guests-dialog/columns";
 import columns from "@/app/manage/orders/_components/guests-dialog/columns";
 import { DataTable } from "@/components/ui/data-table";
+import { useGetListGuestQuery } from "@/hooks/data/useAccount";
 
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 
-export default function GuestsDialog({}: { onChoose: (guest: GuestItem) => void }) {
+export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem) => void }) {
     const [open, setOpen] = useState(false);
     const [fromDate, setFromDate] = useState(initFromDate);
     const [toDate, setToDate] = useState(initToDate);
-    const data: GetListGuestsResType["data"] = [];
+
+    const { data: orderListQuery } = useGetListGuestQuery({
+        fromDate,
+        toDate,
+    });
+    const data = orderListQuery?.payload.data || [];
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -70,6 +75,15 @@ export default function GuestsDialog({}: { onChoose: (guest: GuestItem) => void 
         setFromDate(initFromDate);
         setToDate(initToDate);
     };
+
+    const selectedRow = table.getSelectedRowModel().rows[0];
+    useEffect(() => {
+        if (selectedRow) {
+            onChoose(selectedRow.original);
+            setOpen(false);
+            table.getSelectedRowModel().rows = [];
+        }
+    }, [selectedRow, onChoose, table]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

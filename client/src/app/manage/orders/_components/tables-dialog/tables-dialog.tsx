@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import AutoPagination from "@/components/auto-pagination";
@@ -13,16 +15,17 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-import { TableListResType } from "@/utils/validation/table.schema";
 import { TableItem } from "@/app/manage/tables/context/TableTableContext";
 import columns from "@/app/manage/orders/_components/tables-dialog/columns";
 import { DataTable } from "@/components/ui/data-table";
+import { useGetTables } from "@/hooks/data/useTables";
 
 const PAGE_SIZE = 10;
 
-export function TablesDialog({}: { onChoose: (table: TableItem) => void }) {
+export function TablesDialog({ onChoose }: { onChoose: (table: TableItem) => void }) {
     const [open, setOpen] = useState(false);
-    const data: TableListResType["data"] = [];
+    const { data: tableDataQuery } = useGetTables();
+    const data = tableDataQuery?.payload.data || [];
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -45,6 +48,8 @@ export function TablesDialog({}: { onChoose: (table: TableItem) => void }) {
         onRowSelectionChange: setRowSelection,
         onPaginationChange: setPagination,
         autoResetPageIndex: false,
+        enableMultiRowSelection: false,
+        enableRowSelection: true,
         state: {
             sorting,
             columnFilters,
@@ -54,12 +59,23 @@ export function TablesDialog({}: { onChoose: (table: TableItem) => void }) {
         },
     });
 
+    const selectedRow = table.getSelectedRowModel().rows[0];
+
     useEffect(() => {
         table.setPagination({
             pageIndex: 0,
             pageSize: PAGE_SIZE,
         });
     }, [table]);
+
+    useEffect(() => {
+        if (selectedRow) {
+            const selectedTable = selectedRow.original as TableItem;
+            table.getSelectedRowModel().rows = [];
+            onChoose(selectedTable);
+            setOpen(false);
+        }
+    }, [selectedRow, onChoose, table]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

@@ -34,7 +34,7 @@ export default function GuestConfirmLogout({ className }: { className?: string }
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className={cn(className, "cursor-pointer")}>Đăng xuất</button>
+                <button className={cn(className, "cursor-pointer text-left")}>Đăng xuất</button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
