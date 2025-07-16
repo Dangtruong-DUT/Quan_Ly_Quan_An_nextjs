@@ -2,6 +2,9 @@
 
 import { OrderObjectByGuestID } from "@/app/manage/orders/_components/order.service";
 import { OrderStatusValues } from "@/constants/type";
+import { useUpdateOrderMutation } from "@/hooks/data/useOrder";
+import { handleErrorApi } from "@/utils/handleError";
+import { omit } from "lodash";
 import React, { createContext, useCallback, useState } from "react";
 
 type changeStatusPropTypes = {
@@ -34,14 +37,27 @@ export function useOrderTableContext() {
 export default function OrderTableProvider({ children }: { children: React.ReactNode }) {
     const [orderIdEdit, setOrderIdEdit] = useState<number | undefined>();
     const [orderObjectByGuestId, setOrderObjectByGuestId] = useState<OrderObjectByGuestID>({});
+
+    const { mutateAsync: updateOrderMutate } = useUpdateOrderMutation();
+
     const changeStatus = useCallback(
-        async (body: {
+        async (data: {
             orderId: number;
             dishId: number;
             status: (typeof OrderStatusValues)[number];
             quantity: number;
-        }) => {},
-        []
+        }) => {
+            try {
+                const body = omit(data, ["orderId"]);
+                await updateOrderMutate({
+                    orderId: data.orderId,
+                    body,
+                });
+            } catch (error) {
+                handleErrorApi(error);
+            }
+        },
+        [updateOrderMutate]
     );
     return (
         <OrderTableContext

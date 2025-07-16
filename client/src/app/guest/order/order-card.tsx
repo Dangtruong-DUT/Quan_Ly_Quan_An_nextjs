@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { OrderStatus } from "@/constants/type";
 import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
 import socket from "@/service/socket/socket";
@@ -51,6 +52,7 @@ export default function OrderCard() {
     }
 
     const totalPrice = orders.reduce((total, order) => {
+        if (order.status == OrderStatus.Paid || order.status == OrderStatus.Rejected) return total;
         const price = order?.dishSnapshot.price || 0;
         total += price * order.quantity;
         return total;

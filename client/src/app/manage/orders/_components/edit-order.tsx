@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -19,6 +19,9 @@ import { OrderStatus, OrderStatusValues } from "@/constants/type";
 import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGetOrderDetailQuery } from "@/hooks/data/useOrder";
 import DishesDialog from "@/app/manage/orders/_components/dishes-dialog";
+import { useOrderTableContext } from "@/app/manage/orders/context/order-table-provider";
+import { handleErrorApi } from "@/utils/handleError";
+import { on } from "events";
 
 type EditOrderProps = {
     id?: number;
@@ -26,9 +29,10 @@ type EditOrderProps = {
     onSubmitSuccess?: () => void;
 };
 
-export default function EditOrder({ id, setId }: EditOrderProps) {
+export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps) {
     const { data } = useGetOrderDetailQuery(id);
     const [selectedDish, setSelectedDish] = useState<DishListResType["data"][number] | undefined>(undefined);
+    const { changeStatus } = useOrderTableContext();
 
     const form = useForm<UpdateOrderBodyType>({
         resolver: zodResolver(UpdateOrderBody),
@@ -41,14 +45,33 @@ export default function EditOrder({ id, setId }: EditOrderProps) {
 
     useEffect(() => {
         if (data?.payload) {
-            setSelectedDish(data.payload.data.dishSnapshot);
+            const { status, quantity, dishSnapshot } = data.payload.data;
+            setSelectedDish(dishSnapshot);
+            form.reset({
+                status: status,
+                dishId: Number(dishSnapshot.dishId),
+                quantity: quantity,
+            });
         }
-    }, [data]);
+    }, [data, form]);
 
-    const onSubmit = async (values: UpdateOrderBodyType) => {
-        console.log("Submitting:", values);
-        // Call update API here
-    };
+    const onSubmit = useCallback(
+        async (values: UpdateOrderBodyType) => {
+            try {
+                if (!id) return;
+                await changeStatus({
+                    orderId: id,
+                    dishId: values.dishId,
+                    status: values.status,
+                    quantity: values.quantity,
+                });
+                onSubmitSuccess?.();
+            } catch (error) {
+                handleErrorApi(error);
+            }
+        },
+        [id, changeStatus, onSubmitSuccess]
+    );
 
     const handleClose = () => {
         setId(undefined);
@@ -62,7 +85,12 @@ export default function EditOrder({ id, setId }: EditOrderProps) {
                 </DialogHeader>
 
                 <Form {...form}>
-                    <form id="edit-order-form" onSubmit={form.handleSubmit(onSubmit)} noValidate className="grid gap-6">
+                    <form
+                        id="edit-order-form"
+                        onSubmit={form.handleSubmit(onSubmit, console.error)}
+                        noValidate
+                        className="grid gap-6"
+                    >
                         {/* Món ăn */}
                         <FormField
                             control={form.control}
