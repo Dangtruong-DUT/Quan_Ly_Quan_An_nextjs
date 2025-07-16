@@ -63,13 +63,6 @@ export function TablesDialog({ onChoose }: { onChoose: (table: TableItem) => voi
     const selectedRow = table.getSelectedRowModel().rows[0];
 
     useEffect(() => {
-        table.setPagination({
-            pageIndex: 0,
-            pageSize: PAGE_SIZE,
-        });
-    }, [table]);
-
-    useEffect(() => {
         if (selectedRow) {
             if (
                 selectedRow.original.status !== TableStatus.Available &&
@@ -112,7 +105,12 @@ export function TablesDialog({ onChoose }: { onChoose: (table: TableItem) => voi
                                 <AutoPagination
                                     page={table.getState().pagination.pageIndex + 1}
                                     pageSize={table.getPageCount()}
-                                    pathname="/manage/Tables"
+                                    onPageChange={(page) =>
+                                        table.setPagination({
+                                            pageIndex: page - 1,
+                                            pageSize: PAGE_SIZE,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>

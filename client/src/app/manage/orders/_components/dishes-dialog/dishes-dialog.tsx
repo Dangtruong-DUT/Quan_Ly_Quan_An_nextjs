@@ -59,12 +59,6 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
         },
     });
 
-    useEffect(() => {
-        table.setPagination({
-            pageIndex: 0,
-            pageSize: PAGE_SIZE,
-        });
-    }, [table]);
     const selectedRow = table.getSelectedRowModel().rows[0];
     useEffect(() => {
         if (selectedRow) {
@@ -102,7 +96,12 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
                                 <AutoPagination
                                     page={table.getState().pagination.pageIndex + 1}
                                     pageSize={table.getPageCount()}
-                                    pathname="/manage/dishes"
+                                    onPageChange={(page) =>
+                                        table.setPagination({
+                                            pageIndex: page - 1,
+                                            pageSize: PAGE_SIZE,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>

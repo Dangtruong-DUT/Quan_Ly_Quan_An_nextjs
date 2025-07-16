@@ -64,13 +64,6 @@ export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem
         },
     });
 
-    useEffect(() => {
-        table.setPagination({
-            pageIndex: 0,
-            pageSize: PAGE_SIZE,
-        });
-    }, [table]);
-
     const resetDateFilter = () => {
         setFromDate(initFromDate);
         setToDate(initToDate);
@@ -144,7 +137,12 @@ export default function GuestsDialog({ onChoose }: { onChoose: (guest: GuestItem
                                 <AutoPagination
                                     page={table.getState().pagination.pageIndex + 1}
                                     pageSize={table.getPageCount()}
-                                    pathname="/manage/Guests"
+                                    onPageChange={(page) =>
+                                        table.setPagination({
+                                            pageIndex: page - 1,
+                                            pageSize: PAGE_SIZE,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
