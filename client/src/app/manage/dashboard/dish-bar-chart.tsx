@@ -4,11 +4,17 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { DashboardIndicatorResType } from "@/utils/validation/indicator.schema";
+
+const colors = [
+    "var(--color-chrome)",
+    "var(--color-safari)",
+    "var(--color-firefox)",
+    "var(--color-edge)",
+    "var(--color-other)",
+];
 
 const chartConfig = {
-    visitors: {
-        label: "Visitors",
-    },
     chrome: {
         label: "Chrome",
         color: "var(--chart-1)",
@@ -30,14 +36,16 @@ const chartConfig = {
         color: "var(--chart-5)",
     },
 } satisfies ChartConfig;
-const chartData = [
-    { name: "chrome", successOrders: 275, fill: "var(--color-chrome)" },
-    { name: "safari", successOrders: 200, fill: "var(--color-safari)" },
-    { name: "firefox", successOrders: 187, fill: "var(--color-firefox)" },
-    { name: "edge", successOrders: 173, fill: "var(--color-edge)" },
-    { name: "other", successOrders: 90, fill: "var(--color-other)" },
-];
-export function DishBarChart() {
+export function DishBarChart({
+    chartData,
+}: {
+    chartData?: Pick<DashboardIndicatorResType["data"]["dishIndicator"][number], "name" | "successOrders">[];
+}) {
+    chartData = chartData || [];
+    chartData = chartData.map((item, index) => ({
+        ...item,
+        fill: colors[index % colors.length],
+    }));
     return (
         <Card>
             <CardHeader>
@@ -62,24 +70,15 @@ export function DishBarChart() {
                             axisLine={false}
                             tickFormatter={(value) => {
                                 return value;
-
-                                // return chartConfig[value as keyof typeof chartConfig]?.label
                             }}
                         />
                         <XAxis dataKey="successOrders" type="number" hide />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                        <Bar dataKey="successOrders" name={"Đơn thanh toán"} layout="vertical" radius={5} />
+                        <Bar dataKey="successOrders" name={"Đơn thanh toán :"} layout="vertical" radius={5} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-                {/* <div className='flex gap-2 font-medium leading-none'>
-          Trending up by 5.2% this month <TrendingUp className='h-4 w-4' />
-        </div> */}
-                {/* <div className='leading-none text-muted-foreground'>
-          Showing total visitors for the last 6 months
-        </div> */}
-            </CardFooter>
+            <CardFooter className="flex-col items-start gap-2 text-sm"></CardFooter>
         </Card>
     );
 }
