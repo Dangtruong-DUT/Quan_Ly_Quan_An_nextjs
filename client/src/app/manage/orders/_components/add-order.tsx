@@ -21,6 +21,10 @@ import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import GuestsDialog from "@/app/manage/orders/_components/guests-dialog";
 import TablesDialog from "@/app/manage/orders/_components/tables-dialog";
 import { useGetDishes } from "@/hooks/data/useDishes";
+import { useCreateGuestMutation } from "@/hooks/data/useAccount";
+import { useCreateOrdersMutation } from "@/hooks/data/useOrder";
+import { handleErrorApi } from "@/utils/handleError";
+import { toast } from "sonner";
 
 export default function AddOrder() {
     const [open, setOpen] = useState(false);
@@ -70,10 +74,59 @@ export default function AddOrder() {
         [setOrders]
     );
 
-    const handleOrder = async () => {};
+    const { mutateAsync: createGuestMutate, isPending: isCreateGuest } = useCreateGuestMutation();
+    const { mutateAsync: createOrderMutate, isPending: isCreateOrder } = useCreateOrdersMutation();
+
+    const isLoading = isCreateGuest || isCreateOrder;
+
+    const onReset = useCallback(() => {
+        setOrders([]);
+        setSelectedGuest(null);
+        form.reset();
+        setIsNewGuest(true);
+        setOpen(false);
+    }, [form, setOrders, setSelectedGuest, setIsNewGuest]);
+
+    const handleOrder = useCallback(async () => {
+        if (isLoading) return;
+        try {
+            let Guest = selectedGuest;
+            if (isNewGuest) {
+                const res = await createGuestMutate({
+                    name: form.getValues("name"),
+                    tableNumber: form.getValues("tableNumber"),
+                });
+                Guest = res.payload.data;
+            }
+
+            if (!Guest) {
+                toast.error("Vui lòng chọn khách hàng hoặc tạo khách hàng mới.");
+                return;
+            }
+            const orderData: CreateOrdersBodyType = {
+                guestId: Number(Guest.id),
+                orders,
+            };
+
+            await createOrderMutate(orderData);
+            setOrders([]);
+
+            onReset();
+        } catch (error) {
+            handleErrorApi(error, form.setError);
+        }
+    }, [isLoading, isNewGuest, form, createGuestMutate, createOrderMutate, onReset, orders, selectedGuest]);
 
     return (
-        <Dialog onOpenChange={setOpen} open={open}>
+        <Dialog
+            onOpenChange={(value) => {
+                if (!value) {
+                    onReset();
+                }
+                setOpen(value);
+            }}
+            open={open}
+        >
             <DialogTrigger asChild>
                 <Button size="sm" className="h-7 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />

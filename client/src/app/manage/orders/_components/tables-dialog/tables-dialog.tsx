@@ -19,6 +19,7 @@ import { TableItem } from "@/app/manage/tables/context/TableTableContext";
 import columns from "@/app/manage/orders/_components/tables-dialog/columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useGetTables } from "@/hooks/data/useTables";
+import { TableStatus } from "@/constants/type";
 
 const PAGE_SIZE = 10;
 
@@ -70,6 +71,11 @@ export function TablesDialog({ onChoose }: { onChoose: (table: TableItem) => voi
 
     useEffect(() => {
         if (selectedRow) {
+            if (
+                selectedRow.original.status !== TableStatus.Available &&
+                selectedRow.original.status !== TableStatus.Reserved
+            )
+                return;
             const selectedTable = selectedRow.original as TableItem;
             table.getSelectedRowModel().rows = [];
             onChoose(selectedTable);
