@@ -79,3 +79,13 @@ export function useGetListGuestQuery(queryParams?: { fromDate?: Date; toDate?: D
         staleTime: 1000 * 60 * 5,
     });
 }
+
+export function useCreateGuestMutation() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: clientRequestAccountApi.createGuest,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["guestList"] });
+        },
+    });
+}

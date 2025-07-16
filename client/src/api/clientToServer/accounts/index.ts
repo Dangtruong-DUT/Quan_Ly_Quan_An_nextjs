@@ -4,6 +4,8 @@ import {
     AccountResType,
     ChangePasswordBodyType,
     CreateEmployeeAccountBodyType,
+    CreateGuestBodyType,
+    CreateGuestResType,
     GetGuestListQueryParamsType,
     GetListGuestsResType,
     UpdateEmployeeAccountBodyType,
@@ -30,5 +32,6 @@ const clientRequestAccountApi = {
             : "";
         return http.get<GetListGuestsResType>(`/accounts/guests${query}`);
     },
+    createGuest: (body: CreateGuestBodyType) => http.post<CreateGuestResType>("/accounts/guests", body),
 };
 export default clientRequestAccountApi;
