@@ -2,9 +2,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OrderStatus } from "@/constants/type";
 import { getVietnameseOrderStatus, OrderStatusIcon } from "@/helpers/common";
+import { usePayForGuestOrdersMutation } from "@/hooks/data/useOrder";
 import { OrderStatusType } from "@/types/order";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import { formatDateTimeToLocaleString, formatDateTimeToTimeString } from "@/utils/formatting/formatTime";
+import { handleErrorApi } from "@/utils/handleError";
 import { GetOrdersResType } from "@/utils/validation/order.schema";
 import Image from "next/image";
 import { Fragment, useCallback, useMemo } from "react";
@@ -15,6 +17,17 @@ interface OrderGuestDetailProps {
 }
 
 export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProps) {
+    const { mutateAsync: payMutation, isPending } = usePayForGuestOrdersMutation();
+
+    const handlePayAllOrders = useCallback(async () => {
+        if (!guest || isPending) return;
+        try {
+            await payMutation({ guestId: guest.id });
+        } catch (error) {
+            handleErrorApi(error);
+        }
+    }, [guest, payMutation, isPending]);
+
     const [paidOrders, unpaidOrders] = useMemo(() => {
         if (!guest || !orders) return [[], []];
 
@@ -122,7 +135,13 @@ export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProp
             </div>
 
             <div>
-                <Button className="w-full" size="sm" variant="secondary" disabled={unpaidOrders.length === 0}>
+                <Button
+                    className="w-full"
+                    size="sm"
+                    variant="secondary"
+                    disabled={unpaidOrders.length === 0 || isPending}
+                    onClick={handlePayAllOrders}
+                >
                     Thanh toán tất cả ({unpaidOrders.length} đơn)
                 </Button>
             </div>

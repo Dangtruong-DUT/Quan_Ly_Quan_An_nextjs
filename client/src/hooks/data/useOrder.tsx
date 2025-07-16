@@ -25,3 +25,13 @@ export function useGetOrderDetailQuery(orderId?: number) {
         enabled: !!orderId,
     });
 }
+
+export function usePayForGuestOrdersMutation() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: clientRequestOrderApi.Pay,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orderList"] });
+        },
+    });
+}

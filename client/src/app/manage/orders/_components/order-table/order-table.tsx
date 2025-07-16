@@ -41,7 +41,7 @@ import OrderStatics from "@/app/manage/orders/_components/order-statics/order-st
 import socket from "@/service/socket/socket";
 import { GuestCreateOrdersResType } from "@/utils/validation/guest.schema";
 import { toast } from "sonner";
-import { UpdateOrderResType } from "@/utils/validation/order.schema";
+import { PayGuestOrdersResType, UpdateOrderResType } from "@/utils/validation/order.schema";
 
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
@@ -53,11 +53,11 @@ export default function OrderTable() {
     const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
     const pageIndex = page - 1;
 
-    const { data: orderListQuery } = useGetOrderListQuery({
+    const { data: orderListQuery, refetch: refetchOrderList } = useGetOrderListQuery({
         fromDate,
         toDate,
     });
-    const { data: tableListQuery, refetch: refetchOrder } = useGetTables();
+    const { data: tableListQuery } = useGetTables();
     const dishList = useMemo(() => orderListQuery?.payload.data || [], [orderListQuery]);
     const tableList = useMemo(() => tableListQuery?.payload.data || [], [tableListQuery]);
 
@@ -157,25 +157,35 @@ export default function OrderTable() {
                 description: `Trạng thái đơn hàng hiện tại: ${getVietnameseOrderStatus(data.status)}`,
             });
         }
+        function onPayment(data: PayGuestOrdersResType["data"]) {
+            refetchOrderWithinRange();
+            const { guest } = data[0];
+            const total = data.reduce((sum, order) => sum + order.quantity * order.dishSnapshot.price, 0);
+            toast.message(`Đã thanh toán thành công  ${data.length} đơn`, {
+                description: `Tổng số tiền khách hàng ${guest?.name} thanh toán là ${total} VNĐ`,
+            });
+        }
 
         function refetchOrderWithinRange() {
             const now = new Date();
             if (fromDate <= now && now <= toDate) {
-                refetchOrder(); // Refetch orders if within the date range
+                refetchOrderList(); // Refetch orders if within the date range
             }
         }
         socket.on("update-order", onOrderUpdate);
         socket.on("new-order", onNewOrder);
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
+        socket.on("payment", onPayment);
 
         return () => {
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
             socket.off("new-order", onNewOrder);
             socket.off("update-order", onOrderUpdate);
+            socket.off("payment", onPayment);
         };
-    }, [refetchOrder, fromDate, toDate]);
+    }, [refetchOrderList, fromDate, toDate]);
 
     return (
         <div className="w-full">

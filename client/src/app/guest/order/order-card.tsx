@@ -7,7 +7,7 @@ import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
 import socket from "@/service/socket/socket";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
-import { UpdateOrderResType } from "@/utils/validation/order.schema";
+import { PayGuestOrdersResType, UpdateOrderResType } from "@/utils/validation/order.schema";
 import Image from "next/image";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -36,14 +36,25 @@ export default function OrderCard() {
             });
         }
 
+        function onPayment(data: PayGuestOrdersResType["data"]) {
+            refetchOrder();
+            const { guest } = data[0];
+            const total = data.reduce((sum, order) => sum + order.quantity * order.dishSnapshot.price, 0);
+            toast.message(`Đã thanh toán thành công  ${data.length} đơn`, {
+                description: `Tổng số tiền khách hàng ${guest?.name} thanh toán là ${total} VNĐ`,
+            });
+        }
+
         socket.on("update-order", onOrderUpdate);
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
+        socket.on("payment", onPayment);
 
         return () => {
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
             socket.off("update-order", onOrderUpdate);
+            socket.off("payment", onPayment);
         };
     }, [refetchOrder]);
 

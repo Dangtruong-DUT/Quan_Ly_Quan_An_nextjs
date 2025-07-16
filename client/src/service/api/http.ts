@@ -144,7 +144,7 @@ class Http {
 
     private async rawRequest<Response>(props: RequestPropsType): Promise<ResponseType<Response>> {
         const { method, url, options } = props;
-        const key = `${method}:${url}`;
+        const key = `${method}:${url}:${JSON.stringify(options)}`;
 
         if (Http.callStack[key] !== undefined) {
             return Http.callStack[key];

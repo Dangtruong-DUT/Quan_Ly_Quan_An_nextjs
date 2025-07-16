@@ -83,7 +83,7 @@ export default function OrderStatics({
     return (
         <Fragment>
             {/* Dialog hiển thị chi tiết khách */}
-            <Dialog open={!!selectedTable} onOpenChange={(open) => !open && handleCloseDialog()}>
+            <Dialog open={!!selectedTable && !!guestsAtTable} onOpenChange={(open) => !open && handleCloseDialog()}>
                 <DialogContent className="max-h-full overflow-auto">
                     {guestsAtTable && (
                         <>

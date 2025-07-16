@@ -3,6 +3,7 @@ import {
     GetOrderDetailResType,
     GetOrdersQueryParamsType,
     GetOrdersResType,
+    PayGuestOrdersBodyType,
     UpdateOrderBodyType,
     UpdateOrderResType,
 } from "@/utils/validation/order.schema";
@@ -23,5 +24,6 @@ const clientRequestOrderApi = {
     getOrderDetail: (orderId: number) => {
         return http.get<GetOrderDetailResType>(`/orders/${orderId}`);
     },
+    Pay: (body: PayGuestOrdersBodyType) => http.post(`/orders/pay`, body),
 };
 export default clientRequestOrderApi;

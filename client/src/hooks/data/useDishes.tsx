@@ -5,6 +5,7 @@ export function useGetDishes() {
     return useQuery({
         queryKey: ["dishes"],
         queryFn: () => clientRequestDishesApi.list(),
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 }
 
@@ -13,6 +14,7 @@ export function useGetDishDetail({ id }: { id?: number }) {
         queryKey: ["dish", id],
         queryFn: () => clientRequestDishesApi.getDish(id!),
         enabled: !!id,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 }
 
