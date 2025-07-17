@@ -13,6 +13,8 @@ import { useLoginMutation } from "@/hooks/data/useAuth";
 import { LoginBody, LoginBodyType } from "@/utils/validation/auth.schema";
 import { handleErrorApi } from "@/utils/handleError";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { getOauthGoogleUrl } from "@/helpers/oauth";
+import Link from "next/link";
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
@@ -50,6 +52,9 @@ export default function LoginForm() {
         },
         [form, isPending, login, router, setRole]
     );
+
+    const googleOauthUrl = getOauthGoogleUrl();
+
     return (
         <Form {...form}>
             <form
@@ -90,9 +95,11 @@ export default function LoginForm() {
                     <Button type="submit" className="w-full" disabled={isPending}>
                         Đăng nhập
                     </Button>
-                    <Button variant="outline" className="w-full" type="button" disabled={isPending}>
-                        Đăng nhập bằng Google
-                    </Button>
+                    <Link href={googleOauthUrl} className="w-full">
+                        <Button variant="outline" className="w-full" type="button" disabled={isPending}>
+                            Đăng nhập bằng Google
+                        </Button>
+                    </Link>
                 </div>
             </form>
         </Form>

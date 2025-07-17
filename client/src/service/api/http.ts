@@ -2,6 +2,7 @@
 import envConfig from "@/config/app.config";
 import { HttpStatus } from "@/constants/httpStatus";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { SetCookieBodyType } from "@/types/auth";
 import { LoginResType } from "@/utils/validation/auth.schema";
 import { redirect } from "next/navigation";
 
@@ -273,6 +274,13 @@ http.useResponse((response, url) => {
         clientSessionToken.accessToken = accessToken || null;
         clientSessionToken.refreshToken = refreshToken || null;
     }
+
+    if (url.includes("api/auth/token") && response.status === HttpStatus.OK_STATUS) {
+        const { accessToken, refreshToken } = response.payload as SetCookieBodyType;
+        clientSessionToken.accessToken = accessToken || null;
+        clientSessionToken.refreshToken = refreshToken || null;
+    }
+
     if (url.includes("/logout") && response.status === HttpStatus.OK_STATUS) {
         clientSessionToken.clear();
     }

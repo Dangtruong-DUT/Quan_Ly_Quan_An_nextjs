@@ -1,4 +1,5 @@
 import http from "@/service/api/http";
+import { SetCookieBodyType } from "@/types/auth";
 import { LoginBodyType, LoginResType, RefreshTokenResType } from "@/utils/validation/auth.schema";
 
 const clientRequestAuthApi = {
@@ -12,6 +13,10 @@ const clientRequestAuthApi = {
         }),
     refreshToken: () =>
         http.post<RefreshTokenResType>("/api/auth/refresh-token", null, {
+            baseUrl: "",
+        }),
+    setCookie: (body: SetCookieBodyType) =>
+        http.post("/api/auth/token", body, {
             baseUrl: "",
         }),
 };

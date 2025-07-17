@@ -12,3 +12,9 @@ export function useLogoutMutation() {
         mutationFn: clientRequestAuthApi.logout,
     });
 }
+
+export function useSetCookieMutation() {
+    return useMutation({
+        mutationFn: clientRequestAuthApi.setCookie,
+    });
+}
