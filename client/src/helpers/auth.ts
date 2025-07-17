@@ -19,6 +19,7 @@ export async function handleRefreshToken(params?: {
     onSuccess?: () => void;
     onError?: (error: unknown) => void;
     onRefreshTokenExpired?: () => void;
+    force?: boolean;
 }) {
     const accessToken = clientSessionToken.accessToken;
     const refreshToken = clientSessionToken.refreshToken;
@@ -36,7 +37,8 @@ export async function handleRefreshToken(params?: {
         return params?.onRefreshTokenExpired?.();
     }
     // If the access token is still valid for more than 1/3 of its lifetime, skip the refresh logic
-    if (decodeAccessToken.exp - currentTime > (decodeAccessToken.exp - decodeAccessToken.iat) / 3) return;
+    if (!params?.force && decodeAccessToken.exp - currentTime > (decodeAccessToken.exp - decodeAccessToken.iat) / 3)
+        return;
 
     try {
         const res = await refreshFn();

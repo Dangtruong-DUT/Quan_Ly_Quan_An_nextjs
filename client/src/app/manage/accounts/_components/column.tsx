@@ -48,6 +48,11 @@ const columns: ColumnDef<AccountType>[] = [
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
+        accessorKey: "role",
+        header: "Role",
+        cell: ({ row }) => <div className="lowercase">{row.getValue("role")}</div>,
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: function Actions({ row }) {
