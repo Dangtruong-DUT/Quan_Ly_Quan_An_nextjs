@@ -1,7 +1,7 @@
+import { getTokens, handleInvalidAccessToken } from "@/middleware/auth";
+import { isPathMatch, privatePath, unAuthPath } from "@/middleware/pathCheck";
+import { handleRoleAccess } from "@/middleware/roleCheck";
 import { NextRequest, NextResponse } from "next/server";
-import { getTokens, handleInvalidAccessToken } from "./auth";
-import { privatePath, unAuthPath, isPathMatch } from "./pathCheck";
-import { handleRoleAccess } from "./roleCheck";
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
