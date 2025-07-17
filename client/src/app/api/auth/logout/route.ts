@@ -28,12 +28,12 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(res.payload);
     } catch (error) {
         if (error instanceof httpError) {
-            return NextResponse.json(error.payload, { status: error.status });
+            return NextResponse.json(error.payload, { status: HttpStatus.OK_STATUS });
         } else {
             console.error("Logout error:", error);
             return NextResponse.json(
                 { message: "An unexpected error occurred during logout." },
-                { status: HttpStatus.INTERNALS_SERVER_sTATUS }
+                { status: HttpStatus.OK_STATUS }
             );
         }
     }

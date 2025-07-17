@@ -27,9 +27,9 @@ export default function OrderStatics({
     tableList: TableListResType["data"];
     servingGuestByTableNumber: ServingGuestByTableNumber;
 }) {
-    const [selectedTable, setSelectedTable] = useState<number>(0);
+    const [selectedTable, setSelectedTable] = useState<number>(-1);
 
-    const handleCloseDialog = useCallback(() => setSelectedTable(0), []);
+    const handleCloseDialog = useCallback(() => setSelectedTable(-1), []);
 
     const guestsAtTable = useMemo(() => {
         return servingGuestByTableNumber[selectedTable];

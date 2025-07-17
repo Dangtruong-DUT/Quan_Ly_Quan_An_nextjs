@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 
 const EXCLUDE_PATHS = ["/login", "/register", "/logout", "/refresh-token"];
+
 // Define the interval for refreshing the token
 // This is set to  5 minutes (5 * 50 * 1000 milliseconds)
 const TIMEOUT_REFRESH_TOKEN = 5 * 60 * 1000;

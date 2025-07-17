@@ -20,11 +20,10 @@ export default function LogoutPage({
         const handleLogout = async () => {
             try {
                 await logoutMutate();
-                setRole(undefined);
             } catch (error) {
                 handleErrorApi(error);
             } finally {
-                router.refresh();
+                setRole(undefined);
                 router.push("/");
             }
         };

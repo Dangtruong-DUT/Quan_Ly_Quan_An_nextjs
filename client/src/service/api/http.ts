@@ -273,7 +273,7 @@ http.useResponse((response, url) => {
         clientSessionToken.accessToken = accessToken || null;
         clientSessionToken.refreshToken = refreshToken || null;
     }
-    if (url.includes("auth/logout") && response.status === HttpStatus.OK_STATUS) {
+    if (url.includes("/logout") && response.status === HttpStatus.OK_STATUS) {
         clientSessionToken.clear();
     }
     return response;
