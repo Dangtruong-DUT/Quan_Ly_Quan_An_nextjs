@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function handleErrorApi(error: unknown, setError?: UseFormSetError<any>) {
-    console.log("Error in handleErrorApi:", error);
+    console.error("Error on handleErrorApi:", error);
     if (error instanceof EntityError && setError) {
         const { errors } = error.payload;
         errors.forEach((error) => {

@@ -38,15 +38,16 @@ import { useGetOrderListQuery } from "@/hooks/data/useOrder";
 import { useGetTables } from "@/hooks/data/useTables";
 import { formatDateTimeLocal } from "@/utils/formatting/formatTime";
 import OrderStatics from "@/app/manage/orders/_components/order-statics/order-statics";
-import socket from "@/service/socket/socket";
 import { GuestCreateOrdersResType } from "@/utils/validation/guest.schema";
 import { toast } from "sonner";
 import { PayGuestOrdersResType, UpdateOrderResType } from "@/utils/validation/order.schema";
+import { useSocketClient } from "@/hooks/shared/useSocketClient";
 
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 export default function OrderTable() {
+    const { socket } = useSocketClient();
     const searchParam = useSearchParams();
     const [fromDate, setFromDate] = useState(initFromDate);
     const [toDate, setToDate] = useState(initToDate);
@@ -131,17 +132,7 @@ export default function OrderTable() {
     );
 
     useEffect(() => {
-        if (socket.connected) {
-            onConnect();
-        }
-
-        function onConnect() {
-            console.log(socket.id, "Connected to socket server");
-        }
-
-        function onDisconnect() {
-            console.log("Disconnected from socket server");
-        }
+        if (!socket) return;
 
         function onNewOrder(data: GuestCreateOrdersResType["data"]) {
             const { guest } = data[0];
@@ -174,18 +165,14 @@ export default function OrderTable() {
         }
         socket.on("update-order", onOrderUpdate);
         socket.on("new-order", onNewOrder);
-        socket.on("connect", onConnect);
-        socket.on("disconnect", onDisconnect);
         socket.on("payment", onPayment);
 
         return () => {
-            socket.off("connect", onConnect);
-            socket.off("disconnect", onDisconnect);
             socket.off("new-order", onNewOrder);
             socket.off("update-order", onOrderUpdate);
             socket.off("payment", onPayment);
         };
-    }, [refetchOrderList, fromDate, toDate]);
+    }, [refetchOrderList, fromDate, toDate, socket]);
 
     return (
         <div className="w-full">

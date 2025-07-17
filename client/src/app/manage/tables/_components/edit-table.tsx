@@ -132,7 +132,7 @@ export default function EditTable({
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
                                             <Label htmlFor="description">Trạng thái</Label>
                                             <div className="col-span-3 w-full space-y-2">
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <Select onValueChange={field.onChange} value={field.value}>
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Chọn trạng thái" />

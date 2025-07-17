@@ -2,7 +2,7 @@
 
 import { useAppContext } from "@/app/app-provider";
 import { handleRefreshToken } from "@/helpers/auth";
-import socket from "@/service/socket/socket";
+import { useSocketClient } from "@/hooks/shared/useSocketClient";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,7 +16,10 @@ export function RefreshToken() {
     const router = useRouter();
     const pathname = usePathname();
     const { setRole } = useAppContext();
+    const { socket } = useSocketClient();
+
     const interValIdRef = useRef<NodeJS.Timeout | null>(null);
+
     const refreshToken = useCallback(
         (params?: { force?: boolean }) => {
             handleRefreshToken({
@@ -46,24 +49,12 @@ export function RefreshToken() {
         [interValIdRef, router, setRole]
     );
     useEffect(() => {
-        if (socket.connected) {
-            onConnect();
-        }
+        if (!socket) return;
 
-        function onConnect() {
-            console.log(socket.id, "Connected to socket server");
-        }
-
-        function onDisconnect() {
-            console.log("Disconnected from socket server");
-        }
         function onRefreshToken() {
             refreshToken({ force: true });
         }
 
-        socket.on("connect", onConnect);
-        socket.on("disconnect", onDisconnect);
-        // Listen for the refresh token event from the server
         socket.on("refresh-token", onRefreshToken);
 
         // If the pathname is not in the excluded paths, skip the refresh token logic
@@ -75,14 +66,12 @@ export function RefreshToken() {
             refreshToken();
         }, TIMEOUT_REFRESH_TOKEN);
         return () => {
-            socket.off("connect", onConnect);
-            socket.off("disconnect", onDisconnect);
             if (interValIdRef.current) {
                 clearInterval(interValIdRef.current);
                 interValIdRef.current = null;
             }
         };
-    }, [interValIdRef, refreshToken, pathname]);
+    }, [interValIdRef, refreshToken, pathname, socket]);
 
     return null;
 }

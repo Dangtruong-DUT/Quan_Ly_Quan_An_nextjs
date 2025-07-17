@@ -31,7 +31,6 @@ export default function AutoPagination({ page, pageSize, pathname, onPageChange 
 
     const renderPageItem = (pageNumber: number) => {
         const isActive = pageNumber === page;
-        console.log("renderPageItem", pageNumber, page);
         return (
             <PaginationItem key={pageNumber}>
                 {isLinkMode ? (

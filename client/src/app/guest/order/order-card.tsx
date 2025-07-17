@@ -1,11 +1,10 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { OrderStatus } from "@/constants/type";
 import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
-import socket from "@/service/socket/socket";
+import { useSocketClient } from "@/hooks/shared/useSocketClient";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import { PayGuestOrdersResType, UpdateOrderResType } from "@/utils/validation/order.schema";
 import Image from "next/image";
@@ -15,19 +14,10 @@ import { toast } from "sonner";
 export default function OrderCard() {
     const { data, refetch: refetchOrder } = useGuestGetOrderListQuery();
     const orders = data?.payload.data || [];
+    const { socket } = useSocketClient();
 
     useEffect(() => {
-        if (socket.connected) {
-            onConnect();
-        }
-
-        function onConnect() {
-            console.log(socket.id, "Connected to socket server");
-        }
-
-        function onDisconnect() {
-            console.log("Disconnected from socket server");
-        }
+        if (!socket) return;
 
         function onOrderUpdate(data: UpdateOrderResType["data"]) {
             refetchOrder();
@@ -46,39 +36,45 @@ export default function OrderCard() {
         }
 
         socket.on("update-order", onOrderUpdate);
-        socket.on("connect", onConnect);
-        socket.on("disconnect", onDisconnect);
         socket.on("payment", onPayment);
 
         return () => {
-            socket.off("connect", onConnect);
-            socket.off("disconnect", onDisconnect);
             socket.off("update-order", onOrderUpdate);
             socket.off("payment", onPayment);
         };
-    }, [refetchOrder]);
+    }, [refetchOrder, socket]);
 
     if (orders.length === 0) {
         return <p className="text-center text-gray-500">Bạn chưa có đơn hàng nào.</p>;
     }
 
-    const totalPrice = orders.reduce((total, order) => {
-        if (order.status == OrderStatus.Paid || order.status == OrderStatus.Rejected) return total;
-        const price = order?.dishSnapshot.price || 0;
-        total += price * order.quantity;
+    // Tổng tiền chưa thanh toán (orders status chưa phải Paid hoặc Rejected)
+    const unpaidAmount = orders.reduce((total, order) => {
+        if (order.status === OrderStatus.Paid || order.status === OrderStatus.Rejected) return total;
+        return total + (order.dishSnapshot.price || 0) * order.quantity;
+    }, 0);
+
+    // Tổng tiền đã thanh toán (orders đã Paid)
+    const paidAmount = orders.reduce((total, order) => {
+        if (order.status === OrderStatus.Paid) {
+            return total + (order.dishSnapshot.price || 0) * order.quantity;
+        }
         return total;
     }, 0);
+
+    // Tổng số món
+    const totalQuantity = orders.reduce((total, order) => total + order.quantity, 0);
 
     return (
         <>
             {orders.map((order, index) => {
                 return (
-                    <div key={order.id} className="flex gap-4">
-                        <div className="text-xs">{index}</div>
-                        <div className="flex-shrink-0 relative  rounded-md overflow-hidden">
+                    <div key={order.id} className="flex gap-4 border-b border-gray-200 py-2">
+                        <div className="text-xs">{index + 1}</div>
+                        <div className="flex-shrink-0 relative rounded-md overflow-hidden">
                             <Image
                                 src={order.dishSnapshot.image}
-                                alt={order.dishSnapshot.image}
+                                alt={order.dishSnapshot.name}
                                 height={100}
                                 width={100}
                                 quality={100}
@@ -88,9 +84,9 @@ export default function OrderCard() {
                                 }}
                             />
                         </div>
-                        <div className="space-y-1">
-                            <h3 className="text-sm">{order.dishSnapshot.name}</h3>
-                            <p className="text-xs">{order.dishSnapshot.description}</p>
+                        <div className="space-y-1 flex-grow">
+                            <h3 className="text-sm font-semibold">{order.dishSnapshot.name}</h3>
+                            <p className="text-xs text-gray-600">{order.dishSnapshot.description}</p>
                             <p className="text-xs font-semibold">
                                 {formatCurrency(order.dishSnapshot.price)} x <Badge>{order.quantity}</Badge>
                             </p>
@@ -101,11 +97,20 @@ export default function OrderCard() {
                     </div>
                 );
             })}
-            <div className="sticky bottom-0">
-                <Button className="w-full justify-between">
-                    <span>Đơn hàng · {orders.length} món</span>
-                    <span>{formatCurrency(totalPrice)}</span>
-                </Button>
+
+            <div className="sticky bottom-0 bg-white border-t border-gray-300 p-4">
+                <div className="flex justify-between mb-2">
+                    <span className="font-semibold">Chưa thanh toán:</span>
+                    <span className="text-red-600 font-semibold">{formatCurrency(unpaidAmount)}</span>
+                </div>
+                <div className="flex justify-between mb-2">
+                    <span className="font-semibold">Đã thanh toán:</span>
+                    <span className="text-green-600 font-semibold">{formatCurrency(paidAmount)}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="font-semibold">Tổng số món:</span>
+                    <span>{totalQuantity}</span>
+                </div>
             </div>
         </>
     );

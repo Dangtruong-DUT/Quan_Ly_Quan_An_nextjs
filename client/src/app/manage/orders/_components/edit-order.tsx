@@ -21,7 +21,6 @@ import { useGetOrderDetailQuery } from "@/hooks/data/useOrder";
 import DishesDialog from "@/app/manage/orders/_components/dishes-dialog";
 import { useOrderTableContext } from "@/app/manage/orders/context/order-table-provider";
 import { handleErrorApi } from "@/utils/handleError";
-import { on } from "events";
 
 type EditOrderProps = {
     id?: number;
