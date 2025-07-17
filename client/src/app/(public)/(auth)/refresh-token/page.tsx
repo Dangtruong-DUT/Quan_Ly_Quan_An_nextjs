@@ -4,6 +4,8 @@ import clientRequestAuthApi from "@/api/clientToServer/auth";
 import { useAppContext } from "@/app/app-provider";
 import { handleRefreshToken } from "@/helpers/auth";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { TokenPayload } from "@/types/jwt";
+import { decodeJwt } from "@/utils/jwt";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
@@ -18,7 +20,10 @@ export default function RefreshTokenPage({
     useEffect(() => {
         if (redirect && clientSessionToken.refreshToken && refreshToken === clientSessionToken.refreshToken) {
             handleRefreshToken({
-                onSuccess: () => {
+                onSuccess: (data) => {
+                    const { refreshToken: newRefreshToken } = data.data;
+                    const { role } = decodeJwt<TokenPayload>(newRefreshToken);
+                    setRole(role);
                     router.push(redirect);
                 },
                 onError: (error) => {

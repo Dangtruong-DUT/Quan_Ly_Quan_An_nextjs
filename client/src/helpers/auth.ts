@@ -4,6 +4,7 @@ import { Role } from "@/constants/type";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
+import { RefreshTokenResType } from "@/utils/validation/auth.schema";
 
 /**
  * Handles the refresh token logic.
@@ -16,7 +17,7 @@ import { decodeJwt } from "@/utils/jwt";
  */
 
 export async function handleRefreshToken(params?: {
-    onSuccess?: () => void;
+    onSuccess?: (data: RefreshTokenResType) => void;
     onError?: (error: unknown) => void;
     onRefreshTokenExpired?: () => void;
     force?: boolean;
@@ -46,7 +47,7 @@ export async function handleRefreshToken(params?: {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = res.payload.data;
         clientSessionToken.accessToken = newAccessToken;
         clientSessionToken.refreshToken = newRefreshToken;
-        params?.onSuccess?.();
+        params?.onSuccess?.(res.payload);
     } catch (error) {
         params?.onError?.(error);
     }

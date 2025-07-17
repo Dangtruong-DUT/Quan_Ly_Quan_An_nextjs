@@ -3,6 +3,8 @@
 import { useAppContext } from "@/app/app-provider";
 import { handleRefreshToken } from "@/helpers/auth";
 import socket from "@/service/socket/socket";
+import { TokenPayload } from "@/types/jwt";
+import { decodeJwt } from "@/utils/jwt";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -18,6 +20,11 @@ export function RefreshToken() {
     const refreshToken = useCallback(
         (params?: { force?: boolean }) => {
             handleRefreshToken({
+                onSuccess: (data) => {
+                    const { refreshToken } = data.data;
+                    const { role } = decodeJwt<TokenPayload>(refreshToken);
+                    setRole(role);
+                },
                 onError: (error) => {
                     console.error("Error during token refresh:", error);
                     if (interValIdRef.current) {

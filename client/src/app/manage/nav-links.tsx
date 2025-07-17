@@ -1,4 +1,5 @@
 "use client";
+import { useAppContext } from "@/app/app-provider";
 import menuItems from "@/app/manage/menuItems";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -8,6 +9,7 @@ import { usePathname } from "next/navigation";
 
 export default function NavLinks() {
     const pathname = usePathname();
+    const { role } = useAppContext();
 
     return (
         <TooltipProvider>
@@ -23,6 +25,9 @@ export default function NavLinks() {
 
                     {menuItems.map((Item, index) => {
                         const isActive = pathname === Item.href;
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        if (Item.role && !Item.role.includes(role as any)) return null;
+
                         return (
                             <Tooltip key={index}>
                                 <TooltipTrigger asChild>

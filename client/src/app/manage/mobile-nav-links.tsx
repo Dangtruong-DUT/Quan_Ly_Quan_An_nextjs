@@ -1,7 +1,8 @@
 "use client";
+import { useAppContext } from "@/app/app-provider";
 import menuItems from "@/app/manage/menuItems";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Package2, PanelLeft } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +10,9 @@ import { usePathname } from "next/navigation";
 
 export default function MobileNavLinks() {
     const pathname = usePathname();
+
+    const { role } = useAppContext();
+
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -18,6 +22,10 @@ export default function MobileNavLinks() {
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
+                <SheetHeader className="hidden md:block">
+                    <SheetTitle>Navigation</SheetTitle>
+                    <SheetDescription>Navigate through the application</SheetDescription>
+                </SheetHeader>
                 <nav className="grid gap-6 text-lg font-medium">
                     <Link
                         href="#"
@@ -28,6 +36,8 @@ export default function MobileNavLinks() {
                     </Link>
                     {menuItems.map((Item, index) => {
                         const isActive = pathname === Item.href;
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        if (Item.role && !Item.role.includes(role as any)) return null;
                         return (
                             <Link
                                 key={index}

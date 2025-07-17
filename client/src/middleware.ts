@@ -6,6 +6,7 @@ import type { NextRequest } from "next/server";
 
 const manaPath = ["/manage"];
 const guestPath = ["/guest"];
+const onlyOwnerPath = ["/manage/accounts"];
 const privatePath = [...manaPath, ...guestPath];
 const unAuthPath = ["/login", "/register"];
 
@@ -42,9 +43,14 @@ export function middleware(request: NextRequest) {
     if (isAccessTokenValid && isAuthenticated) {
         const isManaPath = manaPath.some((path) => pathname.startsWith(path));
         const isGuestPath = guestPath.some((path) => pathname.startsWith(path));
+        const isOnlyOwnerPath = onlyOwnerPath.some((path) => pathname.startsWith(path));
 
         const { role } = decodeJwt<TokenPayload>(accessToken);
 
+        // if the user is trying to access an only owner path and does not have the owner role, redirect to home
+        if (isOnlyOwnerPath && role !== Role.Owner) {
+            return NextResponse.redirect(new URL("/", request.url));
+        }
         // if the user is trying to access a management path and does not have the required role, redirect to guest menu
         if (isManaPath && role !== Role.Owner && role !== Role.Employee) {
             return NextResponse.redirect(new URL("/", request.url));
