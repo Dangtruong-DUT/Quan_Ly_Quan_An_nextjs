@@ -52,7 +52,7 @@ export default async function Home() {
                                     <p className="font-semibold">{formatCurrency(dish.price)}</p>
                                 </div>
                             </div>
-                        ))}
+                        ))}{" "}
                 </div>
             </section>
         </div>

@@ -1,6 +1,6 @@
 import { useAppContext } from "@/app/app-provider";
 import { clientSocket } from "@/service/socket/socket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 
 type UseSocketClientReturnType = {
@@ -9,10 +9,16 @@ type UseSocketClientReturnType = {
 
 export function useSocketClient(): UseSocketClientReturnType {
     const { role } = useAppContext();
+    const [socket, setSocket] = useState<null | Socket>(null);
     useEffect(() => {
         if (role) {
-            clientSocket.connect();
+            const socket = clientSocket.connect();
+            setSocket(socket);
+        } else {
+            setSocket(null);
+            clientSocket.disconnect();
         }
+
         return () => {
             if (!role) {
                 clientSocket.disconnect();
@@ -20,5 +26,5 @@ export function useSocketClient(): UseSocketClientReturnType {
         };
     }, [role]);
 
-    return { socket: clientSocket.socket };
+    return { socket };
 }

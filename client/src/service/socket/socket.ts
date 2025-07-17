@@ -6,23 +6,23 @@ class ClientSocket {
     private _socket: ReturnType<typeof io> | null = null;
     private static instance: ClientSocket;
 
-    private constructor() {}
+    private constructor(private clientSession: typeof clientSessionToken) {}
 
     public static getInstance(): ClientSocket {
         if (!ClientSocket.instance) {
-            ClientSocket.instance = new ClientSocket();
+            ClientSocket.instance = new ClientSocket(clientSessionToken);
         }
         return ClientSocket.instance;
     }
 
     public connect() {
-        if (this._socket && this._socket.connected) return;
-
-        const accessToken = clientSessionToken.accessToken;
-        if (!accessToken) {
-            console.error("No access token found. Cannot connect to socket.");
-            return;
+        if (this._socket) {
+            if (this._socket.connected) return this._socket;
+            this._socket.connect();
+            return this._socket;
         }
+
+        const accessToken = this.clientSession.accessToken;
         this._socket = io(envConfig.NEXT_PUBLIC_API_ENDPOINT, {
             auth: {
                 Authorization: `Bearer ${accessToken}`,
@@ -36,17 +36,17 @@ class ClientSocket {
         this._socket.on("disconnect", (reason) => {
             console.log("Socket disconnected:", reason);
         });
+        return this._socket;
     }
 
     public disconnect() {
-        if (this._socket && this._socket.connected) {
+        if (this._socket) {
             this._socket.disconnect();
             this._socket = null;
         }
     }
-
-    get socket() {
-        return this._socket;
+    public get isConnected() {
+        return !!this._socket?.connected;
     }
 }
 

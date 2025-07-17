@@ -49,13 +49,11 @@ export function RefreshToken() {
         [interValIdRef, router, setRole]
     );
     useEffect(() => {
-        if (!socket) return;
-
         function onRefreshToken() {
+            console.log("Refresh token event received");
             refreshToken({ force: true });
         }
-
-        socket.on("refresh-token", onRefreshToken);
+        socket?.on("refresh-token", onRefreshToken);
 
         // If the pathname is not in the excluded paths, skip the refresh token logic
         // Skip refresh token logic for excluded paths
@@ -65,7 +63,9 @@ export function RefreshToken() {
         interValIdRef.current = setInterval(() => {
             refreshToken();
         }, TIMEOUT_REFRESH_TOKEN);
+
         return () => {
+            socket?.off("refresh-token", onRefreshToken);
             if (interValIdRef.current) {
                 clearInterval(interValIdRef.current);
                 interValIdRef.current = null;

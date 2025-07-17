@@ -6,6 +6,7 @@ import { RefreshToken } from "@/components/refresh-token";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { RoleType, TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
+import { SocketListener } from "@/components/socket-listener";
 
 type AppContextType = {
     role: RoleType | undefined;
@@ -51,8 +52,10 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         <AppContext value={{ role, setRole: handleSetRole, isAuth }}>
             <QueryClientProvider client={queryClient}>
                 {children}
-                <RefreshToken />
                 <ReactQueryDevtools initialIsOpen={false} />
+                <RefreshToken />
+                {/* Socket Listener for handling real-time updates */}
+                <SocketListener />
             </QueryClientProvider>
         </AppContext>
     );

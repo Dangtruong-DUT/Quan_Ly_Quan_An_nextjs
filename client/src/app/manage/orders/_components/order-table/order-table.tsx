@@ -38,23 +38,18 @@ import { useGetOrderListQuery } from "@/hooks/data/useOrder";
 import { useGetTables } from "@/hooks/data/useTables";
 import { formatDateTimeLocal } from "@/utils/formatting/formatTime";
 import OrderStatics from "@/app/manage/orders/_components/order-statics/order-statics";
-import { GuestCreateOrdersResType } from "@/utils/validation/guest.schema";
-import { toast } from "sonner";
-import { PayGuestOrdersResType, UpdateOrderResType } from "@/utils/validation/order.schema";
-import { useSocketClient } from "@/hooks/shared/useSocketClient";
 
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 export default function OrderTable() {
-    const { socket } = useSocketClient();
     const searchParam = useSearchParams();
     const [fromDate, setFromDate] = useState(initFromDate);
     const [toDate, setToDate] = useState(initToDate);
     const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
     const pageIndex = page - 1;
 
-    const { data: orderListQuery, refetch: refetchOrderList } = useGetOrderListQuery({
+    const { data: orderListQuery } = useGetOrderListQuery({
         fromDate,
         toDate,
     });
@@ -130,49 +125,6 @@ export default function OrderTable() {
         },
         [table]
     );
-
-    useEffect(() => {
-        if (!socket) return;
-
-        function onNewOrder(data: GuestCreateOrdersResType["data"]) {
-            const { guest } = data[0];
-            refetchOrderWithinRange();
-            toast.message(`Đơn hàng mới`, {
-                description: `Khách hàng ${guest?.name} tại bàn ${guest?.tableNumber} vừa đặt ${data.length} món.`,
-            });
-        }
-
-        function onOrderUpdate(data: UpdateOrderResType["data"]) {
-            refetchOrderWithinRange();
-            toast.message(`Đơn hàng ${data.dishSnapshot.name} đã được cập nhật`, {
-                description: `Trạng thái đơn hàng hiện tại: ${getVietnameseOrderStatus(data.status)}`,
-            });
-        }
-        function onPayment(data: PayGuestOrdersResType["data"]) {
-            refetchOrderWithinRange();
-            const { guest } = data[0];
-            const total = data.reduce((sum, order) => sum + order.quantity * order.dishSnapshot.price, 0);
-            toast.message(`Đã thanh toán thành công  ${data.length} đơn`, {
-                description: `Tổng số tiền khách hàng ${guest?.name} thanh toán là ${total} VNĐ`,
-            });
-        }
-
-        function refetchOrderWithinRange() {
-            const now = new Date();
-            if (fromDate <= now && now <= toDate) {
-                refetchOrderList(); // Refetch orders if within the date range
-            }
-        }
-        socket.on("update-order", onOrderUpdate);
-        socket.on("new-order", onNewOrder);
-        socket.on("payment", onPayment);
-
-        return () => {
-            socket.off("new-order", onNewOrder);
-            socket.off("update-order", onOrderUpdate);
-            socket.off("payment", onPayment);
-        };
-    }, [refetchOrderList, fromDate, toDate, socket]);
 
     return (
         <div className="w-full">

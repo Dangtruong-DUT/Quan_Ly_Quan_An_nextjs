@@ -1,6 +1,6 @@
 "use client";
 import { useAppContext } from "@/app/app-provider";
-import menuItems from "@/app/manage/menuItems";
+import menuItems from "@/app/manage/_components/menuItems";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Package2, Settings } from "lucide-react";
