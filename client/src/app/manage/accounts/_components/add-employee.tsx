@@ -172,6 +172,7 @@ export default function AddEmployee() {
                                     </FormItem>
                                 )}
                             />
+
                             <FormField
                                 control={form.control}
                                 name="password"
