@@ -55,6 +55,7 @@ export default function LoginForm() {
             <form
                 className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
                 noValidate
+                method="post"
                 onSubmit={form.handleSubmit(onSubmit, console.warn)}
             >
                 <div className="grid gap-4">
