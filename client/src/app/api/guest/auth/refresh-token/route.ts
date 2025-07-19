@@ -44,7 +44,7 @@ export async function POST() {
             console.error("refresh token error:", error);
             return NextResponse.json(
                 { message: "An unexpected error occurred during refresh token." },
-                { status: HttpStatus.INTERNALS_SERVER_sTATUS }
+                { status: HttpStatus.INTERNAL_SERVER_STATUS }
             );
         }
     }

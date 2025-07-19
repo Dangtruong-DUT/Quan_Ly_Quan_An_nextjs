@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
             console.error("Logout error:", error);
             return NextResponse.json(
                 { message: "An unexpected error occurred during logout." },
-                { status: HttpStatus.INTERNALS_SERVER_sTATUS }
+                { status: HttpStatus.INTERNAL_SERVER_STATUS }
             );
         }
     }

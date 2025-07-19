@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
             console.error("Login error:", error);
             return NextResponse.json(
                 { message: "An unexpected error occurred during login." },
-                { status: HttpStatus.INTERNALS_SERVER_sTATUS }
+                { status: HttpStatus.INTERNAL_SERVER_STATUS }
             );
         }
     }
