@@ -1,7 +1,7 @@
 import Layout from "@/app/(public)/layout";
 
 function GuestLayout({ children }: { children: React.ReactNode }) {
-    return <Layout>{children}</Layout>;
+    return <Layout modal={null}>{children}</Layout>;
 }
 
 export default GuestLayout;
