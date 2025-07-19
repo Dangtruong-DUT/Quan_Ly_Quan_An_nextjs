@@ -1,7 +1,7 @@
 "use client";
 
-import { useAppContext } from "@/app/app-provider";
 import { useLogoutMutation } from "@/hooks/data/useAuth";
+import { useAppStore } from "@/providers/app-provider";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { handleErrorApi } from "@/utils/handleError";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export default function LogoutPage({
     searchParams: Promise<{ accessToken?: string; refreshToken?: string }>;
 }) {
     const router = useRouter();
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const { accessToken, refreshToken } = use(searchParams);
     const { mutateAsync: logoutMutate } = useLogoutMutation();
     useEffect(() => {

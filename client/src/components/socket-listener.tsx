@@ -1,13 +1,13 @@
 "use client";
 
-import { useAppContext } from "@/app/app-provider";
 import { GuestSocket } from "@/components/guest-socket";
 import { LogoutSocket } from "@/components/logout-soket";
 import ManageSocket from "@/components/manage-socket";
 import { Role } from "@/constants/type";
+import { useAppStore } from "@/providers/app-provider";
 
 export function SocketListener() {
-    const { role } = useAppContext();
+    const role = useAppStore((state) => state.role);
 
     if (!role) return null;
 

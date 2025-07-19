@@ -1,4 +1,4 @@
-import { useAppContext } from "@/app/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 import { clientSocket } from "@/service/socket/socket";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
@@ -8,7 +8,7 @@ type UseSocketClientReturnType = {
 };
 
 export function useSocketClient(): UseSocketClientReturnType {
-    const { role } = useAppContext();
+    const role = useAppStore((state) => state.role);
     const [socket, setSocket] = useState<null | Socket>(null);
     useEffect(() => {
         if (role) {

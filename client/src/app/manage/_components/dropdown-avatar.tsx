@@ -13,13 +13,13 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { useAppContext } from "@/app/app-provider";
 import { useLogoutMutation } from "@/hooks/data/useAuth";
 import { useAccountProfile } from "@/hooks/data/useAccount";
+import { useAppStore } from "@/providers/app-provider";
 
 export default function DropdownAvatar() {
     const router = useRouter();
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const { mutateAsync: logoutMutateAsync, isPending } = useLogoutMutation();
     const handleLogout = useCallback(async () => {
         try {

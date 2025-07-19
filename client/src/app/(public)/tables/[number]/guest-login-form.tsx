@@ -12,7 +12,7 @@ import { handleErrorApi } from "@/utils/handleError";
 import { useGuestLoginMutation } from "@/hooks/data/useGuest";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useAppContext } from "@/app/app-provider";
+import { useAppStore } from "@/providers/app-provider";
 
 export default function GuestLoginForm() {
     const searchParams = useSearchParams();
@@ -22,7 +22,7 @@ export default function GuestLoginForm() {
 
     const router = useRouter();
     const { mutateAsync: loginMutate, isPending } = useGuestLoginMutation();
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
 
     const form = useForm<GuestLoginBodyType>({
         resolver: zodResolver(GuestLoginBody),

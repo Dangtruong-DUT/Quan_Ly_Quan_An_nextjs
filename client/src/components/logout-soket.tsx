@@ -1,14 +1,20 @@
-import { useAppContext } from "@/app/app-provider";
 import { Role } from "@/constants/type";
 import { useLogoutMutation } from "@/hooks/data/useAuth";
 import { useGuestLogoutMutation } from "@/hooks/data/useGuest";
 import { useSocketClient } from "@/hooks/shared/useSocketClient";
+import { useAppStore } from "@/providers/app-provider";
 import { handleErrorApi } from "@/utils/handleError";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 export function LogoutSocket() {
-    const { setRole, role } = useAppContext();
+    const { setRole, role } = useAppStore(
+        useShallow((state) => ({
+            setRole: state.setRole,
+            role: state.role,
+        }))
+    );
     const router = useRouter();
     const { socket } = useSocketClient();
     const { mutateAsync: logoutMutate } = useLogoutMutation();

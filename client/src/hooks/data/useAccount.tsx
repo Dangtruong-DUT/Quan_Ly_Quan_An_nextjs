@@ -1,11 +1,14 @@
 import clientRequestAccountApi from "@/api/clientToServer/accounts";
+import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useAccountProfile() {
+    const refreshToken = clientSessionToken.refreshToken;
     return useQuery({
-        queryKey: ["accountProfile"],
+        queryKey: ["accountProfile", refreshToken],
         queryFn: clientRequestAccountApi.me,
         staleTime: 1000 * 60 * 5,
+        enabled: Boolean(refreshToken),
     });
 }
 

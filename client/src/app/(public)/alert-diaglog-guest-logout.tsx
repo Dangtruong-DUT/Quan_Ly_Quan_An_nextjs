@@ -1,4 +1,3 @@
-import { useAppContext } from "@/app/app-provider";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,11 +11,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useGuestLogoutMutation } from "@/hooks/data/useGuest";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 export default function GuestConfirmLogout({ className }: { className?: string }) {
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
     const { mutateAsync: logoutMutate } = useGuestLogoutMutation();
 

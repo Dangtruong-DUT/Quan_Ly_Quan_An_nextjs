@@ -1,9 +1,9 @@
 "use client";
-import { useAppContext } from "@/app/app-provider";
 import menuItems from "@/app/manage/_components/menuItems";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/providers/app-provider";
 import { Package2, PanelLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,7 +11,7 @@ import { usePathname } from "next/navigation";
 export default function MobileNavLinks() {
     const pathname = usePathname();
 
-    const { role } = useAppContext();
+    const role = useAppStore((state) => state.role);
 
     return (
         <Sheet>

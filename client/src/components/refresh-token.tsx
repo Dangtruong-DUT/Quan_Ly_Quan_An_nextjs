@@ -1,8 +1,8 @@
 "use client";
 
-import { useAppContext } from "@/app/app-provider";
 import { handleRefreshToken } from "@/helpers/auth";
 import { useSocketClient } from "@/hooks/shared/useSocketClient";
+import { useAppStore } from "@/providers/app-provider";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ const TIMEOUT_REFRESH_TOKEN = 5 * 60 * 1000;
 export function RefreshToken() {
     const router = useRouter();
     const pathname = usePathname();
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const { socket } = useSocketClient();
 
     const interValIdRef = useRef<NodeJS.Timeout | null>(null);

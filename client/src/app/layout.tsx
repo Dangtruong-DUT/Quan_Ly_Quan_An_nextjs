@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import AppProvider from "@/app/app-provider";
+import AppProvider from "@/providers/app-provider";
 
 const inter = Inter({
     variable: "--font-inter",

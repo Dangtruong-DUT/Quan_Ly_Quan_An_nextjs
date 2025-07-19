@@ -1,7 +1,7 @@
 "use client";
 
-import { useAppContext } from "@/app/app-provider";
 import { useSetCookieMutation } from "@/hooks/data/useAuth";
+import { useAppStore } from "@/providers/app-provider";
 import { TokenPayload } from "@/types/jwt";
 import { handleErrorApi } from "@/utils/handleError";
 import { decodeJwt } from "@/utils/jwt";
@@ -10,7 +10,7 @@ import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function OauthPage() {
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
 
     const { mutateAsync: setCookieMutateAsync } = useSetCookieMutation();

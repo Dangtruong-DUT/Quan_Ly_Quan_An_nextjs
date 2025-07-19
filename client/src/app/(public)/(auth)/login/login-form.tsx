@@ -7,7 +7,6 @@ import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAppContext } from "@/app/app-provider";
 import { useCallback, useEffect } from "react";
 import { useLoginMutation } from "@/hooks/data/useAuth";
 import { LoginBody, LoginBodyType } from "@/utils/validation/auth.schema";
@@ -15,6 +14,7 @@ import { handleErrorApi } from "@/utils/handleError";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { getOauthGoogleUrl } from "@/helpers/oauth";
 import Link from "next/link";
+import { useAppStore } from "@/providers/app-provider";
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
@@ -25,7 +25,7 @@ export default function LoginForm() {
         }
     }, [clearToken]);
 
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
     const { mutateAsync: login, isPending } = useLoginMutation();
     const form = useForm<LoginBodyType>({

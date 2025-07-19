@@ -1,8 +1,8 @@
 "use client";
 
 import clientRequestAuthApi from "@/api/clientToServer/auth";
-import { useAppContext } from "@/app/app-provider";
 import { handleRefreshToken } from "@/helpers/auth";
+import { useAppStore } from "@/providers/app-provider";
 import { clientSessionToken } from "@/service/storage/clientSessionToken";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
@@ -15,7 +15,7 @@ export default function RefreshTokenPage({
     searchParams: Promise<{ redirect?: string; refreshToken?: string }>;
 }) {
     const { redirect, refreshToken } = use(searchParams);
-    const { setRole } = useAppContext();
+    const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
     useEffect(() => {
         if (redirect && clientSessionToken.refreshToken && refreshToken === clientSessionToken.refreshToken) {

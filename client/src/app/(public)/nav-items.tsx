@@ -1,10 +1,11 @@
 "use client";
 
 import GuestConfirmLogout from "@/app/(public)/alert-diaglog-guest-logout";
-import { useAppContext } from "@/app/app-provider";
 import { Role } from "@/constants/type";
+import { useAppStore } from "@/providers/app-provider";
 import { RoleType } from "@/types/jwt";
 import Link from "next/link";
+import { useShallow } from "zustand/react/shallow";
 
 export type MenuItemType = {
     title: string;
@@ -23,7 +24,12 @@ const menuItems: MenuItemType[] = [
 ];
 
 export default function NavItems({ className }: { className?: string }) {
-    const { isAuth, role } = useAppContext();
+    const { isAuth, role } = useAppStore(
+        useShallow((state) => ({
+            isAuth: state.isAuth,
+            role: state.role,
+        }))
+    );
 
     return (
         <>

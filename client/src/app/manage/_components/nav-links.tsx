@@ -1,15 +1,15 @@
 "use client";
-import { useAppContext } from "@/app/app-provider";
 import menuItems from "@/app/manage/_components/menuItems";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/providers/app-provider";
 import { Package2, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function NavLinks() {
     const pathname = usePathname();
-    const { role } = useAppContext();
+    const role = useAppStore((state) => state.role);
 
     return (
         <TooltipProvider>
