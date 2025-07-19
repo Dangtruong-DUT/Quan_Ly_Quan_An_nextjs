@@ -1,12 +1,15 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode, createContext, use, useRef } from "react";
+import { ReactNode, createContext, use, useEffect, useRef } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RefreshToken } from "@/components/refresh-token";
 import { SocketListener } from "@/components/socket-listener";
 import { AppStore, createAppStore } from "@/stores/stores";
 import { useStore } from "zustand";
+import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { decodeJwt } from "@/utils/jwt";
+import { TokenPayload } from "@/types/jwt";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -29,6 +32,19 @@ export default function AppProvider({ children }: AppProviderProps) {
     if (storeRef.current === null) {
         storeRef.current = createAppStore();
     }
+    const setRole = useStore(storeRef.current, (state) => state.setRole);
+
+    useEffect(() => {
+        const token = clientSessionToken.refreshToken;
+        if (!token) return;
+
+        try {
+            const { role } = decodeJwt<TokenPayload>(token);
+            if (role) setRole(role);
+        } catch (error) {
+            console.error("Invalid refresh token:", error);
+        }
+    }, [setRole]);
     return (
         <AppContext value={storeRef.current}>
             <QueryClientProvider client={queryClient}>

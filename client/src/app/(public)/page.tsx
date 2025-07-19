@@ -1,16 +1,14 @@
 import nextRequestDishesApi from "@/api/nextToBackend/dishes";
+import { WrapperServerCallApi } from "@/utils/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
-import { handleErrorApiOnNextServer } from "@/utils/handleError";
 import Image from "next/image";
 
 export default async function Home() {
-    let dishes = null;
-    try {
-        const res = await nextRequestDishesApi.nextList();
-        dishes = res.payload.data;
-    } catch (error) {
-        handleErrorApiOnNextServer(error);
-    }
+    const data = await WrapperServerCallApi({
+        apiCallFn: () => nextRequestDishesApi.nextList(),
+    });
+    const dishes = data?.payload.data;
+
     return (
         <div className="w-full space-y-4">
             <div className="relative">
