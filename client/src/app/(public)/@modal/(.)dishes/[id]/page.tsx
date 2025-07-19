@@ -1,4 +1,5 @@
 import nextRequestDishesApi from "@/api/nextToBackend/dishes";
+import { Modal } from "@/app/(public)/@modal/(.)dishes/[id]/modal";
 import DishDetail from "@/app/(public)/dishes/[id]/dish-detail";
 import { WrapperServerCallApi } from "@/utils/common";
 
@@ -9,11 +10,16 @@ export default async function DishPage({ params }: { params: Promise<{ id: strin
     });
 
     const dish = data?.payload.data;
-    if (!dish) {
-        return (
-            <div className="flex items-center justify-center min-h-[50vh] text-gray-500 text-lg">Dish not found</div>
-        );
-    }
 
-    return <DishDetail dish={dish} />;
+    return (
+        <Modal>
+            {dish ? (
+                <DishDetail dish={dish} />
+            ) : (
+                <div className="flex items-center justify-center min-h-[50vh] text-gray-500 text-lg">
+                    Dish not found
+                </div>
+            )}
+        </Modal>
+    );
 }

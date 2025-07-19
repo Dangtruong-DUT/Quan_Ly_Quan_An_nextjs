@@ -30,8 +30,6 @@ export default function NavItems({ className }: { className?: string }) {
             role: state.role,
         }))
     );
-    console.log("role", role);
-    console.log("isAuth", isAuth);
     return (
         <>
             {menuItems.map((item) => {

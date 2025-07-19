@@ -2,6 +2,7 @@ import nextRequestDishesApi from "@/api/nextToBackend/dishes";
 import { WrapperServerCallApi } from "@/utils/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
     const data = await WrapperServerCallApi({
@@ -33,23 +34,25 @@ export default async function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                     {dishes &&
                         dishes.map((dish) => (
-                            <div className="flex gap-4 w" key={dish.id}>
-                                <div className="flex-shrink-0">
-                                    <Image
-                                        src={dish.image || "/placeholderimage.webp"}
-                                        width={150}
-                                        height={150}
-                                        className="object-cover w-[150px] h-[150px] rounded-md"
-                                        alt={dish.name}
-                                        quality={100}
-                                    />
+                            <Link key={dish.id} href={`/dishes/${dish.id}`} className="group">
+                                <div className="flex gap-4 w" key={dish.id}>
+                                    <div className="flex-shrink-0">
+                                        <Image
+                                            src={dish.image || "/placeholderimage.webp"}
+                                            width={150}
+                                            height={150}
+                                            className="object-cover w-[150px] h-[150px] rounded-md"
+                                            alt={dish.name}
+                                            quality={100}
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h3 className="text-xl font-semibold">{dish.name}</h3>
+                                        <p className="">{dish.description}</p>
+                                        <p className="font-semibold">{formatCurrency(dish.price)}</p>
+                                    </div>
                                 </div>
-                                <div className="space-y-1">
-                                    <h3 className="text-xl font-semibold">{dish.name}</h3>
-                                    <p className="">{dish.description}</p>
-                                    <p className="font-semibold">{formatCurrency(dish.price)}</p>
-                                </div>
-                            </div>
+                            </Link>
                         ))}{" "}
                 </div>
             </section>
