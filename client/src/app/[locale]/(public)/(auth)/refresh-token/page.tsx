@@ -1,14 +1,12 @@
 "use client";
 
-import clientRequestAuthApi from "@/api/clientToServer/auth";
 import { handleRefreshToken } from "@/helpers/auth";
 import { useAppStore } from "@/providers/app-provider";
 import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
+import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
-import { useRouter } from "@/i18n/navigation";
-
 export default function RefreshTokenPage({
     searchParams,
 }: {
@@ -28,18 +26,17 @@ export default function RefreshTokenPage({
                 },
                 onError: (error) => {
                     setRole(undefined);
-                    router.push("/login");
+                    router.push("/");
                     console.error("Error during token refresh:", error);
                 },
                 onRefreshTokenExpired: () => {
                     setRole(undefined);
-                    router.push("/login");
+                    router.push("/");
                 },
             });
         } else {
-            clientRequestAuthApi.logout();
             router.push("/");
         }
-    });
+    }, [redirect, refreshToken, setRole, router]);
     return <></>;
 }

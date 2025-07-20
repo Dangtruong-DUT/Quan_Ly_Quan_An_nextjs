@@ -11,13 +11,31 @@
     },
     "LoginPage": {
         "title": "Đăng nhập",
-        "description": "Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống",
+        "description": "Nhập email và mật khẩu để đăng nhập vào hệ thống",
         "emailLabel": "Email",
         "emailPlaceholder": "m@example.com",
         "passwordLabel": "Mật khẩu",
         "passwordPlaceholder": "Nhập mật khẩu của bạn",
         "loginButton": "Đăng nhập",
         "googleLoginButton": "Đăng nhập bằng Google"
+    },
+    "UpdateProfileForm": {
+        "title": "Hồ sơ",
+        "name": "Tên",
+        "upload": "Tải lên",
+        "cancel": "Hủy",
+        "save": "Lưu",
+        "saving": "Đang lưu",
+        "successMessage": "Cập nhật hồ sơ thành công"
+    },
+    "ChangePasswordForm": {
+        "title": "Đổi mật khẩu",
+        "oldPassword": "Mật khẩu cũ",
+        "newPassword": "Mật khẩu mới",
+        "confirmPassword": "Xác nhận mật khẩu mới",
+        "cancel": "Hủy",
+        "save": "Lưu",
+        "successMessage": "Đổi mật khẩu thành công"
     },
     "Common": {
         "cancel": "Huỷ",
@@ -333,6 +351,63 @@
             "Reserved": "Đã đặt",
             "Hidden": "Ẩn"
         }
+    },
+    "TablesPage": {
+        "title": "Bàn ăn",
+        "description": "Quản lý bàn ăn"
+    },
+    "AddTable": {
+        "title": "Thêm bàn",
+        "addButton": "Thêm bàn",
+        "tableNumber": "Số hiệu bàn",
+        "capacity": "Lượng khách cho phép",
+        "status": "Trạng thái",
+        "selectStatus": "Chọn trạng thái",
+        "addButtonText": "Thêm",
+        "successMessage": "Thêm bàn thành công"
+    },
+    "EditTable": {
+        "title": "Cập nhật bàn ăn",
+        "tableNumber": "Số hiệu bàn",
+        "capacity": "Sức chứa (người)",
+        "status": "Trạng thái",
+        "selectStatus": "Chọn trạng thái",
+        "changeQRCode": "Đổi QR Code",
+        "qrCode": "QR Code",
+        "orderUrl": "URL gọi món",
+        "saveButton": "Lưu",
+        "successMessage": "Cập nhật bàn thành công"
+    },
+    "DeleteTable": {
+        "title": "Xóa bàn ăn?",
+        "description": "Bàn {number} sẽ bị xóa vĩnh viễn",
+        "cancel": "Hủy",
+        "continue": "Tiếp tục",
+        "successMessage": "Xóa bàn thành công"
+    },
+    "TableTable": {
+        "filterPlaceholder": "Lọc số bàn",
+        "showing": "Hiển thị",
+        "in": "trong",
+        "results": "kết quả"
+    },
+    "TableColumns": {
+        "tableNumber": "Số bàn",
+        "capacity": "Sức chứa",
+        "status": "Trạng thái",
+        "qrCode": "QR Code",
+        "actions": "Hành động",
+        "openMenu": "Mở menu",
+        "edit": "Sửa",
+        "delete": "Xóa"
+    },
+    "SettingPage": {
+        "title": "Cài đặt",
+        "owner": "Chủ sở hữu"
+    },
+    "QRCodeGenerator": {
+        "tableNumber": "Bàn số: {number}",
+        "scanToOrder": "Quét mã để order món"
     },
     "TablesDialog": {
         "title": "Chọn bàn",

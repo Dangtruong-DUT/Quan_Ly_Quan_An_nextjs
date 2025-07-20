@@ -14,8 +14,10 @@ import { UpdateMeBody, UpdateMeBodyType } from "@/utils/validation/account.schem
 import { useAccountProfile, useUpdateAccountProfileMutation } from "@/hooks/data/useAccount";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { handleErrorApi } from "@/utils/handleError";
+import { useTranslations } from "next-intl";
 
 export default function UpdateProfileForm() {
+    const t = useTranslations("UpdateProfileForm");
     const [file, setFile] = useState<File | null>(null);
     const avatarPreviewRef = useRef<HTMLInputElement>(null);
 
@@ -62,12 +64,12 @@ export default function UpdateProfileForm() {
                     avatar: avatar || "",
                     name,
                 });
-                toast.success(updateProfileRes.payload.message || "Cập nhật thông tin thành công");
+                toast.success(updateProfileRes.payload.message || t("successMessage"));
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [file, form, uploadImageMutateAsync, updateProfileMutateAsync, user?.avatar]
+        [file, form, uploadImageMutateAsync, updateProfileMutateAsync, user?.avatar, t]
     );
 
     const avatarSrc = useMemo(
@@ -97,7 +99,7 @@ export default function UpdateProfileForm() {
             >
                 <Card x-chunk="dashboard-07-chunk-0">
                     <CardHeader>
-                        <CardTitle>Profile</CardTitle>
+                        <CardTitle>{t("title")}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid gap-6">
@@ -129,7 +131,7 @@ export default function UpdateProfileForm() {
                                                 }}
                                             >
                                                 <Upload className="h-4 w-4 text-muted-foreground" />
-                                                <span className="sr-only">Upload</span>
+                                                <span className="sr-only">{t("upload")}</span>
                                             </button>
                                         </div>
                                     </FormItem>
@@ -142,7 +144,9 @@ export default function UpdateProfileForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid gap-3">
-                                            <Label htmlFor="name">Tên</Label>
+                                            <Label htmlFor="name" className="sr-only">
+                                                {t("name")}
+                                            </Label>
                                             <Input id="name" type="text" className="w-full" {...field} />
                                             <FormMessage />
                                         </div>
@@ -152,10 +156,10 @@ export default function UpdateProfileForm() {
 
                             <div className=" items-center gap-2 md:ml-auto flex">
                                 <Button variant="outline" size="sm" type="reset">
-                                    Cancel
+                                    {t("cancel")}
                                 </Button>
                                 <Button size="sm" type="submit" disabled={isLoading}>
-                                    {isLoading ? "Saving" : "Save"}
+                                    {isLoading ? t("saving") : t("save")}
                                 </Button>
                             </div>
                         </div>

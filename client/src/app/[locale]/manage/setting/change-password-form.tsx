@@ -12,8 +12,10 @@ import { toast } from "sonner";
 import { ChangePasswordBody, ChangePasswordBodyType } from "@/utils/validation/account.schema";
 import { useChangePasswordMutation } from "@/hooks/data/useAccount";
 import { handleErrorApi } from "@/utils/handleError";
+import { useTranslations } from "next-intl";
 
 export default function ChangePasswordForm() {
+    const t = useTranslations("ChangePasswordForm");
     const form = useForm<ChangePasswordBodyType>({
         resolver: zodResolver(ChangePasswordBody),
         defaultValues: {
@@ -27,13 +29,13 @@ export default function ChangePasswordForm() {
         async (data: ChangePasswordBodyType) => {
             try {
                 const res = await changePasswordMutate(data);
-                toast.success(res.payload.message || "Password changed successfully");
+                toast.success(res.payload.message || t("successMessage"));
                 form.reset();
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [form, changePasswordMutate]
+        [form, changePasswordMutate, t]
     );
     const onReset = useCallback(() => {
         form.reset();
@@ -48,7 +50,7 @@ export default function ChangePasswordForm() {
             >
                 <Card className="overflow-hidden" x-chunk="dashboard-07-chunk-4">
                     <CardHeader>
-                        <CardTitle>Change password</CardTitle>
+                        <CardTitle>{t("title")}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid gap-6">
@@ -58,7 +60,7 @@ export default function ChangePasswordForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid gap-3">
-                                            <Label htmlFor="oldPassword">Old Password</Label>
+                                            <Label htmlFor="oldPassword">{t("oldPassword")}</Label>
                                             <Input id="oldPassword" type="password" className="w-full" {...field} />
                                             <FormMessage />
                                         </div>
@@ -71,7 +73,7 @@ export default function ChangePasswordForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid gap-3">
-                                            <Label htmlFor="password">New Password</Label>
+                                            <Label htmlFor="password">{t("newPassword")}</Label>
                                             <Input id="password" type="password" className="w-full" {...field} />
                                             <FormMessage />
                                         </div>
@@ -84,7 +86,7 @@ export default function ChangePasswordForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid gap-3">
-                                            <Label htmlFor="confirmPassword">Confirm your new password</Label>
+                                            <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
                                             <Input id="confirmPassword" type="password" className="w-full" {...field} />
                                             <FormMessage />
                                         </div>
@@ -93,10 +95,10 @@ export default function ChangePasswordForm() {
                             />
                             <div className=" items-center gap-2 md:ml-auto flex">
                                 <Button variant="outline" size="sm" type="reset">
-                                    Cancel
+                                    {t("cancel")}
                                 </Button>
                                 <Button size="sm" type="submit">
-                                    Save
+                                    {t("save")}
                                 </Button>
                             </div>
                         </div>

@@ -1,13 +1,14 @@
-import { getTableStatus } from "@/helpers/common";
 import { simpleMatchText } from "@/utils/common";
 import { TableListResType } from "@/utils/validation/table.schema";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
+import { useTableStatus } from "@/helpers/common";
 
 export type TableItem = TableListResType["data"][0];
 
 export function useTablesColumns(): ColumnDef<TableItem>[] {
     const t = useTranslations("TablesDialog");
+    const getTableStatus = useTableStatus();
 
     return [
         {

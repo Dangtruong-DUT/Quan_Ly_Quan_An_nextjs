@@ -334,6 +334,81 @@
             "Hidden": "Hidden"
         }
     },
+    "TablesPage": {
+        "title": "Tables",
+        "description": "Manage tables"
+    },
+    "AddTable": {
+        "title": "Add table",
+        "addButton": "Add table",
+        "tableNumber": "Table number",
+        "capacity": "Guest capacity",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "addButtonText": "Add",
+        "successMessage": "Table added successfully"
+    },
+    "EditTable": {
+        "title": "Update table",
+        "tableNumber": "Table number",
+        "capacity": "Capacity (people)",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "changeQRCode": "Change QR Code",
+        "qrCode": "QR Code",
+        "orderUrl": "Order URL",
+        "saveButton": "Save",
+        "successMessage": "Table updated successfully"
+    },
+    "DeleteTable": {
+        "title": "Delete table?",
+        "description": "Table {number} will be permanently deleted",
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "successMessage": "Table deleted successfully"
+    },
+    "TableTable": {
+        "filterPlaceholder": "Filter table number",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "TableColumns": {
+        "tableNumber": "Table number",
+        "capacity": "Capacity",
+        "status": "Status",
+        "qrCode": "QR Code",
+        "actions": "Actions",
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "SettingPage": {
+        "title": "Settings",
+        "owner": "Owner"
+    },
+    "QRCodeGenerator": {
+        "tableNumber": "Table: {number}",
+        "scanToOrder": "Scan to order"
+    },
+    "UpdateProfileForm": {
+        "title": "Profile",
+        "name": "Name",
+        "upload": "Upload",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving",
+        "successMessage": "Profile updated successfully"
+    },
+    "ChangePasswordForm": {
+        "title": "Change password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm your new password",
+        "cancel": "Cancel",
+        "save": "Save",
+        "successMessage": "Password changed successfully"
+    },
     "TablesDialog": {
         "title": "Select table",
         "selectTable": "Select table",

@@ -4,6 +4,7 @@ import { HttpStatus } from "@/constants/httpStatus";
 import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { SetCookieBodyType } from "@/types/auth";
 import { LoginResType } from "@/utils/validation/auth.schema";
+import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 const isClient = typeof window !== "undefined";
@@ -136,8 +137,9 @@ class Http {
                     // window.location.href = "/";
                 }
             } else {
+                const locale = getLocale();
                 const accessToken = (options as any)?.headers?.Authorization?.replace("Bearer ", "") || "";
-                redirect("/logout?accessToken=" + accessToken);
+                redirect(`/${locale}/logout?accessToken=${accessToken}`);
             }
         }
         throw error;

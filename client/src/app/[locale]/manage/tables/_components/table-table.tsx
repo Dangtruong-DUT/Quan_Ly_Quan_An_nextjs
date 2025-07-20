@@ -21,11 +21,14 @@ import EditTable from "@/app/[locale]/manage/tables/_components/edit-table";
 import AlertDialogDeleteTable from "@/app/[locale]/manage/tables/_components/alert-dialog-delete-table";
 import { useTableTableContext } from "@/app/[locale]/manage/tables/context/TableTableContext";
 import AddTable from "@/app/[locale]/manage/tables/_components/add-table";
-import columns from "@/app/[locale]/manage/tables/_components/columns";
+import { useTableColumns } from "@/app/[locale]/manage/tables/_components/columns";
 import { useGetTables } from "@/hooks/data/useTables";
+import { useTranslations } from "next-intl";
 
 const PAGE_SIZE = 10;
 export default function TableTable() {
+    const t = useTranslations("TableTable");
+    const columns = useTableColumns();
     const searchParam = useSearchParams();
     const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
     const pageIndex = page - 1;
@@ -79,7 +82,7 @@ export default function TableTable() {
             <AlertDialogDeleteTable tableDelete={tableDelete} setTableDelete={setTableDelete} />
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Lọc số bàn"
+                    placeholder={t("filterPlaceholder")}
                     value={(table.getColumn("number")?.getFilterValue() as string) ?? ""}
                     onChange={(event) => table.getColumn("number")?.setFilterValue(event.target.value)}
                     className="max-w-sm"
@@ -91,8 +94,8 @@ export default function TableTable() {
             <DataTable columns={columns} table={table} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                    Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-                    <strong>{data.length}</strong> kết quả
+                    {t("showing")} <strong>{table.getPaginationRowModel().rows.length}</strong> {t("in")}{" "}
+                    <strong>{data.length}</strong> {t("results")}
                 </div>
                 <div>
                     <AutoPagination

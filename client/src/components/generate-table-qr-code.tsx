@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { getTableLink } from "@/helpers/common";
 import { Download } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
@@ -14,6 +14,7 @@ type QRcodeGenerateProps = {
 };
 
 export default function QRcodeTableGenerate({ token, tableNumber, width = 200 }: QRcodeGenerateProps) {
+    const t = useTranslations("QRCodeGenerator");
     const locale = useLocale();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const url = getTableLink({ token, tableNumber, locale });
@@ -40,10 +41,10 @@ export default function QRcodeTableGenerate({ token, tableNumber, width = 200 }:
             ctx.fillStyle = "#000";
             ctx.font = "16px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(`Bàn số: ${tableNumber}`, width / 2, width + 15);
-            ctx.fillText("Quét mã để order món", width / 2, width + 50);
+            ctx.fillText(t("tableNumber", { number: tableNumber }), width / 2, width + 15);
+            ctx.fillText(t("scanToOrder"), width / 2, width + 50);
         }
-    }, [url, canvasRef, width, virtualCanvas, tableNumber]);
+    }, [url, canvasRef, width, virtualCanvas, tableNumber, t]);
 
     const handleDownload = useCallback(() => {
         if (!canvasRef.current) return;

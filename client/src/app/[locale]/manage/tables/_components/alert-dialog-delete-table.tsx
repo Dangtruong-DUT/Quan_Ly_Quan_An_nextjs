@@ -13,6 +13,7 @@ import { useDeleteTableMutation } from "@/hooks/data/useTables";
 import { handleErrorApi } from "@/utils/handleError";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function AlertDialogDeleteTable({
     tableDelete,
@@ -21,6 +22,7 @@ export default function AlertDialogDeleteTable({
     tableDelete: TableItem | null;
     setTableDelete: (value: TableItem | null) => void;
 }) {
+    const t = useTranslations("DeleteTable");
     const { mutateAsync } = useDeleteTableMutation();
 
     const handleDeleteTable = useCallback(async () => {
@@ -44,18 +46,14 @@ export default function AlertDialogDeleteTable({
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Xóa bàn ăn?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("title")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Bàn{" "}
-                        <span className="bg-foreground text-primary-foreground rounded px-1">
-                            {tableDelete?.number}
-                        </span>{" "}
-                        sẽ bị xóa vĩnh viễn
+                        {t("description", { number: tableDelete?.number || 0 })}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteTable}>Continue</AlertDialogAction>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteTable}>{t("continue")}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
