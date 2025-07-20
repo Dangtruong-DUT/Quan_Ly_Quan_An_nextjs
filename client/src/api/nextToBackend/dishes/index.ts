@@ -1,4 +1,4 @@
-import http from "@/service/api/http";
+import http from "@/services/api/http";
 import { DishListResType, DishResType } from "@/utils/validation/dish.schema";
 
 const nextRequestDishesApi = {

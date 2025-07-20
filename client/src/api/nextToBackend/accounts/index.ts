@@ -1,4 +1,4 @@
-import http from "@/service/api/http";
+import http from "@/services/api/http";
 import { AccountResType } from "@/utils/validation/account.schema";
 
 const nextRequestAccountApi = {

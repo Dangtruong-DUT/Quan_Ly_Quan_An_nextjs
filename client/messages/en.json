@@ -2,5 +2,10 @@
     "HomePage": {
         "title": "TaplamIT - Restaurant",
         "description": "Deliciousness, unforgettable moments"
+    },
+    "SwitchLanguage": {
+        "label": "Switch Language",
+        "en": "English",
+        "vi": "Vietnamese"
     }
 }

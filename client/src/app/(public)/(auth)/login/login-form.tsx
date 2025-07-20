@@ -11,7 +11,7 @@ import { useCallback, useEffect } from "react";
 import { useLoginMutation } from "@/hooks/data/useAuth";
 import { LoginBody, LoginBodyType } from "@/utils/validation/auth.schema";
 import { handleErrorApi } from "@/utils/handleError";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { getOauthGoogleUrl } from "@/helpers/oauth";
 import Link from "next/link";
 import { useAppStore } from "@/providers/app-provider";

@@ -1,5 +1,5 @@
 import clientRequestAccountApi from "@/api/clientToServer/accounts";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useAccountProfile() {

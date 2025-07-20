@@ -1,5 +1,5 @@
 import envConfig from "@/config/app.config";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { io } from "socket.io-client";
 
 class ClientSocket {

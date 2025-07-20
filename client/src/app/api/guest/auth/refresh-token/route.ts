@@ -1,6 +1,6 @@
 import nextRequestGuestApi from "@/api/nextToBackend/guest";
 import { HttpStatus } from "@/constants/httpStatus";
-import { httpError } from "@/service/api/http";
+import { httpError } from "@/services/api/http";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { cookies } from "next/headers";

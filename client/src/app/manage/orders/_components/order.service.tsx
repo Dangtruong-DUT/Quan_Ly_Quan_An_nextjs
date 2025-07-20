@@ -11,7 +11,7 @@ export type Statics = {
 export type OrderObjectByGuestID = Record<number, GetOrdersResType["data"]>;
 export type ServingGuestByTableNumber = Record<number, OrderObjectByGuestID>;
 
-export const useOrderService = (orderList: GetOrdersResType["data"]) => {
+export const useOrderservices = (orderList: GetOrdersResType["data"]) => {
     const result = useMemo(() => {
         const statics: Statics = {
             status: {

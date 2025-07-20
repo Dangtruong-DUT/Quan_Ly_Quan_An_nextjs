@@ -1,4 +1,4 @@
-import http from "@/service/api/http";
+import http from "@/services/api/http";
 import { DashboardIndicatorQueryParamsType, DashboardIndicatorResType } from "@/utils/validation/indicator.schema";
 import queryString from "query-string";
 

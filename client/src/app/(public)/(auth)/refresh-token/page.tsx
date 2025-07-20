@@ -3,7 +3,7 @@
 import clientRequestAuthApi from "@/api/clientToServer/auth";
 import { handleRefreshToken } from "@/helpers/auth";
 import { useAppStore } from "@/providers/app-provider";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { useRouter } from "next/navigation";

@@ -1,6 +1,6 @@
 import nextRequestAuthApi from "@/api/nextToBackend/auth";
 import { HttpStatus } from "@/constants/httpStatus";
-import { httpError } from "@/service/api/http";
+import { httpError } from "@/services/api/http";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 

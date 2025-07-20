@@ -24,7 +24,7 @@ The Next.js server here **acts as a secure proxy** between the **frontend (brows
 -   Any **middleware** in this app should:
     -   Check `accessToken` validity.
     -   If expired but `refreshToken` is still valid, **redirect** the user to a dedicated refresh route.
-    -   If both tokens fail, force logout (using the HTTP client in `src/service/api/http.ts`) which calls the logout API to clear cookies and local storage.
+    -   If both tokens fail, force logout (using the HTTP client in `src/services/api/http.ts`) which calls the logout API to clear cookies and local storage.
 
 ## ⚙️ Why this matters
 
@@ -40,7 +40,7 @@ The Next.js server here **acts as a secure proxy** between the **frontend (brows
 -   Expiration logic uses `exp` from token but subtracts ~1s buffer.
 -   Session auto-renew uses a client `setInterval`.
 -   Middleware **forces proper flow** and redirects if needed.
--   The `http.ts` service guarantees logout if `401` occurs unexpectedly.
+-   The `http.ts` services guarantees logout if `401` occurs unexpectedly.
 
 This ensures your authentication stays robust, secure, and easy to maintain.
 

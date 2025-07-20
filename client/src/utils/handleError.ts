@@ -1,5 +1,5 @@
 import { HttpStatus } from "@/constants/httpStatus";
-import { EntityError, httpError } from "@/service/api/http";
+import { EntityError, httpError } from "@/services/api/http";
 import { UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
 

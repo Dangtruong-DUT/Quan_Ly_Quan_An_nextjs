@@ -1,6 +1,6 @@
 "use client";
 
-import { OrderObjectByGuestID } from "@/app/manage/orders/_components/order.service";
+import { OrderObjectByGuestID } from "@/app/manage/orders/_components/order.services";
 import { OrderStatusValues } from "@/constants/type";
 import { useUpdateOrderMutation } from "@/hooks/data/useOrder";
 import { handleErrorApi } from "@/utils/handleError";

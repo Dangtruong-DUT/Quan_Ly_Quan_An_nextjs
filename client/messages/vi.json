@@ -2,5 +2,10 @@
     "HomePage": {
         "title": "TaplamIT - Nhà hàng",
         "description": "Vị ngon, trọn khoảnh khắc"
+    },
+    "SwitchLanguage": {
+        "label": "Chuyển ngôn ngữ",
+        "en": "Tiếng Anh",
+        "vi": "Tiếng Việt"
     }
 }

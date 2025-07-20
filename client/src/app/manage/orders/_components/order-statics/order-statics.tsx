@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { getVietnameseOrderStatus, OrderStatusIcon } from "@/helpers/common";
 
 import OrderGuestDetail from "@/app/manage/orders/_components/order-guest-detail";
-import { ServingGuestByTableNumber, Statics, StatusCountObject } from "@/app/manage/orders/_components/order.service";
+import { ServingGuestByTableNumber, Statics, StatusCountObject } from "@/app/manage/orders/_components/order.services";
 
 import { TableListResType } from "@/utils/validation/table.schema";
 import { OrderStatusValues } from "@/constants/type";

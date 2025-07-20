@@ -1,3 +1,5 @@
+"use client";
+
 const isClient = typeof window !== "undefined" && typeof localStorage !== "undefined";
 
 class SessionToken {

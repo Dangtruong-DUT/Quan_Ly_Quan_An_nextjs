@@ -1,5 +1,5 @@
 import { HttpStatus } from "@/constants/httpStatus";
-import { httpError } from "@/service/api/http";
+import { httpError } from "@/services/api/http";
 import { SetCookieBodyType } from "@/types/auth";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";

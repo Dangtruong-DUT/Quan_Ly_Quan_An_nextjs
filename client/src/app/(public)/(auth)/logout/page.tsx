@@ -2,7 +2,7 @@
 
 import { useLogoutMutation } from "@/hooks/data/useAuth";
 import { useAppStore } from "@/providers/app-provider";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { handleErrorApi } from "@/utils/handleError";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";

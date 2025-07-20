@@ -1,4 +1,4 @@
-import http from "@/service/api/http";
+import http from "@/services/api/http";
 import { RefreshTokenBodyType, RefreshTokenResType } from "@/utils/validation/auth.schema";
 import { GuestLoginBodyType, GuestLoginResType } from "@/utils/validation/guest.schema";
 

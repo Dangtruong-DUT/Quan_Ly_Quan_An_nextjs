@@ -31,7 +31,7 @@ import { getVietnameseOrderStatus } from "@/helpers/common";
 import EditOrder from "@/app/manage/orders/_components/edit-order";
 import AddOrder from "@/app/manage/orders/_components/add-order";
 import orderTableColumns from "@/app/manage/orders/_components/order-table/columns";
-import { useOrderService } from "@/app/manage/orders/_components/order.service";
+import { useOrderservices } from "@/app/manage/orders/_components/order.services";
 import { DataTable } from "@/components/ui/data-table";
 import { useOrderTableContext } from "@/app/manage/orders/context/order-table-provider";
 import { useGetOrderListQuery } from "@/hooks/data/useOrder";
@@ -68,7 +68,7 @@ export default function OrderTable() {
         pageSize: PAGE_SIZE,
     });
 
-    const { statics, orderObjectByGuestId, servingGuestByTableNumber } = useOrderService(dishList);
+    const { statics, orderObjectByGuestId, servingGuestByTableNumber } = useOrderservices(dishList);
 
     const table = useReactTable({
         data: dishList,

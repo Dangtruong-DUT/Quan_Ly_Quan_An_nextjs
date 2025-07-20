@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import envConfig from "@/config/app.config";
 import { HttpStatus } from "@/constants/httpStatus";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { SetCookieBodyType } from "@/types/auth";
 import { LoginResType } from "@/utils/validation/auth.schema";
 import { redirect } from "next/navigation";
