@@ -4,8 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Locale } from "@/i18n/config";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Suspense } from "react";
-
 export default async function AccountPage({ params }: { params: Promise<{ locale: string }> }) {
     // Enable static rendering
     const { locale } = await params;
@@ -21,11 +19,9 @@ export default async function AccountPage({ params }: { params: Promise<{ locale
                         <CardDescription>{t("description")}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Suspense>
-                            <AccountTableProvider>
-                                <AccountTable />
-                            </AccountTableProvider>
-                        </Suspense>
+                        <AccountTableProvider>
+                            <AccountTable />
+                        </AccountTableProvider>
                     </CardContent>
                 </Card>
             </div>

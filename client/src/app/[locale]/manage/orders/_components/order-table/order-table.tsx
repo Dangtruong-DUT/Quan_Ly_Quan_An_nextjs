@@ -11,7 +11,6 @@ import {
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import AutoPagination from "@/components/auto-pagination";
 import { OrderStatusValues } from "@/constants/type";
 import { useTranslations } from "next-intl";
@@ -39,6 +38,7 @@ import { useGetTables } from "@/hooks/data/useTables";
 import { formatDateTimeLocal } from "@/utils/formatting/formatTime";
 import OrderStatics from "@/app/[locale]/manage/orders/_components/order-statics/order-statics";
 import useOrderServices from "@/app/[locale]/manage/orders/_components/order.service";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
 
 const PAGE_SIZE = 10;
 const initFromDate = startOfDay(new Date());
@@ -47,10 +47,10 @@ export default function OrderTable() {
     const getOrderStatus = useOrderStatus();
     const t = useTranslations("OrderTable");
     const columns = useOrderColumns();
-    const searchParam = useSearchParams();
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
     const [fromDate, setFromDate] = useState(initFromDate);
     const [toDate, setToDate] = useState(initToDate);
-    const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
+    const page = searchParams?.get("page") ? Number(searchParams.get("page")) : 1;
     const pageIndex = page - 1;
 
     const { data: orderListQuery } = useGetOrderListQuery({
@@ -132,6 +132,7 @@ export default function OrderTable() {
 
     return (
         <div className="w-full">
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <EditOrder id={orderIdEdit} setId={setOrderIdEdit} onSubmitSuccess={() => {}} />
             <div className=" flex items-center">
                 <div className="flex flex-wrap gap-2">

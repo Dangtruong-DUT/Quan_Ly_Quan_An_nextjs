@@ -5,11 +5,11 @@ import { useAppStore } from "@/providers/app-provider";
 import { TokenPayload } from "@/types/jwt";
 import { handleErrorApi } from "@/utils/handleError";
 import { decodeJwt } from "@/utils/jwt";
-import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
 
 export default function OauthPage() {
     const t = useTranslations("OauthPage");
@@ -18,10 +18,10 @@ export default function OauthPage() {
 
     const { mutateAsync: setCookieMutateAsync } = useSetCookieMutation();
 
-    const searchParams = useSearchParams();
-    const accessToken = searchParams.get("accessToken");
-    const refreshToken = searchParams.get("refreshToken");
-    const message = searchParams.get("message");
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
+    const accessToken = searchParams?.get("accessToken");
+    const refreshToken = searchParams?.get("refreshToken");
+    const message = searchParams?.get("message");
 
     const handleSetCookie = useCallback(
         async (accessToken: string, refreshToken: string) => {
@@ -54,6 +54,7 @@ export default function OauthPage() {
 
     return (
         <div className="flex items-center justify-center h-screen">
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <p>{t("redirecting")}</p>
         </div>
     );

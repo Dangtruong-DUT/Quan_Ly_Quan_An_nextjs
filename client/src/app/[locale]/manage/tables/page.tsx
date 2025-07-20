@@ -3,7 +3,6 @@ import TableTableProvider from "@/app/[locale]/manage/tables/context/TableTableC
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Locale } from "@/i18n/config";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Suspense } from "react";
 
 export default async function TablesPage({ params }: { params: { locale: string } }) {
     const { locale } = params;
@@ -20,11 +19,9 @@ export default async function TablesPage({ params }: { params: { locale: string 
                         <CardDescription>{t("description")}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Suspense>
-                            <TableTableProvider>
-                                <TableTable />
-                            </TableTableProvider>
-                        </Suspense>
+                        <TableTableProvider>
+                            <TableTable />
+                        </TableTableProvider>
                     </CardContent>
                 </Card>
             </div>

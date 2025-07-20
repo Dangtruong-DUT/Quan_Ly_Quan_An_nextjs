@@ -16,21 +16,21 @@ import { useTranslations } from "next-intl";
 
 import AutoPagination from "@/components/auto-pagination";
 import { useGetAccountList } from "@/hooks/data/useAccount";
-import { useSearchParams } from "next/navigation";
 import { useAccountTableContext } from "@/app/[locale]/manage/accounts/context/account-table-context";
 import { useAccountColumns } from "@/app/[locale]/manage/accounts/_components/column";
 import EditEmployee from "@/app/[locale]/manage/accounts/_components/edit-employee";
 import AlertDialogDeleteAccount from "@/app/[locale]/manage/accounts/_components/alert-dialog-delete-account";
 import AddEmployee from "@/app/[locale]/manage/accounts/_components/add-employee";
 import { DataTable } from "@/components/ui/data-table";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
 
 const PAGE_SIZE = 10;
 export default function AccountTable() {
     const t = useTranslations("AccountTable");
     const columns = useAccountColumns();
     const { employeeIdEdit, setEmployeeIdEdit, employeeDelete, setEmployeeDelete } = useAccountTableContext();
-    const searchParams = useSearchParams();
-    const pageParam = searchParams.get("page");
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
+    const pageParam = searchParams?.get("page");
     const page = pageParam ? Number(pageParam) : 1;
     const pageIndex = page - 1;
     // const params = Object.fromEntries(searchParam.entries())
@@ -76,6 +76,7 @@ export default function AccountTable() {
 
     return (
         <div className="w-full">
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <EditEmployee id={employeeIdEdit} setId={setEmployeeIdEdit} />
             <AlertDialogDeleteAccount employeeDelete={employeeDelete} setEmployeeDelete={setEmployeeDelete} />
             <div className="flex items-center py-4">

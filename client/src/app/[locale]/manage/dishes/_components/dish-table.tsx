@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { useSearchParams } from "next/navigation";
 import AutoPagination from "@/components/auto-pagination";
 import { DataTable } from "@/components/ui/data-table";
 import { useGetDishes } from "@/hooks/data/useDishes";
@@ -24,14 +23,15 @@ import EditDish from "@/app/[locale]/manage/dishes/_components/edit-dish";
 import AlertDialogDeleteDish from "@/app/[locale]/manage/dishes/_components/alert-dialog-delete-dish";
 import AddDish from "@/app/[locale]/manage/dishes/_components/add-dish";
 import { useDishColumns } from "@/app/[locale]/manage/dishes/_components/columns";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
 
 // Số lượng item trên 1 trang
 const PAGE_SIZE = 10;
 export default function DishTable() {
     const t = useTranslations("DishTable");
     const columns = useDishColumns();
-    const searchParam = useSearchParams();
-    const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
+    const page = searchParams?.get("page") ? Number(searchParams.get("page")) : 1;
     const pageIndex = page - 1;
     const { dishIdEdit, setDishIdEdit, dishDelete, setDishDelete } = useDishTableContext();
     const { data: resFromServer } = useGetDishes();
@@ -76,6 +76,7 @@ export default function DishTable() {
 
     return (
         <div className="w-full">
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <EditDish id={dishIdEdit} setId={setDishIdEdit} />
             <AlertDialogDeleteDish dishDelete={dishDelete} setDishDelete={setDishDelete} />
             <div className="flex items-center py-4">

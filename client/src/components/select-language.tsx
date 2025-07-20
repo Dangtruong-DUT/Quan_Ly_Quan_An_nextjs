@@ -14,7 +14,7 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { LANGUAGES, Locale } from "@/i18n/config";
 import { useParams } from "next/navigation";
-import { Suspense, useTransition } from "react";
+import { useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
 function SelectLanguage() {
@@ -60,9 +60,5 @@ function SelectLanguage() {
 }
 
 export default function SelectLanguageWrapper() {
-    return (
-        <Suspense>
-            <SelectLanguage />
-        </Suspense>
-    );
+    return <SelectLanguage />;
 }

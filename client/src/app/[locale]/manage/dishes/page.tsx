@@ -3,7 +3,6 @@ import DishTableProvider from "@/app/[locale]/manage/dishes/context/DishTableCon
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Locale } from "@/i18n/config";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Suspense } from "react";
 
 export default async function DishesPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -20,11 +19,9 @@ export default async function DishesPage({ params }: { params: Promise<{ locale:
                         <CardDescription>{t("description")}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Suspense>
-                            <DishTableProvider>
-                                <DishTable />
-                            </DishTableProvider>
-                        </Suspense>
+                        <DishTableProvider>
+                            <DishTable />
+                        </DishTableProvider>
                     </CardContent>
                 </Card>
             </div>

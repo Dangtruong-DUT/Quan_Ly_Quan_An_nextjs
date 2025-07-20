@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
-import { useSearchParams } from "next/navigation";
 import AutoPagination from "@/components/auto-pagination";
 import { DataTable } from "@/components/ui/data-table";
 import EditTable from "@/app/[locale]/manage/tables/_components/edit-table";
@@ -24,13 +23,14 @@ import AddTable from "@/app/[locale]/manage/tables/_components/add-table";
 import { useTableColumns } from "@/app/[locale]/manage/tables/_components/columns";
 import { useGetTables } from "@/hooks/data/useTables";
 import { useTranslations } from "next-intl";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
 
 const PAGE_SIZE = 10;
 export default function TableTable() {
     const t = useTranslations("TableTable");
     const columns = useTableColumns();
-    const searchParam = useSearchParams();
-    const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
+    const page = searchParams?.get("page") ? Number(searchParams.get("page")) : 1;
     const pageIndex = page - 1;
 
     const { tableIdEdit, setTableIdEdit, tableDelete, setTableDelete } = useTableTableContext();
@@ -78,6 +78,7 @@ export default function TableTable() {
 
     return (
         <div className="w-full">
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <EditTable id={tableIdEdit} setId={setTableIdEdit} />
             <AlertDialogDeleteTable tableDelete={tableDelete} setTableDelete={setTableDelete} />
             <div className="flex items-center py-4">
