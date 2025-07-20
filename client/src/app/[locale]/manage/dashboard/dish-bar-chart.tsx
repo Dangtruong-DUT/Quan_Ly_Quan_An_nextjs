@@ -5,6 +5,7 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { DashboardIndicatorResType } from "@/utils/validation/indicator.schema";
+import { useTranslations } from "next-intl";
 
 const colors = [
     "var(--color-chrome)",
@@ -41,6 +42,7 @@ export function DishBarChart({
 }: {
     chartData?: Pick<DashboardIndicatorResType["data"]["dishIndicator"][number], "name" | "successOrders">[];
 }) {
+    const t = useTranslations("DishBarChart");
     chartData = chartData || [];
     chartData = chartData.map((item, index) => ({
         ...item,
@@ -49,8 +51,8 @@ export function DishBarChart({
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Xếp hạng món ăn</CardTitle>
-                <CardDescription>Được gọi nhiều nhất</CardDescription>
+                <CardTitle>{t("title")}</CardTitle>
+                <CardDescription>{t("description")}</CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
@@ -74,7 +76,7 @@ export function DishBarChart({
                         />
                         <XAxis dataKey="successOrders" type="number" hide />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                        <Bar dataKey="successOrders" name={"Đơn thanh toán :"} layout="vertical" radius={5} />
+                        <Bar dataKey="successOrders" name={t("paidOrders") + " :"} layout="vertical" radius={5} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>

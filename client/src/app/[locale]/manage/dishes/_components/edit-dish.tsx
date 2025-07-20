@@ -20,12 +20,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DishStatus, DishStatusValues } from "@/constants/type";
 import { Textarea } from "@/components/ui/textarea";
 import { UpdateDishBody, UpdateDishBodyType } from "@/utils/validation/dish.schema";
-import { getVietnameseDishStatus } from "@/helpers/common";
+import { useDishStatus } from "@/helpers/common";
 import { useEditDishMutation, useGetDishDetail } from "@/hooks/data/useDishes";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { handleErrorApi } from "@/utils/handleError";
 import { toast } from "sonner";
 import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
+import { useTranslations } from "next-intl";
 
 export default function EditDish({
     id,
@@ -36,6 +37,8 @@ export default function EditDish({
     setId: (value: number | undefined) => void;
     onSubmitSuccess?: () => void;
 }) {
+    const getDishStatus = useDishStatus();
+    const t = useTranslations("EditDish");
     const { mutateAsync: editDishMutate, isPending: isEditingDish } = useEditDishMutation({ id });
     const { mutateAsync: uploadMediaMutate, isPending: isUploading } = useUploadMediaMutation();
     const isLoading = isEditingDish || isUploading;
@@ -92,8 +95,8 @@ export default function EditDish({
                 } else {
                     body.image = dish?.image || "";
                 }
-                const res = await editDishMutate({ id: id!, body });
-                toast.success(res.payload.message);
+                await editDishMutate({ id: id!, body });
+                toast.success(t("successMessage"));
                 onSubmitSuccess?.();
                 onReset();
                 await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
@@ -101,7 +104,7 @@ export default function EditDish({
                 handleErrorApi(error, form.setError);
             }
         },
-        [id, isLoading, uploadMediaMutate, editDishMutate, file, dish, onSubmitSuccess, onReset, form]
+        [id, isLoading, uploadMediaMutate, editDishMutate, file, dish, onSubmitSuccess, onReset, form, t]
     );
 
     return (
@@ -115,8 +118,8 @@ export default function EditDish({
         >
             <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
                 <DialogHeader>
-                    <DialogTitle>Cập nhật món ăn</DialogTitle>
-                    <DialogDescription>Các trường sau đây là bắ buộc: Tên, ảnh</DialogDescription>
+                    <DialogTitle>{t("title")}</DialogTitle>
+                    <DialogDescription>{t("dialogDescription")}</DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form
@@ -159,7 +162,7 @@ export default function EditDish({
                                                 onClick={() => imageInputRef.current?.click()}
                                             >
                                                 <Upload className="h-4 w-4 text-muted-foreground" />
-                                                <span className="sr-only">Upload</span>
+                                                <span className="sr-only">{t("upload")}</span>
                                             </button>
                                         </div>
                                         <FormMessage />
@@ -173,7 +176,7 @@ export default function EditDish({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="name">Tên món ăn</Label>
+                                            <Label htmlFor="name">{t("dishName")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="name" className="w-full" {...field} />
                                                 <FormMessage />
@@ -188,7 +191,7 @@ export default function EditDish({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="price">Giá</Label>
+                                            <Label htmlFor="price">{t("price")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="price" className="w-full" {...field} type="number" />
                                                 <FormMessage />
@@ -203,7 +206,7 @@ export default function EditDish({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="description">Mô tả sản phẩm</Label>
+                                            <Label htmlFor="description">{t("dishDescription")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Textarea id="description" className="w-full" {...field} />
                                                 <FormMessage />
@@ -218,18 +221,18 @@ export default function EditDish({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="status">Trạng thái</Label>
+                                            <Label htmlFor="status">{t("status")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <Select onValueChange={field.onChange} value={field.value}>
                                                     <FormControl>
                                                         <SelectTrigger id="status">
-                                                            <SelectValue placeholder="Chọn trạng thái" />
+                                                            <SelectValue placeholder={t("selectStatus")} />
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         {DishStatusValues.map((status) => (
                                                             <SelectItem key={status} value={status}>
-                                                                {getVietnameseDishStatus(status)}
+                                                                {getDishStatus(status)}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
@@ -246,7 +249,7 @@ export default function EditDish({
                 </Form>
                 <DialogFooter>
                     <Button type="submit" form="edit-dish-form" disabled={isLoading}>
-                        Lưu
+                        {t("saveButton")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

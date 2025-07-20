@@ -6,18 +6,20 @@ import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GuestLoginBody, GuestLoginBodyType } from "@/utils/validation/guest.schema";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { handleErrorApi } from "@/utils/handleError";
 import { useGuestLoginMutation } from "@/hooks/data/useGuest";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { useAppStore } from "@/providers/app-provider";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
+import { useTranslations } from "next-intl";
 
 export default function GuestLoginForm() {
-    const searchParams = useSearchParams();
+    const t = useTranslations("GuestLoginPage");
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
     const params = useParams<{ number: string }>();
-    const token = searchParams.get("token") || "";
     const tableNumber = Number(params.number);
 
     const router = useRouter();
@@ -34,14 +36,13 @@ export default function GuestLoginForm() {
     });
 
     useEffect(() => {
+        const token = searchParams?.get("token") || "";
         if (!token) {
-            router.push("/");
-            toast.error("Token không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.");
+            toast.error(t("tokenInvalid"));
         }
-
         form.setValue("token", token);
         form.setValue("tableNumber", tableNumber);
-    }, [token, tableNumber, form, router]);
+    }, [searchParams, tableNumber, form, router, t]);
 
     const handleLogin = useCallback(
         async (data: GuestLoginBodyType) => {
@@ -62,6 +63,7 @@ export default function GuestLoginForm() {
 
     return (
         <Form {...form}>
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <form className=" flex-shrink-0 " noValidate onSubmit={onSubmit}>
                 <div className="grid gap-4">
                     <FormField
@@ -70,7 +72,7 @@ export default function GuestLoginForm() {
                         render={({ field }) => (
                             <FormItem>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Tên khách hàng</Label>
+                                    <Label htmlFor="name">{t("nameLabel")}</Label>
                                     <Input id="name" type="text" required {...field} />
                                     <FormMessage />
                                 </div>
@@ -79,7 +81,7 @@ export default function GuestLoginForm() {
                     />
 
                     <Button type="submit" className="w-full" disabled={isPending}>
-                        Đăng nhập
+                        {t("loginButton")}
                     </Button>
                 </div>
             </form>

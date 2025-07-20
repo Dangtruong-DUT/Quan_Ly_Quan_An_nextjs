@@ -38,7 +38,7 @@ export default function RefreshTokenPage({
             });
         } else {
             clientRequestAuthApi.logout();
-            router.push("/login");
+            router.push("/");
         }
     });
     return <></>;

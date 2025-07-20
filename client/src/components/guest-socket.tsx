@@ -1,6 +1,6 @@
 "use client";
 
-import { getVietnameseOrderStatus } from "@/helpers/common";
+import { useOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
 import { useSocketClient } from "@/hooks/shared/useSocketClient";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
@@ -9,12 +9,13 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 export function GuestSocket() {
+    const getOrderStatus = useOrderStatus();
     const { refetch: refetchOrder } = useGuestGetOrderListQuery();
     const { socket } = useSocketClient();
     useEffect(() => {
         function onOrderUpdate(data: UpdateOrderResType["data"]) {
             toast.message(`Đơn hàng ${data.dishSnapshot.name} đã được cập nhật`, {
-                description: `Trạng thái đơn hàng hiện tại: ${getVietnameseOrderStatus(data.status)}`,
+                description: `Trạng thái đơn hàng hiện tại: ${getOrderStatus(data.status)}`,
             });
             refetchOrder();
         }

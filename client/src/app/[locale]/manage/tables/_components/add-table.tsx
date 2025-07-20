@@ -11,13 +11,14 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { TableStatus, TableStatusValues } from "@/constants/type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CreateTableBody, CreateTableBodyType } from "@/utils/validation/table.schema";
-import { getVietnameseTableStatus } from "@/helpers/common";
+import { useTableStatus } from "@/helpers/common";
 import { useAddTableMutation } from "@/hooks/data/useTables";
 import { handleErrorApi } from "@/utils/handleError";
 import { toast } from "sonner";
 
 export default function AddTable() {
     const { mutateAsync: addTableMutation } = useAddTableMutation();
+    const getTableStatus = useTableStatus();
     const [open, setOpen] = useState(false);
     const form = useForm<CreateTableBodyType>({
         resolver: zodResolver(CreateTableBody),
@@ -112,7 +113,7 @@ export default function AddTable() {
                                                     <SelectContent>
                                                         {TableStatusValues.map((status) => (
                                                             <SelectItem key={status} value={status}>
-                                                                {getVietnameseTableStatus(status)}
+                                                                {getTableStatus(status)}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>

@@ -6,8 +6,10 @@ import { useAppStore } from "@/providers/app-provider";
 import { Package2, Settings } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function NavLinks() {
+    const t = useTranslations("ManageNavigation");
     const pathname = usePathname();
     const role = useAppStore((state) => state.role);
 
@@ -42,10 +44,14 @@ export default function NavLinks() {
                                         )}
                                     >
                                         <Item.Icon className="h-5 w-5" />
-                                        <span className="sr-only">{Item.title}</span>
+                                        <span className="sr-only">
+                                            {t(Item.title as "dashboard" | "orders" | "tables" | "dishes" | "accounts")}
+                                        </span>
                                     </Link>
                                 </TooltipTrigger>
-                                <TooltipContent side="right">{Item.title}</TooltipContent>
+                                <TooltipContent side="right">
+                                    {t(Item.title as "dashboard" | "orders" | "tables" | "dishes" | "accounts")}
+                                </TooltipContent>
                             </Tooltip>
                         );
                     })}
@@ -64,10 +70,10 @@ export default function NavLinks() {
                                 )}
                             >
                                 <Settings className="h-5 w-5" />
-                                <span className="sr-only">Cài đặt</span>
+                                <span className="sr-only">{t("settings")}</span>
                             </Link>
                         </TooltipTrigger>
-                        <TooltipContent side="right">Cài đặt</TooltipContent>
+                        <TooltipContent side="right">{t("settings")}</TooltipContent>
                     </Tooltip>
                 </nav>
             </aside>

@@ -1,11 +1,373 @@
 {
     "HomePage": {
-        "title": "TaplamIT - Restaurant",
+        "NameRestaurant": "TaplamIT - Restaurant",
+        "title": "Diverse Dishes",
         "description": "Deliciousness, unforgettable moments"
     },
     "SwitchLanguage": {
         "label": "Switch Language",
         "en": "English",
         "vi": "Vietnamese"
+    },
+    "LoginPage": {
+        "title": "Login",
+        "description": "Enter your email and password to login to the system",
+        "emailLabel": "Email",
+        "emailPlaceholder": "m@example.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "loginButton": "Login",
+        "googleLoginButton": "Login with Google"
+    },
+    "Common": {
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "confirm": "Confirm"
+    },
+    "Navigation": {
+        "home": "Home",
+        "menu": "Menu",
+        "orders": "Orders",
+        "login": "Login",
+        "manage": "Manage",
+        "logout": "Logout"
+    },
+    "LogoutDialog": {
+        "title": "Are you sure you want to logout",
+        "description": "You will not be able to access the system functions without logging in."
+    },
+    "OauthPage": {
+        "redirecting": "Redirecting to OAuth provider...",
+        "authenticationFailed": "Authentication failed. Please try again."
+    },
+    "GuestLoginPage": {
+        "title": "Guest Order Login",
+        "nameLabel": "Customer Name",
+        "loginButton": "Login",
+        "tokenInvalid": "Token is invalid or expired. Please try again."
+    },
+    "MenuPage": {
+        "title": "🍕 Restaurant Menu",
+        "outOfStock": "Out of Stock",
+        "orderButton": "Order",
+        "items": "items"
+    },
+    "OrderPage": {
+        "title": "🍕 Orders",
+        "noOrders": "You don't have any orders yet.",
+        "unpaid": "Unpaid:",
+        "paid": "Paid:",
+        "totalItems": "Total items:"
+    },
+    "OrderStatus": {
+        "Delivered": "Delivered",
+        "Paid": "Paid",
+        "Pending": "Pending",
+        "Processing": "Processing",
+        "Rejected": "Rejected"
+    },
+    "ManageNavigation": {
+        "dashboard": "Dashboard",
+        "orders": "Orders",
+        "tables": "Tables",
+        "dishes": "Dishes",
+        "accounts": "Employees",
+        "settings": "Settings",
+        "toggleMenu": "Toggle Menu",
+        "navigation": "Navigation",
+        "navigationDescription": "Navigate through the application"
+    },
+    "DropdownAvatar": {
+        "setting": "Settings",
+        "helper": "Helper",
+        "logout": "Logout",
+        "logoutSuccess": "Logout successful"
+    },
+    "AccountsPage": {
+        "title": "Accounts",
+        "description": "Employee Account Management"
+    },
+    "AddEmployee": {
+        "addNewEmployee": "Add new employee",
+        "title": "Add new employee",
+        "description": "Name, email, password are required",
+        "upload": "Upload",
+        "fullName": "Full name",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "addButton": "Add New Employee",
+        "successMessage": "Employee {name} added successfully!"
+    },
+    "AccountTable": {
+        "filterEmails": "Filter emails...",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "AccountColumns": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "fullName": "Full Name",
+        "email": "Email",
+        "role": "Role",
+        "actions": "Actions",
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "DeleteEmployeeDialog": {
+        "title": "Delete this Employee?",
+        "description": "Account {name} will be deleted permanently.",
+        "successMessage": "Employee {name} deleted successfully"
+    },
+    "EditEmployee": {
+        "title": "Update Account",
+        "description": "Name, email, password are required",
+        "upload": "Upload",
+        "fullName": "Full name",
+        "email": "Email",
+        "role": "Role",
+        "changePassword": "Change password",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "saveButton": "Save",
+        "successMessage": "Profile updated successfully"
+    },
+    "DashboardPage": {
+        "title": "Dashboard",
+        "description": "Analytics overview"
+    },
+    "DashboardMain": {
+        "from": "From",
+        "to": "To",
+        "fromDatePlaceholder": "From date",
+        "toDatePlaceholder": "To date",
+        "resetButton": "Reset",
+        "totalRevenue": "Total Revenue",
+        "customers": "Customers",
+        "customerOrders": "Ordered",
+        "orders": "Orders",
+        "paidOrders": "Paid",
+        "servingTables": "Tables Serving"
+    },
+    "RevenueLineChart": {
+        "title": "Revenue",
+        "revenue": "Revenue"
+    },
+    "DishBarChart": {
+        "title": "Top Dishes",
+        "description": "Most ordered",
+        "paidOrders": "Paid orders"
+    },
+    "DishesPage": {
+        "title": "Dishes",
+        "description": "Manage dishes"
+    },
+    "AddDish": {
+        "addNewDish": "Add new dish",
+        "title": "Create New Dish",
+        "dialogDescription": "Name and image are required",
+        "upload": "Upload",
+        "dishName": "Dish name",
+        "price": "Price",
+        "dishDescription": "Description",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "addButton": "Add",
+        "imageRequired": "Please upload an image",
+        "successMessage": "Dish added successfully"
+    },
+    "DishTable": {
+        "filterNames": "Filter by name...",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "DishColumns": {
+        "id": "ID",
+        "image": "Image",
+        "name": "Name",
+        "price": "Price",
+        "dishDescription": "Description",
+        "status": "Status",
+        "actions": "Actions",
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "DeleteDishDialog": {
+        "title": "Delete dish?",
+        "description": "Dish {name} will be deleted permanently. Are you sure you want to continue?",
+        "successMessage": "Dish deleted successfully"
+    },
+    "EditDish": {
+        "title": "Update dish",
+        "dialogDescription": "The following fields are required: Name, image",
+        "upload": "Upload",
+        "dishName": "Dish name",
+        "price": "Price",
+        "dishDescription": "Description",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "saveButton": "Save",
+        "successMessage": "Dish updated successfully"
+    },
+    "OrdersPage": {
+        "title": "Orders",
+        "description": "Manage orders"
+    },
+    "OrderTable": {
+        "fromDatePlaceholder": "From date",
+        "toDatePlaceholder": "To date",
+        "guestNamePlaceholder": "Guest name",
+        "tableNumberPlaceholder": "Table number",
+        "statusPlaceholder": "Status",
+        "addOrder": "Add order",
+        "refresh": "Refresh",
+        "fromText": "From",
+        "toText": "To",
+        "reset": "Reset",
+        "statusLabel": "Status",
+        "allStatus": "All",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "OrderColumns": {
+        "tableNumber": "Table",
+        "guest": "Guest",
+        "orders": "Orders",
+        "price": "Price",
+        "status": "Status",
+        "createdAt": "Created at",
+        "actions": "Actions",
+        "guestDeleted": "Deleted",
+        "paid": "Paid",
+        "pending": "Pending",
+        "processing": "Processing",
+        "rejected": "Rejected",
+        "delivered": "Delivered",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "payOrders": "Pay orders",
+        "orderHandler": "Handler",
+        "selectStatus": "Select status"
+    },
+    "AddOrder": {
+        "title": "Create order",
+        "addOrder": "Add order",
+        "newGuest": "New guest",
+        "existingGuest": "Existing guest",
+        "guestName": "Guest name",
+        "guestNamePlaceholder": "Enter guest name",
+        "phoneNumber": "Phone number",
+        "phoneNumberPlaceholder": "Enter phone number",
+        "tableNumber": "Table number",
+        "tableNumberPlaceholder": "Select table",
+        "selectGuest": "Select guest",
+        "selectGuestPlaceholder": "Select guest",
+        "selectedGuest": "Selected guest",
+        "tableLabel": "Table",
+        "dishName": "Dish name",
+        "price": "Price",
+        "quantity": "Quantity",
+        "totalPrice": "Total price",
+        "submit": "Create order",
+        "orderButton": "Order",
+        "items": "items",
+        "outOfStock": "Out of stock",
+        "pleaseSelectGuest": "Please select a guest or create a new guest.",
+        "successMessage": "Order created successfully"
+    },
+    "EditOrder": {
+        "title": "Update order",
+        "dish": "Dish",
+        "status": "Status",
+        "quantity": "Quantity",
+        "selectDish": "Select dish",
+        "saveButton": "Update",
+        "successMessage": "Order updated successfully"
+    },
+    "OrderStatics": {
+        "tableDetails": "Table details",
+        "guestCount": "guests",
+        "orderCount": "orders",
+        "totalTables": "Total tables",
+        "emptyTable": "Empty table",
+        "occupiedTable": "Occupied table",
+        "ready": "Ready",
+        "serving": "Serving"
+    },
+    "GuestsDialog": {
+        "title": "Select guest",
+        "selectGuest": "Select guest",
+        "fromDate": "From date",
+        "toDate": "To date",
+        "toText": "To",
+        "guestNameFilter": "Guest name",
+        "nameOrIdPlaceholder": "Name or Id",
+        "tableNumber": "Table number",
+        "createdAt": "Created",
+        "refresh": "Refresh",
+        "reset": "Reset",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "Status": {
+        "DishStatus": {
+            "Available": "Available",
+            "Unavailable": "Unavailable",
+            "Hidden": "Hidden"
+        },
+        "OrderStatus": {
+            "Delivered": "Delivered",
+            "Paid": "Paid",
+            "Pending": "Pending",
+            "Processing": "Processing",
+            "Rejected": "Rejected"
+        },
+        "TableStatus": {
+            "Available": "Available",
+            "Reserved": "Reserved",
+            "Hidden": "Hidden"
+        }
+    },
+    "TablesDialog": {
+        "title": "Select table",
+        "selectTable": "Select table",
+        "tableNumber": "Table number",
+        "capacity": "Capacity",
+        "status": "Status",
+        "change": "Change",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "DishesDialog": {
+        "title": "Select dish",
+        "selectDish": "Select dish",
+        "change": "Change",
+        "filterName": "Filter name",
+        "dishName": "Dish name",
+        "price": "Price",
+        "status": "Status",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "OrderGuestDetail": {
+        "name": "Name",
+        "table": "Table",
+        "registrationDate": "Registration date",
+        "orders": "Orders",
+        "total": "Total",
+        "unpaid": "Unpaid",
+        "paid": "Paid",
+        "payAllOrders": "Pay all orders",
+        "orderCount": "orders",
+        "created": "Created",
+        "updated": "Updated"
     }
 }

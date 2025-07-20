@@ -5,11 +5,12 @@ import { toast } from "sonner";
 import { PayGuestOrdersResType, UpdateOrderResType } from "@/utils/validation/order.schema";
 import { useSocketClient } from "@/hooks/shared/useSocketClient";
 import { useEffect } from "react";
-import { getVietnameseOrderStatus } from "@/helpers/common";
+import { useOrderStatus } from "@/helpers/common";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 
 export default function ManageSocket() {
+    const getOrderStatus = useOrderStatus();
     const queryClient = useQueryClient();
     const { socket } = useSocketClient();
     useEffect(() => {
@@ -24,7 +25,7 @@ export default function ManageSocket() {
 
         function onOrderUpdate(data: UpdateOrderResType["data"]) {
             toast.message(`Đơn hàng ${data.dishSnapshot.name} đã được cập nhật`, {
-                description: `Trạng thái đơn hàng hiện tại: ${getVietnameseOrderStatus(data.status)}`,
+                description: `Trạng thái đơn hàng hiện tại: ${getOrderStatus(data.status)}`,
             });
             refetchOrder();
         }

@@ -24,7 +24,7 @@ export function middleware(request: NextRequest) {
     const isUnAuthPath = isPathMatch(unAuthPath, pathname);
 
     // Handle refresh token
-    const refreshRedirect = handleInvalidAccessToken(accessToken, refreshToken, pathname, request);
+    const refreshRedirect = handleInvalidAccessToken(accessToken, refreshToken, pathname, request, defaultLocale);
     if (refreshRedirect) return refreshRedirect;
 
     // Not authenticated trying to access private

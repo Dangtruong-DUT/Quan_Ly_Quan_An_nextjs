@@ -3,12 +3,22 @@ import MobileNavLinks from "@/app/[locale]/manage/_components/mobile-nav-links";
 import NavLinks from "@/app/[locale]/manage/_components/nav-links";
 import { DarkModeToggle } from "@/components/dark-mode-toggle";
 import SelectLanguage from "@/components/select-language";
+import { Locale } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
+import { use } from "react";
 
 export default function Layout({
     children,
+    params,
 }: Readonly<{
     children: React.ReactNode;
+    params: Promise<{ locale: string }>;
 }>) {
+    const { locale } = use(params);
+
+    // Enable static rendering
+    setRequestLocale(locale as Locale);
+
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             <NavLinks />

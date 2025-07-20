@@ -18,12 +18,14 @@ import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { useAddEmployeeMutation } from "@/hooks/data/useAccount";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { CreateEmployeeAccountBody, CreateEmployeeAccountBodyType } from "@/utils/validation/account.schema";
 import { handleErrorApi } from "@/utils/handleError";
 
 export default function AddEmployee() {
+    const t = useTranslations("AddEmployee");
     const { mutateAsync: addAccountMutate, isPending: isAddingAccount } = useAddEmployeeMutation();
     const { mutateAsync: uploadMediaMutate, isPending: isUploadMedia } = useUploadMediaMutation();
     const isLoading = isAddingAccount || isUploadMedia;
@@ -71,14 +73,14 @@ export default function AddEmployee() {
                 const uploadResponse = await uploadMediaMutate(formData);
                 data.avatar = uploadResponse.payload.data;
                 const res = await addAccountMutate(data);
-                toast.success(`Employee ${res.payload.data.name} added successfully!`);
+                toast.success(t("successMessage", { name: res.payload.data.name }));
                 onReset();
                 setOpen(false);
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [addAccountMutate, file, form, uploadMediaMutate, setOpen, onReset, isLoading]
+        [addAccountMutate, file, form, uploadMediaMutate, setOpen, onReset, isLoading, t]
     );
 
     return (
@@ -86,13 +88,13 @@ export default function AddEmployee() {
             <DialogTrigger asChild>
                 <Button size="sm" className="h-7 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add new employee</span>
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">{t("addNewEmployee")}</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto" onCloseAutoFocus={onReset}>
                 <DialogHeader>
-                    <DialogTitle>Add new employee</DialogTitle>
-                    <DialogDescription>Name, email, password are required</DialogDescription>
+                    <DialogTitle>{t("title")}</DialogTitle>
+                    <DialogDescription>{t("description")}</DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form
@@ -134,7 +136,7 @@ export default function AddEmployee() {
                                                 onClick={() => avatarInputRef.current?.click()}
                                             >
                                                 <Upload className="h-4 w-4 text-muted-foreground" />
-                                                <span className="sr-only">Upload</span>
+                                                <span className="sr-only">{t("upload")}</span>
                                             </button>
                                         </div>
                                         <FormMessage />
@@ -148,7 +150,7 @@ export default function AddEmployee() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="name">Full name</Label>
+                                            <Label htmlFor="name">{t("fullName")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="name" className="w-full" {...field} />
                                                 <FormMessage />
@@ -163,7 +165,7 @@ export default function AddEmployee() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="email">Email</Label>
+                                            <Label htmlFor="email">{t("email")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="email" className="w-full" {...field} />
                                                 <FormMessage />
@@ -179,7 +181,7 @@ export default function AddEmployee() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="password">Password</Label>
+                                            <Label htmlFor="password">{t("password")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="password" className="w-full" type="password" {...field} />
                                                 <FormMessage />
@@ -194,7 +196,7 @@ export default function AddEmployee() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="confirmPassword">Confirm password </Label>
+                                            <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input
                                                     id="confirmPassword"
@@ -213,7 +215,7 @@ export default function AddEmployee() {
                 </Form>
                 <DialogFooter>
                     <Button type="submit" form="add-employee-form" disabled={isLoading}>
-                        Add New Employee
+                        {t("addButton")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

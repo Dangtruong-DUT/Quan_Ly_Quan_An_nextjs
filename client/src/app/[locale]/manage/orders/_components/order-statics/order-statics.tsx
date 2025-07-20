@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { cn } from "@/lib/utils";
-import { getVietnameseOrderStatus, OrderStatusIcon } from "@/helpers/common";
+import { useOrderStatus, OrderStatusIcon } from "@/helpers/common";
 
 import { TableListResType } from "@/utils/validation/table.schema";
 import { OrderStatusValues } from "@/constants/type";
@@ -20,6 +20,7 @@ import {
     Statics,
     StatusCountObject,
 } from "@/app/[locale]/manage/orders/_components/order.service";
+import { useTranslations } from "next-intl";
 
 export default function OrderStatics({
     statics,
@@ -30,6 +31,8 @@ export default function OrderStatics({
     tableList: TableListResType["data"];
     servingGuestByTableNumber: ServingGuestByTableNumber;
 }) {
+    const getOrderStatus = useOrderStatus();
+    const t = useTranslations("OrderStatics");
     const [selectedTable, setSelectedTable] = useState<number>(-1);
 
     const handleCloseDialog = useCallback(() => setSelectedTable(-1), []);
@@ -64,34 +67,38 @@ export default function OrderStatics({
         return { isEmpty, count };
     }, []);
 
-    const StatusIconWithTooltip = useCallback(({ status, count }: { status: OrderStatusType; count: number }) => {
-        const Icon = OrderStatusIcon[status];
-        if (!Icon) return null;
+    const StatusIconWithTooltip = useCallback(
+        ({ status, count }: { status: OrderStatusType; count: number }) => {
+            const Icon = OrderStatusIcon[status];
+            if (!Icon) return null;
 
-        return (
-            <Tooltip>
-                <TooltipTrigger>
-                    <div className="flex items-center gap-2">
-                        <Icon className="w-4 h-4" />
-                        <span>{count}</span>
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                    {getVietnameseOrderStatus(status)}: {count} đơn
-                </TooltipContent>
-            </Tooltip>
-        );
-    }, []);
+            return (
+                <Tooltip>
+                    <TooltipTrigger>
+                        <div className="flex items-center gap-2">
+                            <Icon className="w-4 h-4" />
+                            <span>{count}</span>
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        {getOrderStatus(status)}: {count} {t("orderCount")}
+                    </TooltipContent>
+                </Tooltip>
+            );
+        },
+        [t]
+    );
 
     return (
         <Fragment>
-            {/* Dialog hiển thị chi tiết khách */}
             <Dialog open={!!selectedTable && !!guestsAtTable} onOpenChange={(open) => !open && handleCloseDialog()}>
                 <DialogContent className="max-h-full overflow-auto">
                     {guestsAtTable && (
                         <>
                             <DialogHeader>
-                                <DialogTitle>Khách đang ngồi tại bàn {selectedTable}</DialogTitle>
+                                <DialogTitle>
+                                    {t("tableDetails")} {selectedTable}
+                                </DialogTitle>
                             </DialogHeader>
                             {Object.entries(guestsAtTable).map(([guestId, orders], index, array) => (
                                 <div key={guestId}>
@@ -104,7 +111,6 @@ export default function OrderStatics({
                 </DialogContent>
             </Dialog>
 
-            {/* Danh sách bàn */}
             <div className="flex flex-wrap gap-4 py-4 items-stretch justify-start">
                 {tableList.map((table) => {
                     const tableNumber = table.number;
@@ -131,7 +137,9 @@ export default function OrderStatics({
                                                 <span>{guestCount}</span>
                                             </div>
                                         </TooltipTrigger>
-                                        <TooltipContent>Đang phục vụ: {guestCount} khách</TooltipContent>
+                                        <TooltipContent>
+                                            {t("serving")}: {guestCount} {t("guestCount")}
+                                        </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
                             </div>
@@ -145,7 +153,7 @@ export default function OrderStatics({
 
                             <div className="flex flex-col justify-center">
                                 {isEmpty ? (
-                                    <span className="text-sm">Ready</span>
+                                    <span className="text-sm">{t("ready")}</span>
                                 ) : (
                                     <TooltipProvider>
                                         {(["Pending", "Processing", "Delivered"] as OrderStatusType[]).map((status) => (
@@ -159,11 +167,10 @@ export default function OrderStatics({
                 })}
             </div>
 
-            {/* Tổng số đơn theo trạng thái */}
             <div className="flex flex-wrap gap-4 py-4 items-end justify-start">
                 {OrderStatusValues.map((status) => (
                     <Badge key={status} variant="secondary">
-                        {getVietnameseOrderStatus(status)}: {statics.status[status] ?? 0}
+                        {getOrderStatus(status)}: {statics.status[status] ?? 0}
                     </Badge>
                 ))}
             </div>

@@ -2,7 +2,7 @@
 "use client";
 
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { ColumnDef, Row } from "@tanstack/react-table";
+import { Row } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -18,27 +18,27 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 
 import { OrderStatusValues } from "@/constants/type";
-import { GetOrdersResType } from "@/utils/validation/order.schema";
 import { simpleMatchText } from "@/utils/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import { formatDateTimeToLocaleString } from "@/utils/formatting/formatTime";
-import { getVietnameseOrderStatus } from "@/helpers/common";
+import { useOrderStatus } from "@/helpers/common";
 import { OrderStatusType } from "@/types/order";
 import OrderGuestDetail from "@/app/[locale]/manage/orders/_components/order-guest-detail";
 import { useOrderTableContext } from "@/app/[locale]/manage/orders/context/order-table-provider";
-
-type OrderItem = GetOrdersResType["data"][0];
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 const TableNumberCell = ({ value }: { value: number }) => <div>{value}</div>;
 
 const GuestCell = ({ row }: { row: Row<any> }) => {
+    const t = useTranslations("OrderColumns");
     const { orderObjectByGuestId } = useOrderTableContext();
     const guest = row.original.guest;
 
     if (!guest)
         return (
             <div>
-                <span>Đã bị xóa</span>
+                <span>{t("guestDeleted")}</span>
             </div>
         );
 
@@ -106,6 +106,8 @@ const DishCell = ({ row }: { row: Row<any> }) => {
 
 const StatusCell = ({ row }: { row: Row<any> }) => {
     const { changeStatus } = useOrderTableContext();
+    const t = useTranslations("OrderColumns");
+    const getOrderStatus = useOrderStatus();
 
     const handleChange = async (status: OrderStatusType) => {
         changeStatus({
@@ -119,12 +121,12 @@ const StatusCell = ({ row }: { row: Row<any> }) => {
     return (
         <Select value={row.getValue("status")} onValueChange={handleChange}>
             <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Chọn trạng thái" />
+                <SelectValue placeholder={t("selectStatus")} />
             </SelectTrigger>
             <SelectContent>
                 {OrderStatusValues.map((status) => (
                     <SelectItem key={status} value={status}>
-                        {getVietnameseOrderStatus(status)}
+                        {getOrderStatus(status)}
                     </SelectItem>
                 ))}
             </SelectContent>
@@ -133,6 +135,7 @@ const StatusCell = ({ row }: { row: Row<any> }) => {
 };
 
 const ActionsCell = ({ row }: { row: any }) => {
+    const t = useTranslations("OrderColumns");
     const { setOrderIdEdit } = useOrderTableContext();
 
     return (
@@ -144,59 +147,64 @@ const ActionsCell = ({ row }: { row: any }) => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+                <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setOrderIdEdit(row.original.id)}>Sửa</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setOrderIdEdit(row.original.id)}>{t("edit")}</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );
 };
 
-const orderTableColumns: ColumnDef<OrderItem>[] = [
-    {
-        accessorKey: "tableNumber",
-        header: "Bàn",
-        cell: ({ row }) => <TableNumberCell value={row.getValue("tableNumber")} />,
-        filterFn: (row, columnId, filterValue: string) =>
-            simpleMatchText(String(row.getValue(columnId)), String(filterValue)),
-    },
-    {
-        id: "guestName",
-        header: "Khách hàng",
-        cell: ({ row }) => <GuestCell row={row} />,
-        filterFn: (row, _columnId, filterValue: string) =>
-            simpleMatchText(row.original.guest?.name ?? "Đã bị xóa", filterValue),
-    },
-    {
-        id: "dishName",
-        header: "Món ăn",
-        cell: ({ row }) => <DishCell row={row} />,
-    },
-    {
-        accessorKey: "status",
-        header: "Trạng thái",
-        cell: ({ row }) => <StatusCell row={row} />,
-    },
-    {
-        id: "orderHandlerName",
-        header: "Người xử lý",
-        cell: ({ row }) => <div>{row.original.orderHandler?.name ?? ""}</div>,
-    },
-    {
-        accessorKey: "createdAt",
-        header: "Tạo/Cập nhật",
-        cell: ({ row }) => (
-            <div className="space-y-2 text-sm">
-                <div>{formatDateTimeToLocaleString(row.getValue("createdAt"))}</div>
-                <div>{formatDateTimeToLocaleString(row.original.updatedAt)}</div>
-            </div>
-        ),
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => <ActionsCell row={row} />,
-    },
-];
+export function useOrderColumns() {
+    const t = useTranslations("OrderColumns");
 
-export default orderTableColumns;
+    return useMemo(
+        () => [
+            {
+                accessorKey: "tableNumber",
+                header: t("tableNumber"),
+                cell: ({ row }: { row: Row<any> }) => <TableNumberCell value={row.getValue("tableNumber")} />,
+                filterFn: (row: any, columnId: any, filterValue: string) =>
+                    simpleMatchText(String(row.getValue(columnId)), String(filterValue)),
+            },
+            {
+                id: "guestName",
+                header: t("guest"),
+                cell: ({ row }: { row: Row<any> }) => <GuestCell row={row} />,
+                filterFn: (row: any, _columnId: any, filterValue: string) =>
+                    simpleMatchText(row.original.guest?.name ?? t("guestDeleted"), filterValue),
+            },
+            {
+                id: "dishName",
+                header: t("orders"),
+                cell: ({ row }: { row: Row<any> }) => <DishCell row={row} />,
+            },
+            {
+                accessorKey: "status",
+                header: t("status"),
+                cell: ({ row }: { row: Row<any> }) => <StatusCell row={row} />,
+            },
+            {
+                id: "orderHandlerName",
+                header: t("orderHandler"),
+                cell: ({ row }: { row: Row<any> }) => <div>{row.original.orderHandler?.name ?? ""}</div>,
+            },
+            {
+                accessorKey: "createdAt",
+                header: t("createdAt"),
+                cell: ({ row }: { row: Row<any> }) => (
+                    <div className="space-y-2 text-sm">
+                        <div>{formatDateTimeToLocaleString(row.getValue("createdAt"))}</div>
+                        <div>{formatDateTimeToLocaleString(row.original.updatedAt)}</div>
+                    </div>
+                ),
+            },
+            {
+                id: "actions",
+                enableHiding: false,
+                cell: ({ row }: { row: Row<any> }) => <ActionsCell row={row} />,
+            },
+        ],
+        [t]
+    );
+}

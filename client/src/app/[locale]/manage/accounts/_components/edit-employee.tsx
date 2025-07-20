@@ -24,6 +24,7 @@ import { UpdateEmployeeAccountBody, UpdateEmployeeAccountBodyType } from "@/util
 import { handleErrorApi } from "@/utils/handleError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RoleValues } from "@/constants/type";
+import { useTranslations } from "next-intl";
 
 export default function EditEmployee({
     id,
@@ -34,6 +35,7 @@ export default function EditEmployee({
     setId: (value: number | undefined) => void;
     onSubmitSuccess?: () => void;
 }) {
+    const t = useTranslations("EditEmployee");
     const { mutateAsync: uploadImageMutateAsync, isPending: isUploadingAvatar } = useUploadMediaMutation();
     const { mutateAsync: updateProfileMutateAsync, isPending: isUpdatingProfile } = useEditEmployeeMutation({ id });
     const isLoading = isUploadingAvatar || isUpdatingProfile;
@@ -82,8 +84,8 @@ export default function EditEmployee({
                 } else {
                     body.avatar = data.payload.data.avatar || undefined;
                 }
-                const updateProfileRes = await updateProfileMutateAsync({ id: data.payload.data.id, body });
-                toast.success(updateProfileRes.payload.message || "Cập nhật thông tin thành công");
+                await updateProfileMutateAsync({ id: data.payload.data.id, body });
+                toast.success(t("successMessage"));
                 form.reset();
                 setFile(null);
                 setId(undefined);
@@ -92,7 +94,18 @@ export default function EditEmployee({
                 handleErrorApi(error, form.setError);
             }
         },
-        [file, form, uploadImageMutateAsync, updateProfileMutateAsync, data, isLoading, setFile, setId, onSubmitSuccess]
+        [
+            file,
+            form,
+            uploadImageMutateAsync,
+            updateProfileMutateAsync,
+            data,
+            isLoading,
+            setFile,
+            setId,
+            onSubmitSuccess,
+            t,
+        ]
     );
 
     const avatar = form.watch("avatar");
@@ -116,8 +129,8 @@ export default function EditEmployee({
         >
             <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
                 <DialogHeader>
-                    <DialogTitle>Update Account</DialogTitle>
-                    <DialogDescription>Name, email, password are required</DialogDescription>
+                    <DialogTitle>{t("title")}</DialogTitle>
+                    <DialogDescription>{t("description")}</DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form
@@ -158,7 +171,7 @@ export default function EditEmployee({
                                                 onClick={() => avatarInputRef.current?.click()}
                                             >
                                                 <Upload className="h-4 w-4 text-muted-foreground" />
-                                                <span className="sr-only">Upload</span>
+                                                <span className="sr-only">{t("upload")}</span>
                                             </button>
                                         </div>
                                     </FormItem>
@@ -171,7 +184,7 @@ export default function EditEmployee({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="name">Full name</Label>
+                                            <Label htmlFor="name">{t("fullName")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="name" className="w-full" {...field} />
                                                 <FormMessage />
@@ -186,7 +199,7 @@ export default function EditEmployee({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="email">Email</Label>
+                                            <Label htmlFor="email">{t("email")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="email" className="w-full" {...field} />
                                                 <FormMessage />
@@ -201,7 +214,7 @@ export default function EditEmployee({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="description">Role</Label>
+                                            <Label htmlFor="description">{t("role")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Select onValueChange={field.onChange} value={field.value}>
                                                     <FormControl>
@@ -229,7 +242,7 @@ export default function EditEmployee({
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="email">Change password</Label>
+                                            <Label htmlFor="email">{t("changePassword")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Switch checked={field.value} onCheckedChange={field.onChange} />
                                                 <FormMessage />
@@ -245,7 +258,7 @@ export default function EditEmployee({
                                     render={({ field }) => (
                                         <FormItem>
                                             <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                                <Label htmlFor="password">New password</Label>
+                                                <Label htmlFor="password">{t("password")}</Label>
                                                 <div className="col-span-3 w-full space-y-2">
                                                     <Input
                                                         id="password"
@@ -267,7 +280,7 @@ export default function EditEmployee({
                                     render={({ field }) => (
                                         <FormItem>
                                             <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                                                <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
                                                 <div className="col-span-3 w-full space-y-2">
                                                     <Input
                                                         id="confirmPassword"
@@ -287,7 +300,7 @@ export default function EditEmployee({
                 </Form>
                 <DialogFooter>
                     <Button type="submit" form="edit-employee-form">
-                        Save
+                        {t("saveButton")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

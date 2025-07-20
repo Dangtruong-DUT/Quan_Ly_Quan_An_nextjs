@@ -13,14 +13,17 @@ import { DishStatus, DishStatusValues } from "@/constants/type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { CreateDishBody, CreateDishBodyType } from "@/utils/validation/dish.schema";
-import { getVietnameseDishStatus } from "@/helpers/common";
+import { useDishStatus } from "@/helpers/common";
 import { useAddDishMutation } from "@/hooks/data/useDishes";
 import { handleErrorApi } from "@/utils/handleError";
 import { useUploadMediaMutation } from "@/hooks/data/useMedia";
 import { toast } from "sonner";
 import clientRequestRevalidateApi from "@/api/clientToServer/revalidate";
+import { useTranslations } from "next-intl";
 
 export default function AddDish() {
+    const t = useTranslations("AddDish");
+    const getDishStatus = useDishStatus();
     const { mutateAsync: addDishMutate, isPending: isAddingDish } = useAddDishMutation();
     const { mutateAsync: uploadMediaMutate, isPending: isUploadingMedia } = useUploadMediaMutation();
     const isLoading = isAddingDish || isUploadingMedia;
@@ -59,7 +62,7 @@ export default function AddDish() {
                 if (!file) {
                     form.setError("image", {
                         type: "manual",
-                        message: "Please upload an image",
+                        message: t("imageRequired"),
                     });
                     return;
                 }
@@ -68,15 +71,15 @@ export default function AddDish() {
                 const resUpload = await uploadMediaMutate(formData);
                 body.image = resUpload.payload.data;
 
-                const res = await addDishMutate(body);
-                toast.success(res.payload.message);
+                await addDishMutate(body);
+                toast.success(t("successMessage"));
                 onReset();
                 await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }
         },
-        [file, isLoading, form, uploadMediaMutate, addDishMutate, onReset]
+        [file, isLoading, form, uploadMediaMutate, addDishMutate, onReset, t]
     );
 
     return (
@@ -84,12 +87,12 @@ export default function AddDish() {
             <DialogTrigger asChild>
                 <Button size="sm" className="h-7 gap-1">
                     <PlusCircle className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Create New Dish</span>
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">{t("addNewDish")}</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto" onCloseAutoFocus={onReset}>
                 <DialogHeader>
-                    <DialogTitle>Create New Dish</DialogTitle>
+                    <DialogTitle>{t("title")}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form
@@ -132,7 +135,7 @@ export default function AddDish() {
                                                 onClick={() => imageInputRef.current?.click()}
                                             >
                                                 <Upload className="h-4 w-4 text-muted-foreground" />
-                                                <span className="sr-only">Upload</span>
+                                                <span className="sr-only">{t("upload")}</span>
                                             </button>
                                         </div>
                                         <FormMessage />
@@ -146,7 +149,7 @@ export default function AddDish() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="name">Name</Label>
+                                            <Label htmlFor="name">{t("dishName")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="name" className="w-full" {...field} />
                                                 <FormMessage />
@@ -161,7 +164,7 @@ export default function AddDish() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="price">Price</Label>
+                                            <Label htmlFor="price">{t("price")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Input id="price" className="w-full" {...field} type="number" />
                                                 <FormMessage />
@@ -176,7 +179,7 @@ export default function AddDish() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="description">Description</Label>
+                                            <Label htmlFor="description">{t("dishDescription")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Textarea id="description" className="w-full" {...field} />
                                                 <FormMessage />
@@ -191,18 +194,18 @@ export default function AddDish() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="grid grid-cols-4 items-center justify-items-start gap-4">
-                                            <Label htmlFor="description">Status</Label>
+                                            <Label htmlFor="description">{t("status")}</Label>
                                             <div className="col-span-3 w-full space-y-2">
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                     <FormControl>
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder="Chọn trạng thái" />
+                                                            <SelectValue placeholder={t("selectStatus")} />
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
                                                         {DishStatusValues.map((status) => (
                                                             <SelectItem key={status} value={status}>
-                                                                {getVietnameseDishStatus(status)}
+                                                                {getDishStatus(status)}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
@@ -219,7 +222,7 @@ export default function AddDish() {
                 </Form>
                 <DialogFooter>
                     <Button type="submit" form="add-dish-form">
-                        Add
+                        {t("addButton")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

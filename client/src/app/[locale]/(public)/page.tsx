@@ -3,9 +3,14 @@ import { WrapperServerCallApi } from "@/utils/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Locale } from "next-intl";
 
-export default async function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+
+    setRequestLocale(locale as Locale);
+
     const t = await getTranslations("HomePage");
     const data = await WrapperServerCallApi({
         apiCallFn: () => nextRequestDishesApi.nextList(),
@@ -26,13 +31,13 @@ export default async function Home() {
                 />
                 <div className="z-9 relative py-10 md:py-20 px-4 sm:px-10 md:px-20">
                     <h1 className="text-center text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-white">
-                        {t("title")}
+                        {t("NameRestaurant")}
                     </h1>
                     <p className="text-center text-sm sm:text-base mt-4 text-white">{t("description")}</p>
                 </div>
             </div>
             <section className="space-y-10 py-16">
-                <h2 className="text-center text-2xl font-bold ">Đa dạng các món ăn</h2>
+                <h2 className="text-center text-2xl font-bold ">{t("title")}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                     {dishes &&
                         dishes.map((dish) => (

@@ -2,17 +2,19 @@
 
 import { Badge } from "@/components/ui/badge";
 import { OrderStatus } from "@/constants/type";
-import { getVietnameseOrderStatus } from "@/helpers/common";
 import { useGuestGetOrderListQuery } from "@/hooks/data/useGuest";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 export default function OrderCard() {
+    const t = useTranslations("OrderPage");
+    const tStatus = useTranslations("OrderStatus");
     const { data } = useGuestGetOrderListQuery();
     const orders = data?.payload.data || [];
 
     if (orders.length === 0) {
-        return <p className="text-center text-gray-500">Bạn chưa có đơn hàng nào.</p>;
+        return <p className="text-center text-gray-500">{t("noOrders")}</p>;
     }
 
     const unpaidAmount = orders.reduce((total, order) => {
@@ -61,7 +63,7 @@ export default function OrderCard() {
                             </p>
                         </div>
                         <div className="ml-auto flex items-center">
-                            <Badge variant={"outline"}>{getVietnameseOrderStatus(order.status)}</Badge>
+                            <Badge variant={"outline"}>{tStatus(order.status)}</Badge>
                         </div>
                     </div>
                 );
@@ -69,15 +71,15 @@ export default function OrderCard() {
 
             <div className="sticky bottom-0 border-t bg-background border-gray-300 p-4">
                 <div className="flex justify-between mb-2">
-                    <span className="font-semibold">Chưa thanh toán:</span>
+                    <span className="font-semibold">{t("unpaid")}</span>
                     <span className="text-red-600 font-semibold">{formatCurrency(unpaidAmount)}</span>
                 </div>
                 <div className="flex justify-between mb-2">
-                    <span className="font-semibold">Đã thanh toán:</span>
+                    <span className="font-semibold">{t("paid")}</span>
                     <span className="text-green-600 font-semibold">{formatCurrency(paidAmount)}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="font-semibold">Tổng số món:</span>
+                    <span className="font-semibold">{t("totalItems")}</span>
                     <span>{totalQuantity}</span>
                 </div>
             </div>

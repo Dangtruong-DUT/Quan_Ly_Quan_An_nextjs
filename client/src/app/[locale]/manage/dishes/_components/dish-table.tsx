@@ -13,6 +13,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { useSearchParams } from "next/navigation";
 import AutoPagination from "@/components/auto-pagination";
@@ -22,11 +23,13 @@ import { useDishTableContext } from "@/app/[locale]/manage/dishes/context/DishTa
 import EditDish from "@/app/[locale]/manage/dishes/_components/edit-dish";
 import AlertDialogDeleteDish from "@/app/[locale]/manage/dishes/_components/alert-dialog-delete-dish";
 import AddDish from "@/app/[locale]/manage/dishes/_components/add-dish";
-import columns from "@/app/[locale]/manage/dishes/_components/columns";
+import { useDishColumns } from "@/app/[locale]/manage/dishes/_components/columns";
 
 // Số lượng item trên 1 trang
 const PAGE_SIZE = 10;
 export default function DishTable() {
+    const t = useTranslations("DishTable");
+    const columns = useDishColumns();
     const searchParam = useSearchParams();
     const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
     const pageIndex = page - 1;
@@ -77,7 +80,7 @@ export default function DishTable() {
             <AlertDialogDeleteDish dishDelete={dishDelete} setDishDelete={setDishDelete} />
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="filter by name..."
+                    placeholder={t("filterNames")}
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
                     className="max-w-sm"
@@ -89,8 +92,8 @@ export default function DishTable() {
             <DataTable columns={columns} table={table} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                    Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-                    <strong>{data.length}</strong> kết quả
+                    {t("showing")} <strong>{table.getPaginationRowModel().rows.length}</strong> {t("in")}{" "}
+                    <strong>{data.length}</strong> {t("results")}
                 </div>
                 <div>
                     <AutoPagination

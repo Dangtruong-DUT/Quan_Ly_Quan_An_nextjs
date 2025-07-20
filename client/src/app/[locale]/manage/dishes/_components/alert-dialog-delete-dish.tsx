@@ -14,6 +14,7 @@ import { useDeleteDishMutation } from "@/hooks/data/useDishes";
 import { handleErrorApi } from "@/utils/handleError";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function AlertDialogDeleteDish({
     dishDelete,
@@ -22,19 +23,21 @@ export default function AlertDialogDeleteDish({
     dishDelete: DishItem | null;
     setDishDelete: (value: DishItem | null) => void;
 }) {
+    const t = useTranslations("DeleteDishDialog");
+    const tCommon = useTranslations("Common");
     const { mutateAsync: deleteDishMutate } = useDeleteDishMutation();
     const handleDeleteDish = useCallback(async () => {
         if (dishDelete) {
             try {
-                const res = await deleteDishMutate(dishDelete.id);
-                toast.success(res.payload.message);
+                await deleteDishMutate(dishDelete.id);
+                toast.success(t("successMessage"));
                 setDishDelete(null);
                 await clientRequestRevalidateApi.revalidate({ tag: "dishes" });
             } catch (error) {
                 handleErrorApi(error);
             }
         }
-    }, [deleteDishMutate, dishDelete, setDishDelete]);
+    }, [deleteDishMutate, dishDelete, setDishDelete, t]);
     return (
         <AlertDialog
             open={Boolean(dishDelete)}
@@ -46,16 +49,14 @@ export default function AlertDialogDeleteDish({
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Xóa món ăn?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("title")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Dish{" "}
-                        <span className="bg-foreground text-primary-foreground rounded px-1">{dishDelete?.name}</span>{" "}
-                        wil be deleted permanently. Are you sure you want to continue?
+                        {t("description", { name: dishDelete?.name || "" })}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteDish}>Continue</AlertDialogAction>
+                    <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteDish}>{tCommon("continue")}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

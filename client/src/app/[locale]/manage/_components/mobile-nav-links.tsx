@@ -7,8 +7,10 @@ import { useAppStore } from "@/providers/app-provider";
 import { Package2, PanelLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function MobileNavLinks() {
+    const t = useTranslations("ManageNavigation");
     const pathname = usePathname();
 
     const role = useAppStore((state) => state.role);
@@ -18,13 +20,13 @@ export default function MobileNavLinks() {
             <SheetTrigger asChild>
                 <Button size="icon" variant="outline" className="sm:hidden">
                     <PanelLeft className="h-5 w-5" />
-                    <span className="sr-only">Toggle Menu</span>
+                    <span className="sr-only">{t("toggleMenu")}</span>
                 </Button>
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
                 <SheetHeader className="hidden md:block">
-                    <SheetTitle>Navigation</SheetTitle>
-                    <SheetDescription>Navigate through the application</SheetDescription>
+                    <SheetTitle>{t("navigation")}</SheetTitle>
+                    <SheetDescription>{t("navigationDescription")}</SheetDescription>
                 </SheetHeader>
                 <nav className="grid gap-6 text-lg font-medium">
                     <Link
@@ -48,7 +50,7 @@ export default function MobileNavLinks() {
                                 })}
                             >
                                 <Item.Icon className="h-5 w-5" />
-                                {Item.title}
+                                {t(Item.title as "dashboard" | "orders" | "tables" | "dishes" | "accounts")}
                             </Link>
                         );
                     })}

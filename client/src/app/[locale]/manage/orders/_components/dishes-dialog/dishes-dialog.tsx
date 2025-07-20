@@ -16,12 +16,15 @@ import { Input } from "@/components/ui/input";
 import { DishListResType } from "@/utils/validation/dish.schema";
 import { DataTable } from "@/components/ui/data-table";
 import { useGetDishes } from "@/hooks/data/useDishes";
-import columns from "@/app/[locale]/manage/orders/_components/dishes-dialog/columns";
+import { useDishesColumns } from "@/app/[locale]/manage/orders/_components/dishes-dialog/columns";
+import { useTranslations } from "next-intl";
 
 type DishItem = DishListResType["data"][0];
 
 const PAGE_SIZE = 10;
 export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void }) {
+    const t = useTranslations("DishesDialog");
+    const columns = useDishesColumns();
     const [open, setOpen] = useState(false);
     const { data: dishListData } = useGetDishes();
     const data = dishListData?.payload.data || [];
@@ -70,17 +73,17 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Thay đổi</Button>
+                <Button variant="outline">{t("change")}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle>Chọn món ăn</DialogTitle>
+                    <DialogTitle>{t("title")}</DialogTitle>
                 </DialogHeader>
                 <div>
                     <div className="w-full">
                         <div className="flex items-center py-4">
                             <Input
-                                placeholder="Lọc tên"
+                                placeholder={t("filterName")}
                                 value={(table.getColumn("dishName")?.getFilterValue() as string) ?? ""}
                                 onChange={(event) => table.getColumn("dishName")?.setFilterValue(event.target.value)}
                                 className="max-w-sm"
@@ -89,8 +92,8 @@ export function DishesDialog({ onChoose }: { onChoose: (dish: DishItem) => void 
                         <DataTable table={table} columns={columns} />
                         <div className="flex items-center justify-end space-x-2 py-4">
                             <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                                Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
-                                <strong>{data.length}</strong> kết quả
+                                {t("showing")} <strong>{table.getPaginationRowModel().rows.length}</strong> {t("in")}{" "}
+                                <strong>{data.length}</strong> {t("results")}
                             </div>
                             <div>
                                 <AutoPagination

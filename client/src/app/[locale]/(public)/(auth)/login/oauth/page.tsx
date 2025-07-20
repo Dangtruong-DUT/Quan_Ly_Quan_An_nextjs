@@ -9,8 +9,10 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function OauthPage() {
+    const t = useTranslations("OauthPage");
     const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
 
@@ -44,15 +46,15 @@ export default function OauthPage() {
             handleSetCookie(accessToken, refreshToken);
         } else {
             setTimeout(() => {
-                toast.error(message || "Authentication failed. Please try again.");
+                toast.error(message || t("authenticationFailed"));
             });
             router.push("/login");
         }
-    }, [router, message, handleSetCookie, accessToken, refreshToken]);
+    }, [router, message, handleSetCookie, accessToken, refreshToken, t]);
 
     return (
         <div className="flex items-center justify-center h-screen">
-            <p>Redirecting to OAuth provider...</p>
+            <p>{t("redirecting")}</p>
         </div>
     );
 }

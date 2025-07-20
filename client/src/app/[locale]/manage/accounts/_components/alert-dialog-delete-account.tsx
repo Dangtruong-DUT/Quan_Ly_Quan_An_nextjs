@@ -14,6 +14,7 @@ import { useDeleteEmployeeMutation } from "@/hooks/data/useAccount";
 import { handleErrorApi } from "@/utils/handleError";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function AlertDialogDeleteAccount({
     employeeDelete,
@@ -22,6 +23,8 @@ export default function AlertDialogDeleteAccount({
     employeeDelete: AccountItem | null;
     setEmployeeDelete: (value: AccountItem | null) => void;
 }) {
+    const t = useTranslations("DeleteEmployeeDialog");
+    const tCommon = useTranslations("Common");
     const { mutateAsync } = useDeleteEmployeeMutation();
 
     const handleDelete = useCallback(async () => {
@@ -29,12 +32,12 @@ export default function AlertDialogDeleteAccount({
             try {
                 await mutateAsync(employeeDelete.id);
                 setEmployeeDelete(null);
-                toast.success(`Employee ${employeeDelete.name} deleted successfully`);
+                toast.success(t("successMessage", { name: employeeDelete.name }));
             } catch (error) {
                 handleErrorApi(error);
             }
         }
-    }, [employeeDelete, mutateAsync, setEmployeeDelete]);
+    }, [employeeDelete, mutateAsync, setEmployeeDelete, t]);
 
     return (
         <AlertDialog
@@ -47,18 +50,14 @@ export default function AlertDialogDeleteAccount({
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Delete this Employee?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("title")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Account{" "}
-                        <span className="bg-foreground text-primary-foreground rounded px-1">
-                            {employeeDelete?.name}
-                        </span>{" "}
-                        will be deleted permanently.
+                        {t("description", { name: employeeDelete?.name || "" })}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+                    <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>{tCommon("continue")}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

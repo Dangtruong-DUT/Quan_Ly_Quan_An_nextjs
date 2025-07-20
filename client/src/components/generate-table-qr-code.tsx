@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { getTableLink } from "@/helpers/common";
 import { Download } from "lucide-react";
+import { useLocale } from "next-intl";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
@@ -13,8 +14,9 @@ type QRcodeGenerateProps = {
 };
 
 export default function QRcodeTableGenerate({ token, tableNumber, width = 200 }: QRcodeGenerateProps) {
+    const locale = useLocale();
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const url = getTableLink({ token, tableNumber });
+    const url = getTableLink({ token, tableNumber, locale });
 
     // Create a virtual canvas to generate the QR code
     // This is to avoid rendering the QR code directly in the DOM

@@ -12,12 +12,13 @@ import {
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import AutoPagination from "@/components/auto-pagination";
 import { useGetAccountList } from "@/hooks/data/useAccount";
 import { useSearchParams } from "next/navigation";
 import { useAccountTableContext } from "@/app/[locale]/manage/accounts/context/account-table-context";
-import columns from "@/app/[locale]/manage/accounts/_components/column";
+import { useAccountColumns } from "@/app/[locale]/manage/accounts/_components/column";
 import EditEmployee from "@/app/[locale]/manage/accounts/_components/edit-employee";
 import AlertDialogDeleteAccount from "@/app/[locale]/manage/accounts/_components/alert-dialog-delete-account";
 import AddEmployee from "@/app/[locale]/manage/accounts/_components/add-employee";
@@ -25,6 +26,8 @@ import { DataTable } from "@/components/ui/data-table";
 
 const PAGE_SIZE = 10;
 export default function AccountTable() {
+    const t = useTranslations("AccountTable");
+    const columns = useAccountColumns();
     const { employeeIdEdit, setEmployeeIdEdit, employeeDelete, setEmployeeDelete } = useAccountTableContext();
     const searchParams = useSearchParams();
     const pageParam = searchParams.get("page");
@@ -77,7 +80,7 @@ export default function AccountTable() {
             <AlertDialogDeleteAccount employeeDelete={employeeDelete} setEmployeeDelete={setEmployeeDelete} />
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder={t("filterEmails")}
                     value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
                     onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
                     className="max-w-sm"
@@ -89,8 +92,8 @@ export default function AccountTable() {
             <DataTable table={table} columns={columns} />
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="text-xs text-muted-foreground py-4 flex-1 ">
-                    Hiển thị <strong>{table.getPaginationRowModel().rows.length}</strong> trong
-                    <strong>{data.length}</strong> kết quả
+                    {t("showing")} <strong>{table.getPaginationRowModel().rows.length}</strong> {t("in")}
+                    <strong>{data.length}</strong> {t("results")}
                 </div>
                 <div>
                     <AutoPagination

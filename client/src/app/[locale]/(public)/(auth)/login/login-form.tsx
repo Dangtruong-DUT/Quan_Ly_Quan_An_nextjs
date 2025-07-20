@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useLoginMutation } from "@/hooks/data/useAuth";
 import { LoginBody, LoginBodyType } from "@/utils/validation/auth.schema";
@@ -15,15 +14,19 @@ import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { getOauthGoogleUrl } from "@/helpers/oauth";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAppStore } from "@/providers/app-provider";
+import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
+import { useTranslations } from "next-intl";
 
 export default function LoginForm() {
-    const searchParams = useSearchParams();
-    const clearToken = searchParams.get("clearToken") === "true";
+    const t = useTranslations("LoginPage");
+    const { searchParams, setSearchParams } = useSearchParamsLoader();
+
     useEffect(() => {
+        const clearToken = searchParams?.get("clearToken") === "true";
         if (clearToken) {
             clientSessionToken.clear();
         }
-    }, [clearToken]);
+    }, [searchParams]);
 
     const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
@@ -57,6 +60,7 @@ export default function LoginForm() {
 
     return (
         <Form {...form}>
+            <SearchParamsLoader onParamsReceived={setSearchParams} />
             <form
                 className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
                 noValidate
@@ -70,8 +74,14 @@ export default function LoginForm() {
                         render={({ field }) => (
                             <FormItem>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" placeholder="m@example.com" required {...field} />
+                                    <Label htmlFor="email">{t("emailLabel")}</Label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        placeholder={t("emailPlaceholder")}
+                                        required
+                                        {...field}
+                                    />
                                     <FormMessage />
                                 </div>
                             </FormItem>
@@ -84,20 +94,26 @@ export default function LoginForm() {
                             <FormItem>
                                 <div className="grid gap-2">
                                     <div className="flex items-center">
-                                        <Label htmlFor="password">Password</Label>
+                                        <Label htmlFor="password">{t("passwordLabel")}</Label>
                                     </div>
-                                    <Input id="password" type="password" required {...field} />
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        placeholder={t("passwordPlaceholder")}
+                                        required
+                                        {...field}
+                                    />
                                     <FormMessage />
                                 </div>
                             </FormItem>
                         )}
                     />
                     <Button type="submit" className="w-full" disabled={isPending}>
-                        Đăng nhập
+                        {t("loginButton")}
                     </Button>
                     <Link href={googleOauthUrl} className="w-full">
                         <Button variant="outline" className="w-full" type="button" disabled={isPending}>
-                            Đăng nhập bằng Google
+                            {t("googleLoginButton")}
                         </Button>
                     </Link>
                 </div>

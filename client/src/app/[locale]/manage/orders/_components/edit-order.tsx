@@ -16,11 +16,12 @@ import { DishListResType } from "@/utils/validation/dish.schema";
 import { UpdateOrderBody, UpdateOrderBodyType } from "@/utils/validation/order.schema";
 
 import { OrderStatus, OrderStatusValues } from "@/constants/type";
-import { getVietnameseOrderStatus } from "@/helpers/common";
+import { useOrderStatus } from "@/helpers/common";
 import { useGetOrderDetailQuery } from "@/hooks/data/useOrder";
 import DishesDialog from "@/app/[locale]/manage/orders/_components/dishes-dialog";
 import { useOrderTableContext } from "@/app/[locale]/manage/orders/context/order-table-provider";
 import { handleErrorApi } from "@/utils/handleError";
+import { useTranslations } from "next-intl";
 
 type EditOrderProps = {
     id?: number;
@@ -29,6 +30,8 @@ type EditOrderProps = {
 };
 
 export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps) {
+    const getOrderStatus = useOrderStatus();
+    const t = useTranslations("EditOrder");
     const { data } = useGetOrderDetailQuery(id);
     const [selectedDish, setSelectedDish] = useState<DishListResType["data"][number] | undefined>(undefined);
     const { changeStatus } = useOrderTableContext();
@@ -80,7 +83,7 @@ export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps
         <Dialog open={Boolean(id)} onOpenChange={(open) => !open && handleClose()}>
             <DialogContent className="sm:max-w-[600px] max-h-screen overflow-auto">
                 <DialogHeader>
-                    <DialogTitle>Cập nhật đơn hàng</DialogTitle>
+                    <DialogTitle>{t("title")}</DialogTitle>
                 </DialogHeader>
 
                 <Form {...form}>
@@ -96,7 +99,7 @@ export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps
                             name="dishId"
                             render={({ field }) => (
                                 <FormItem className="grid grid-cols-4 items-center gap-4">
-                                    <FormLabel>Món ăn</FormLabel>
+                                    <FormLabel>{t("dish")}</FormLabel>
                                     <div className="col-span-2 flex items-center gap-4">
                                         <Avatar className="w-[50px] h-[50px]">
                                             <AvatarImage src={selectedDish?.image} />
@@ -120,7 +123,7 @@ export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps
                             name="quantity"
                             render={({ field }) => (
                                 <FormItem className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="quantity">Số lượng</Label>
+                                    <Label htmlFor="quantity">{t("quantity")}</Label>
                                     <div className="col-span-3">
                                         <Input
                                             id="quantity"
@@ -145,7 +148,7 @@ export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps
                             name="status"
                             render={({ field }) => (
                                 <FormItem className="grid grid-cols-4 items-center gap-4">
-                                    <FormLabel>Trạng thái</FormLabel>
+                                    <FormLabel>{t("status")}</FormLabel>
                                     <Select value={field.value} onValueChange={field.onChange}>
                                         <FormControl className="col-span-3">
                                             <SelectTrigger className="w-[200px]">
@@ -155,7 +158,7 @@ export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps
                                         <SelectContent>
                                             {OrderStatusValues.map((status) => (
                                                 <SelectItem key={status} value={status}>
-                                                    {getVietnameseOrderStatus(status)}
+                                                    {getOrderStatus(status)}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -169,7 +172,7 @@ export default function EditOrder({ id, setId, onSubmitSuccess }: EditOrderProps
 
                 <DialogFooter>
                     <Button type="submit" form="edit-order-form">
-                        Lưu
+                        {t("saveButton")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

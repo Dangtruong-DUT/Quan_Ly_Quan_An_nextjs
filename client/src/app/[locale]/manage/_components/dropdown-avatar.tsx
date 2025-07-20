@@ -16,8 +16,10 @@ import { useLogoutMutation } from "@/hooks/data/useAuth";
 import { useAccountProfile } from "@/hooks/data/useAccount";
 import { useAppStore } from "@/providers/app-provider";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function DropdownAvatar() {
+    const t = useTranslations("DropdownAvatar");
     const router = useRouter();
     const setRole = useAppStore((state) => state.setRole);
     const { mutateAsync: logoutMutateAsync, isPending } = useLogoutMutation();
@@ -28,11 +30,11 @@ export default function DropdownAvatar() {
             console.error("Logout failed:", error);
         } finally {
             setRole(undefined);
-            toast.success("Logout successful");
+            toast.success(t("logoutSuccess"));
             router.refresh();
             router.push("/");
         }
-    }, [logoutMutateAsync, router, setRole]);
+    }, [logoutMutateAsync, router, setRole, t]);
 
     const { data } = useAccountProfile();
     const account = data?.payload.data || { avatar: undefined, name: "USER" };
@@ -52,13 +54,13 @@ export default function DropdownAvatar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                     <Link href={"/manage/setting"} className="cursor-pointer">
-                        Setting
+                        {t("setting")}
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>Helper</DropdownMenuItem>
+                <DropdownMenuItem>{t("helper")}</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} disabled={isPending}>
-                    Logout
+                    {t("logout")}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

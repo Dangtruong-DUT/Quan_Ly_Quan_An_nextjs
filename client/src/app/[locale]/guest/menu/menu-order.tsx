@@ -12,8 +12,10 @@ import { handleErrorApi } from "@/utils/handleError";
 import { toast } from "sonner";
 import { DishStatus } from "@/constants/type";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function MenuOrder() {
+    const t = useTranslations("MenuPage");
     const router = useRouter();
     const { mutateAsync: orderMutate } = useGuestOrderMutation();
     const { data } = useGetDishes();
@@ -90,7 +92,9 @@ export default function MenuOrder() {
                                 />
                                 {!isAvailable && (
                                     <div className="absolute inset-0 bg-orange-400/80 flex items-center justify-center">
-                                        <span className="text-white text-sm font-semibold text-center">Hêt hàng</span>
+                                        <span className="text-white text-sm font-semibold text-center">
+                                            {t("outOfStock")}
+                                        </span>
                                     </div>
                                 )}
                             </div>
@@ -110,7 +114,9 @@ export default function MenuOrder() {
                 })}
             <div className="sticky bottom-0">
                 <Button className="w-full justify-between" onClick={handleOrderSubmit} disabled={orders.length === 0}>
-                    <span>Đặt hàng · {orders.length} món</span>
+                    <span>
+                        {t("orderButton")} · {orders.length} {t("items")}
+                    </span>
                     <span>{formatCurrency(totalPrice)}</span>
                 </Button>
             </div>

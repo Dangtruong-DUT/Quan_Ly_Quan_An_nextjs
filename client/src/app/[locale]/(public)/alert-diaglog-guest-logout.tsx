@@ -14,8 +14,13 @@ import { cn } from "@/lib/utils";
 import { useAppStore } from "@/providers/app-provider";
 import { useCallback } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function GuestConfirmLogout({ className }: { className?: string }) {
+    const tCommon = useTranslations("Common");
+    const tNavigation = useTranslations("Navigation");
+    const tLogoutDialog = useTranslations("LogoutDialog");
+
     const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
     const { mutateAsync: logoutMutate } = useGuestLogoutMutation();
@@ -34,18 +39,16 @@ export default function GuestConfirmLogout({ className }: { className?: string }
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className={cn(className, "cursor-pointer text-left")}>Đăng xuất</button>
+                <button className={cn(className, "cursor-pointer text-left")}>{tNavigation("logout")}</button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Bạn có chắn chắn đăng xuất</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        Bạn sẽ không thể truy cập vào các chức năng của hệ thống nếu không đăng nhập.
-                    </AlertDialogDescription>
+                    <AlertDialogTitle>{tLogoutDialog("title")}</AlertDialogTitle>
+                    <AlertDialogDescription>{tLogoutDialog("description")}</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Huỷ</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleLogout}>Tiếp tục</AlertDialogAction>
+                    <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleLogout}>{tCommon("continue")}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

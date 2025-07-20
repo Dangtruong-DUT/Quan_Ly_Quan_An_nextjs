@@ -4,6 +4,7 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, parse } from "date-fns";
+import { useTranslations } from "next-intl";
 const chartConfig = {
     desktop: {
         label: "Desktop",
@@ -12,12 +13,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function RevenueLineChart(Props: { chartData?: { date: string; revenue: number }[] }) {
+    const t = useTranslations("RevenueLineChart");
     const chartData = Props.chartData || [];
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Doanh thu</CardTitle>
+                <CardTitle>{t("title")}</CardTitle>
                 {/* <CardDescription>January - June 2024</CardDescription> */}
             </CardHeader>
             <CardContent>
@@ -51,7 +53,7 @@ export function RevenueLineChart(Props: { chartData?: { date: string; revenue: n
                         <Line
                             dataKey="revenue"
                             type="linear"
-                            name="Doanh thu"
+                            name={t("revenue")}
                             stroke="var(--color-desktop)"
                             strokeWidth={2}
                             dot={false}

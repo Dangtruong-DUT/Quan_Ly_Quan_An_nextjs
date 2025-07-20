@@ -11,12 +11,13 @@ import { TableStatus, TableStatusValues } from "@/constants/type";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "@/i18n/navigation";
 import { UpdateTableBody, UpdateTableBodyType } from "@/utils/validation/table.schema";
-import { getTableLink, getVietnameseTableStatus } from "@/helpers/common";
+import { getTableLink, useTableStatus } from "@/helpers/common";
 import { useGetTableDetail, useUpdateTableMutation } from "@/hooks/data/useTables";
 import { useCallback, useEffect } from "react";
 import { handleErrorApi } from "@/utils/handleError";
 import { toast } from "sonner";
 import QRcodeTableGenerate from "@/components/generate-table-qr-code";
+import { useLocale } from "next-intl";
 
 export default function EditTable({
     id,
@@ -26,6 +27,8 @@ export default function EditTable({
     setId: (value: number | undefined) => void;
     onSubmitSuccess?: () => void;
 }) {
+    const locale = useLocale();
+    const getTableStatus = useTableStatus();
     const form = useForm<UpdateTableBodyType>({
         resolver: zodResolver(UpdateTableBody),
         defaultValues: {
@@ -141,7 +144,7 @@ export default function EditTable({
                                                     <SelectContent>
                                                         {TableStatusValues.map((status) => (
                                                             <SelectItem key={status} value={status}>
-                                                                {getVietnameseTableStatus(status)}
+                                                                {getTableStatus(status)}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
@@ -197,6 +200,7 @@ export default function EditTable({
                                                 href={getTableLink({
                                                     token: tableData?.token || "",
                                                     tableNumber: tableData?.number || -1,
+                                                    locale: locale,
                                                 })}
                                                 target="_blank"
                                                 className="break-all"
@@ -204,6 +208,7 @@ export default function EditTable({
                                                 {getTableLink({
                                                     token: tableData?.token || "",
                                                     tableNumber: tableData?.number || -1,
+                                                    locale: locale,
                                                 })}
                                             </Link>
                                         )}

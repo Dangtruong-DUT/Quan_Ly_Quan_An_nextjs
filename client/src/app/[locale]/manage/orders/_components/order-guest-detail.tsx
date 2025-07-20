@@ -1,7 +1,9 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OrderStatus } from "@/constants/type";
-import { getVietnameseOrderStatus, OrderStatusIcon } from "@/helpers/common";
+import { useOrderStatus, OrderStatusIcon } from "@/helpers/common";
 import { usePayForGuestOrdersMutation } from "@/hooks/data/useOrder";
 import { OrderStatusType } from "@/types/order";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
@@ -10,6 +12,7 @@ import { handleErrorApi } from "@/utils/handleError";
 import { GetOrdersResType } from "@/utils/validation/order.schema";
 import Image from "next/image";
 import { Fragment, useCallback, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 interface OrderGuestDetailProps {
     guest: GetOrdersResType["data"][0]["guest"];
@@ -17,6 +20,8 @@ interface OrderGuestDetailProps {
 }
 
 export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProps) {
+    const getOrderStatus = useOrderStatus();
+    const t = useTranslations("OrderGuestDetail");
     const { mutateAsync: payMutation, isPending } = usePayForGuestOrdersMutation();
 
     const handlePayAllOrders = useCallback(async () => {
@@ -69,26 +74,26 @@ export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProp
             {guest && (
                 <Fragment>
                     <div className="space-x-1">
-                        <span className="font-semibold">Tên:</span>
+                        <span className="font-semibold">{t("name")}:</span>
                         <span>{guest.name}</span>
                         <span className="font-semibold">(#{guest.id})</span>
                         <span>|</span>
-                        <span className="font-semibold">Bàn:</span>
+                        <span className="font-semibold">{t("table")}:</span>
                         <span>{guest.tableNumber}</span>
                     </div>
                     <div className="space-x-1">
-                        <span className="font-semibold">Ngày đăng ký:</span>
+                        <span className="font-semibold">{t("registrationDate")}:</span>
                         <span>{formatDateTimeToLocaleString(guest.createdAt)}</span>
                     </div>
                 </Fragment>
             )}
 
             <div className="space-y-1">
-                <div className="font-semibold">Đơn hàng:</div>
+                <div className="font-semibold">{t("orders")}:</div>
                 {orders.map((order, index) => (
                     <div key={order.id} className="flex gap-2 items-center text-xs">
                         <span className="w-[10px]">{index + 1}</span>
-                        <span title={getVietnameseOrderStatus(order.status)}>{getOrderStatusIcon(order.status)}</span>
+                        <span title={getOrderStatus(order.status)}>{getOrderStatusIcon(order.status)}</span>
                         <Image
                             src={order.dishSnapshot.image}
                             alt={order.dishSnapshot.name}
@@ -100,23 +105,23 @@ export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProp
                         <span className="truncate w-[70px] sm:w-[100px]" title={order.dishSnapshot.name}>
                             {order.dishSnapshot.name}
                         </span>
-                        <span className="font-semibold" title={`Tổng: ${order.quantity}`}>
+                        <span className="font-semibold" title={`${t("total")}: ${order.quantity}`}>
                             x{order.quantity}
                         </span>
                         <span className="italic">{formatCurrency(order.quantity * order.dishSnapshot.price)}</span>
                         <span
                             className="hidden sm:inline"
-                            title={`Tạo: ${formatDateTimeToLocaleString(
-                                order.createdAt
-                            )} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}`}
+                            title={`${t("created")}: ${formatDateTimeToLocaleString(order.createdAt)} | ${t(
+                                "updated"
+                            )}: ${formatDateTimeToLocaleString(order.updatedAt)}`}
                         >
                             {formatDateTimeToLocaleString(order.createdAt)}
                         </span>
                         <span
                             className="sm:hidden"
-                            title={`Tạo: ${formatDateTimeToLocaleString(
-                                order.createdAt
-                            )} | Cập nhật: ${formatDateTimeToLocaleString(order.updatedAt)}`}
+                            title={`${t("created")}: ${formatDateTimeToLocaleString(order.createdAt)} | ${t(
+                                "updated"
+                            )}: ${formatDateTimeToLocaleString(order.updatedAt)}`}
                         >
                             {formatDateTimeToTimeString(order.createdAt)}
                         </span>
@@ -125,12 +130,12 @@ export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProp
             </div>
 
             <div className="space-x-1">
-                <span className="font-semibold">Chưa thanh toán:</span>
+                <span className="font-semibold">{t("unpaid")}:</span>
                 <Badge>{formatCurrency(calcTotal(unpaidOrders))}</Badge>
             </div>
 
             <div className="space-x-1">
-                <span className="font-semibold">Đã thanh toán:</span>
+                <span className="font-semibold">{t("paid")}:</span>
                 <Badge variant="outline">{formatCurrency(calcTotal(paidOrders))}</Badge>
             </div>
 
@@ -142,7 +147,7 @@ export default function OrderGuestDetail({ guest, orders }: OrderGuestDetailProp
                     disabled={unpaidOrders.length === 0 || isPending}
                     onClick={handlePayAllOrders}
                 >
-                    Thanh toán tất cả ({unpaidOrders.length} đơn)
+                    {t("payAllOrders")} ({unpaidOrders.length} {t("orderCount")})
                 </Button>
             </div>
         </div>
