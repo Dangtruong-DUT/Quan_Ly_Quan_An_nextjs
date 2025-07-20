@@ -4,8 +4,8 @@ import { useGuestLogoutMutation } from "@/hooks/data/useGuest";
 import { useSocketClient } from "@/hooks/shared/useSocketClient";
 import { useAppStore } from "@/providers/app-provider";
 import { handleErrorApi } from "@/utils/handleError";
-import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect } from "react";
+import { useRouter } from "@/i18n/navigation";
 import { useShallow } from "zustand/react/shallow";
 
 export function LogoutSocket() {

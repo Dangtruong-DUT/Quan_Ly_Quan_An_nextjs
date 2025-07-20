@@ -13,21 +13,35 @@ import {
 } from "@/components/ui/select";
 import { useLocale, useTranslations } from "next-intl";
 import { LANGUAGES, Locale } from "@/i18n/config";
-import { setUserLocale } from "@/services/locale";
+import { useParams } from "next/navigation";
+import { Suspense, useTransition } from "react";
+import { usePathname, useRouter } from "@/i18n/navigation";
 
-export function SelectLanguage() {
+function SelectLanguage() {
     const t = useTranslations();
     const locale = useLocale();
+    const pathname = usePathname();
+    const router = useRouter();
+    const params = useParams();
+
+    const [isPending, startTransition] = useTransition();
 
     function onChange(value: string) {
-        const locale = value as Locale;
-        React.startTransition(() => {
-            setUserLocale(locale);
+        const nextLocale = value as Locale;
+
+        startTransition(() => {
+            router.replace(
+                // @ts-expect-error -- TypeScript will validate that only known `params`
+                // are used in combination with a given `pathname`. Since the two will
+                // always match for the current route, we can skip runtime checks.
+                { pathname, params },
+                { locale: nextLocale }
+            );
         });
     }
 
     return (
-        <Select value={locale} onValueChange={onChange}>
+        <Select value={locale} onValueChange={onChange} disabled={isPending}>
             <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder={t("SwitchLanguage.label")} />
             </SelectTrigger>
@@ -36,11 +50,19 @@ export function SelectLanguage() {
                     <SelectLabel>{t("SwitchLanguage.label")}</SelectLabel>
                     {LANGUAGES.map(({ value, labelKey }) => (
                         <SelectItem key={value} value={value}>
-                            {t(labelKey)}
+                            {t(`SwitchLanguage.${labelKey}` as "SwitchLanguage.en" | "SwitchLanguage.vi")}
                         </SelectItem>
                     ))}
                 </SelectGroup>
             </SelectContent>
         </Select>
+    );
+}
+
+export default function SelectLanguageWrapper() {
+    return (
+        <Suspense>
+            <SelectLanguage />
+        </Suspense>
     );
 }
