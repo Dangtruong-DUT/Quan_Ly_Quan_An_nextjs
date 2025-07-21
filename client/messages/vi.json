@@ -56,6 +56,45 @@
         "save": "Lưu",
         "successMessage": "Đổi mật khẩu thành công"
     },
+    "PrivacyPolicyPage": {
+        "title": "Chính sách bảo mật",
+        "dataCollection": "Dữ liệu thu thập",
+        "dataCollectionDescription": "Chúng tôi thu thập các thông tin cá nhân mà bạn cung cấp khi tạo tài khoản, đặt hàng hoặc liên hệ với chúng tôi. Các thông tin này có thể bao gồm tên. Ngoài ra, chúng tôi cũng thu thập một số thông tin tự động khi bạn truy cập trang web của chúng tôi, như địa chỉ IP và loại trình duyệt.",
+        "purposeOfUse": "Mục đích sử dụng",
+        "purposeOfUseDescription": "Chúng tôi sử dụng thông tin cá nhân của bạn với các mục đích sau:",
+        "orderProcessing": "Để xử lý đơn hàng của bạn: Chúng tôi sử dụng thông tin liên hệ và thanh toán của bạn để xác nhận và xử lý đơn hàng, cũng như để gửi hóa đơn và thông tin giao hàng.",
+        "customerService": "Để cung cấp dịch vụ khách hàng: Chúng tôi sử dụng thông tin liên hệ của bạn để trả lời các câu hỏi, giải quyết các vấn đề và cung cấp hỗ trợ kỹ thuật.",
+        "marketing": "Để gửi các thông tin tiếp thị: Với sự đồng ý của bạn, chúng tôi có thể sử dụng địa chỉ email của bạn để gửi các thông tin về các sản phẩm, dịch vụ mới, khuyến mãi và sự kiện đặc biệt.",
+        "serviceImprovement": "Để cải thiện dịch vụ của chúng tôi: Chúng tôi sử dụng dữ liệu tổng hợp và ẩn danh để phân tích xu hướng và cải thiện dịch vụ của chúng tôi."
+    },
+    "TermsOfServicePage": {
+        "title": "Điều khoản dịch vụ",
+        "introduction": "Giới thiệu",
+        "introductionDescription": "Chào mừng bạn đến với trang Điều khoản dịch vụ của chúng tôi. Khi sử dụng dịch vụ của chúng tôi, bạn đồng ý tuân thủ các điều khoản và điều kiện dưới đây.",
+        "serviceUsage": "Sử dụng dịch vụ",
+        "serviceUsageDescription": "Bạn đồng ý sử dụng dịch vụ của chúng tôi chỉ cho các mục đích hợp pháp và không vi phạm bất kỳ luật lệ nào. Bạn không được sử dụng dịch vụ của chúng tôi để phát tán nội dung bất hợp pháp, gây hại hoặc vi phạm quyền riêng tư của người khác.",
+        "intellectualProperty": "Quyền sở hữu trí tuệ",
+        "intellectualPropertyDescription": "Tất cả nội dung và tài liệu trên trang web của chúng tôi, bao gồm văn bản, hình ảnh, đồ họa, logo, và phần mềm, đều thuộc quyền sở hữu của chúng tôi hoặc các bên cấp phép của chúng tôi và được bảo vệ bởi luật sở hữu trí tuệ.",
+        "termsChanges": "Thay đổi điều khoản",
+        "termsChangesDescription": "Chúng tôi có quyền thay đổi các điều khoản dịch vụ này bất kỳ lúc nào mà không cần thông báo trước. Việc tiếp tục sử dụng dịch vụ của bạn sau khi các thay đổi được đăng tải sẽ được coi là sự chấp nhận của bạn đối với các thay đổi đó.",
+        "contact": "Liên hệ",
+        "contactDescription": "Nếu bạn có bất kỳ câu hỏi nào về các điều khoản dịch vụ này, vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại được cung cấp trên trang web của chúng tôi."
+    },
+    "AboutPage": {
+        "title": "Về TaplamIT Team",
+        "address": "Địa chỉ: thành phố Đà Nẵng",
+        "ourStory": "Câu chuyện của chúng tôi",
+        "ourStoryDescription": "TaplamIT Team được thành lập với sứ mệnh mang đến những giải pháp phần mềm tối ưu, hỗ trợ quản lý và vận hành quán ăn, nhà hàng một cách hiệu quả. Chúng tôi tập hợp những kỹ sư công nghệ đam mê, sáng tạo và luôn đặt nhu cầu của khách hàng lên hàng đầu.",
+        "ourValues": "Giá trị của chúng tôi",
+        "ourValuesDescription": "Chúng tôi tin rằng công nghệ là chìa khóa để đơn giản hóa quy trình quản lý, tiết kiệm thời gian và chi phí cho chủ quán. TaplamIT Team luôn hướng đến những sản phẩm phần mềm thân thiện, dễ sử dụng và có tính ứng dụng cao, giúp khách hàng quản lý đơn hàng, bàn ăn, nhân viên và doanh thu một cách minh bạch, hiệu quả.",
+        "ourCommitment": "Cam kết của chúng tôi",
+        "ourCommitmentDescription": "TaplamIT Team cam kết đồng hành cùng các quán ăn, nhà hàng trong hành trình số hóa và phát triển bền vững. Chúng tôi luôn sẵn sàng hỗ trợ, nâng cấp sản phẩm và cung cấp dịch vụ hậu mãi tận tâm, nhằm mang lại trải nghiệm tốt nhất cho khách hàng."
+    },
+    "Footer": {
+        "termsOfService": "Điều khoản dịch vụ",
+        "privacyPolicy": "Chính sách bảo mật",
+        "aboutUs": "Về chúng tôi"
+    },
     "Common": {
         "cancel": "Huỷ",
         "continue": "Tiếp tục",

@@ -47,8 +47,6 @@ export default function LoginForm() {
                 setRole(role);
                 router.push("/manage/dashboard");
                 toast.success(res.payload.message);
-
-                router.refresh();
             } catch (error) {
                 handleErrorApi(error, form.setError);
             }

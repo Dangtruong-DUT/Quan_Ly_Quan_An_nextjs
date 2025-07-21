@@ -23,7 +23,7 @@ export default function MobileNavLinks() {
                     <span className="sr-only">{t("toggleMenu")}</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs">
+            <SheetContent side="left" className="sm:max-w-xs pt-4 pl-4">
                 <SheetHeader className="hidden md:block">
                     <SheetTitle>{t("navigation")}</SheetTitle>
                     <SheetDescription>{t("navigationDescription")}</SheetDescription>

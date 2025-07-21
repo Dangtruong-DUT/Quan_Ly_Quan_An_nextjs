@@ -43,7 +43,7 @@ export default function Layout({
                             <SheetTitle>Navigation</SheetTitle>
                             <SheetDescription>Navigate through the application</SheetDescription>
                         </SheetHeader>
-                        <nav className="grid gap-6 text-lg font-medium">
+                        <nav className="grid gap-6 text-lg font-medium pt-4 pl-4">
                             <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
                                 <Package2 className="h-6 w-6" />
                                 <span className="sr-only">TaplamIT</span>

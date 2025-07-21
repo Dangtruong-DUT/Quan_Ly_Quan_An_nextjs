@@ -428,6 +428,45 @@
         "save": "Save",
         "successMessage": "Password changed successfully"
     },
+    "PrivacyPolicyPage": {
+        "title": "Privacy Policy",
+        "dataCollection": "Data Collection",
+        "dataCollectionDescription": "We collect personal information that you provide when creating an account, placing orders, or contacting us. This information may include your name. Additionally, we also collect some information automatically when you access our website, such as IP address and browser type.",
+        "purposeOfUse": "Purpose of Use",
+        "purposeOfUseDescription": "We use your personal information for the following purposes:",
+        "orderProcessing": "To process your orders: We use your contact and payment information to confirm and process orders, as well as to send invoices and delivery information.",
+        "customerService": "To provide customer service: We use your contact information to answer questions, resolve issues, and provide technical support.",
+        "marketing": "To send marketing information: With your consent, we may use your email address to send information about new products, services, promotions, and special events.",
+        "serviceImprovement": "To improve our services: We use aggregated and anonymous data to analyze trends and improve our services."
+    },
+    "TermsOfServicePage": {
+        "title": "Terms of Service",
+        "introduction": "Introduction",
+        "introductionDescription": "Welcome to our Terms of Service page. By using our services, you agree to comply with the terms and conditions below.",
+        "serviceUsage": "Service Usage",
+        "serviceUsageDescription": "You agree to use our services only for lawful purposes and not to violate any laws. You may not use our services to distribute illegal, harmful content or violate others' privacy rights.",
+        "intellectualProperty": "Intellectual Property",
+        "intellectualPropertyDescription": "All content and materials on our website, including text, images, graphics, logos, and software, are owned by us or our licensors and are protected by intellectual property law.",
+        "termsChanges": "Terms Changes",
+        "termsChangesDescription": "We reserve the right to change these terms of service at any time without prior notice. Your continued use of the service after changes are posted will be considered your acceptance of those changes.",
+        "contact": "Contact",
+        "contactDescription": "If you have any questions about these terms of service, please contact us via email or phone number provided on our website."
+    },
+    "AboutPage": {
+        "title": "About TaplamIT Team",
+        "address": "Address: Da Nang City",
+        "ourStory": "Our Story",
+        "ourStoryDescription": "TaplamIT Team was founded with the mission to provide optimal software solutions, supporting efficient management and operation of restaurants and eateries. We bring together passionate, creative technology engineers who always put customer needs first.",
+        "ourValues": "Our Values",
+        "ourValuesDescription": "We believe that technology is the key to simplifying management processes, saving time and costs for restaurant owners. TaplamIT Team always aims for user-friendly, easy-to-use software products with high applicability, helping customers manage orders, tables, staff, and revenue transparently and efficiently.",
+        "ourCommitment": "Our Commitment",
+        "ourCommitmentDescription": "TaplamIT Team is committed to accompanying restaurants and eateries in their digitalization and sustainable development journey. We are always ready to support, upgrade products, and provide dedicated after-sales service to bring the best experience to customers."
+    },
+    "Footer": {
+        "termsOfService": "Terms of Service",
+        "privacyPolicy": "Privacy Policy",
+        "aboutUs": "About Us"
+    },
     "TablesDialog": {
         "title": "Select table",
         "selectTable": "Select table",

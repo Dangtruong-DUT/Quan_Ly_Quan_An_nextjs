@@ -134,7 +134,7 @@ class Http {
                     clientSessionToken.clear();
                     // Redirect to login page có thể dẫn đến vòng lặp vô hạn nếu không xử lý đúng
                     //khi trang login có yêu cầu cần token
-                    // window.location.href = "/";
+                    window.location.href = "/";
                 }
             } else {
                 const locale = getLocale();

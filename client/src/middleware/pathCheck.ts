@@ -6,7 +6,7 @@ const unAuthPath = ["/vi/login", "/en/login", "/vi/register", "/en/register"];
 export const privatePath = [...manaPath, ...guestPath];
 
 export function isPathMatch(pathList: string[], pathname: string) {
-    return pathList.some((path) => pathname.startsWith(path));
+    return pathList.some((path) => pathname.includes(path));
 }
 
 export { manaPath, guestPath, onlyOwnerPath, unAuthPath };

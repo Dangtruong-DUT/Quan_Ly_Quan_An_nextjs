@@ -1,7 +1,10 @@
 import { Link } from "@/i18n/navigation";
 import { Beef } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+    const t = useTranslations("Footer");
+
     return (
         <footer className="w-full p-4 md:p-8 text-muted-foreground border-t">
             <div className=" flex flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
@@ -12,19 +15,19 @@ export default function Footer() {
                     </Link>
                     <div className="flex flex-col sm:flex-row items-center gap-4 text-sm">
                         <Link href="/term-of-service" className="hover:underline" prefetch={false}>
-                            Điều khoản dịch vụ
+                            {t("termsOfService")}
                         </Link>
                         <Link href="/privacy-policy" className="hover:underline" prefetch={false}>
-                            Chính sách bảo mật
+                            {t("privacyPolicy")}
                         </Link>
                         <Link href="/about" className="hover:underline" prefetch={false}>
-                            Về chúng tôi
+                            {t("aboutUs")}
                         </Link>
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
                     <Link
-                        href="https://www.facebook.com"
+                        href="https://www.facebook.com/nd.trg281"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
@@ -60,7 +63,7 @@ export default function Footer() {
                         <span className="sr-only">YouTube</span>
                     </Link>
                     <Link
-                        href="https://www.tiktok.com"
+                        href="https://www.tiktok.com/@nd.trg2811"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
