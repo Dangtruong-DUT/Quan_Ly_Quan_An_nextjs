@@ -11,6 +11,7 @@ import { routing } from "@/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import envConfig from "@/config/app.config";
 import Footer from "@/components/footer";
+import GoogleTags from "@/components/google-tags";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -100,6 +101,7 @@ export default async function RootLayout({
                         </ThemeProvider>
                     </AppProvider>
                 </NextIntlClientProvider>
+                <GoogleTags />
             </body>
         </html>
     );
