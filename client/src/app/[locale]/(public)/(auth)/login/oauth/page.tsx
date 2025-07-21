@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
+import { LoaderPinwheel } from "lucide-react";
 
 export default function OauthPage() {
     const t = useTranslations("OauthPage");
@@ -53,9 +54,11 @@ export default function OauthPage() {
     }, [router, message, handleSetCookie, accessToken, refreshToken, t]);
 
     return (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-screen">
             <SearchParamsLoader onParamsReceived={setSearchParams} />
             <p>{t("redirecting")}</p>
+            <h1 className="text-2xl text-center font-bold pt-50">Redirecting...</h1>
+            <LoaderPinwheel className="animate-spin w-5 h-5" />
         </div>
     );
 }

@@ -6,6 +6,7 @@ import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { handleErrorApi } from "@/utils/handleError";
 import { use, useEffect } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { LoaderPinwheel } from "lucide-react";
 
 export default function LogoutPage({
     searchParams,
@@ -36,5 +37,10 @@ export default function LogoutPage({
             router.push("/");
         }
     }, [logoutMutate, accessToken, refreshToken, router, setRole]);
-    return <div></div>;
+    return (
+        <div className="flex flex-col gap-3 items-center justify-center">
+            <h1 className="text-2xl text-center font-bold pt-50">Redirecting...</h1>
+            <LoaderPinwheel className="animate-spin w-5 h-5" />
+        </div>
+    );
 }

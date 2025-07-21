@@ -6,6 +6,7 @@ import { useAppStore } from "@/providers/app-provider";
 import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
+import { LoaderPinwheel } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
@@ -43,8 +44,13 @@ export default function RefreshTokenPage({
                 },
             });
         } else {
-            router.push("/");
+            //  router.push("/");
         }
     }, [redirect, refreshToken, setRole, router]);
-    return <></>;
+    return (
+        <div className="flex flex-col gap-3 items-center justify-center">
+            <h1 className="text-2xl text-center font-bold pt-50">Redirecting...</h1>
+            <LoaderPinwheel className="animate-spin w-5 h-5" />
+        </div>
+    );
 }
