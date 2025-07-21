@@ -51,6 +51,10 @@ export default async function Login({ params }: { params: Promise<{ locale: stri
                         <h1>{t("title")}</h1>
                     </CardTitle>
                     <CardDescription>{t("description")}</CardDescription>
+                    <p className="text-sm text-muted-foreground">
+                        <strong>Default username:</strong> admin@order.com <br />
+                        <strong>Default password:</strong> 123456
+                    </p>
                 </CardHeader>
                 <CardContent>
                     <LoginForm />

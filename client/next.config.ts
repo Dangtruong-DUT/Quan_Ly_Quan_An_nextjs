@@ -3,13 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
     images: {
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "api-bigboy.duthanhduoc.com",
-                pathname: "/**",
-            },
-        ],
+        domains: ["api-bigboy.duthanhduoc.com"],
     },
 };
 

@@ -16,6 +16,8 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useAppStore } from "@/providers/app-provider";
 import { SearchParamsLoader, useSearchParamsLoader } from "@/components/searchparams-loader";
 import { useTranslations } from "next-intl";
+import { LoaderPinwheel } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function LoginForm() {
     const t = useTranslations("LoginPage");
@@ -107,6 +109,9 @@ export default function LoginForm() {
                         )}
                     />
                     <Button type="submit" className="w-full" disabled={isPending}>
+                        <LoaderPinwheel
+                            className={cn("w-5 h-5 mr-2", isPending ? "animate-spin inline-block" : "hidden")}
+                        />{" "}
                         {t("loginButton")}
                     </Button>
                     <Link href={googleOauthUrl} className="w-full">

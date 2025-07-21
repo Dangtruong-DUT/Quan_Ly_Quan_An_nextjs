@@ -44,7 +44,7 @@ export default function RefreshTokenPage({
                 },
             });
         } else {
-            //  router.push("/");
+            router.push("/");
         }
     }, [redirect, refreshToken, setRole, router]);
     return (
