@@ -66,6 +66,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             address: false,
             telephone: false,
         },
+        other: {
+            "google-site-verification": "Lrh8-A7d1Il0KBtPwQQoCRip8eOfyZTW1XfXvGlDqcI",
+        },
     };
 }
 
