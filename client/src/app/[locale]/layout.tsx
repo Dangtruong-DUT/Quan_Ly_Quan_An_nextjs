@@ -10,6 +10,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import envConfig from "@/config/app.config";
+import Footer from "@/components/footer";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -91,6 +92,7 @@ export default async function RootLayout({
                         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                             <NextTopLoader color="var(--foreground)" showSpinner={false} />
                             {children}
+                            <Footer />
                             <Toaster />
                         </ThemeProvider>
                     </AppProvider>
