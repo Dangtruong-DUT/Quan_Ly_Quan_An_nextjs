@@ -3,9 +3,16 @@ import MobileNavLinks from "@/app/[locale]/manage/_components/mobile-nav-links";
 import NavLinks from "@/app/[locale]/manage/_components/nav-links";
 import { DarkModeToggle } from "@/components/dark-mode-toggle";
 import SelectLanguage from "@/components/select-language";
+import { Metadata } from "next";
 import { Locale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { use } from "react";
+
+export const metadata: Metadata = {
+    title: "Manage",
+    description: "Manage your restaurant settings",
+    keywords: "manage, restaurant, settings",
+};
 
 export default function Layout({
     children,

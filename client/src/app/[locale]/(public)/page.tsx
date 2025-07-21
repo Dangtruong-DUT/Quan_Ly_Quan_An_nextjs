@@ -1,5 +1,5 @@
 import nextRequestDishesApi from "@/api/nextToBackend/dishes";
-import { WrapperServerCallApi } from "@/utils/common";
+import { generateSlug, WrapperServerCallApi } from "@/utils/common";
 import { formatCurrency } from "@/utils/formatting/formatCurrency";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -41,7 +41,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                     {dishes &&
                         dishes.map((dish) => (
-                            <Link key={dish.id} href={`/dishes/${dish.id}`} className="group">
+                            <Link
+                                key={dish.id}
+                                href={`/dishes/${generateSlug({ text: dish.name, id: String(dish.id) })}`}
+                                className="group"
+                            >
                                 <div className="flex gap-4 w" key={dish.id}>
                                     <div className="flex-shrink-0">
                                         <Image

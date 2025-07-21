@@ -1,4 +1,23 @@
 {
+    "Metadata": {
+        "title": "Phần mềm quản lý quán ăn| TaplamIT ",
+        "description": "TaplamIT giúp bạn quản lý quán ăn Việt Nam hiệu quả: quản lý đơn hàng, bàn ăn, nhân viên. Tối ưu vận hành cho quán ăn Việt Nam ngon số 1 thế giới.",
+        "keywords": "phần mềm quản lý quán ăn, quản lý nhà hàng, quán ăn Việt Nam, nhà hàng Việt Nam, quản lý đơn hàng, quản lý bàn ăn, quản lý nhân viên, TaplamIT",
+        "author": {
+            "name": "TaplamIT Team",
+            "url": "https://www.facebook.com/nd.trg281"
+        },
+        "login": {
+            "title": "Đăng nhập",
+            "description": "Đăng nhập vào hệ thống quản lý quán ăn của bạn để quản lý đơn hàng, bàn ăn và nhân viên một cách hiệu quả.",
+            "keywords": "đăng nhập, quản lý quán ăn, quản lý nhà hàng, TaplamIT"
+        },
+        "guestLogin": {
+            "title": "Đăng nhập gọi món",
+            "description": "Đăng nhập để gọi món tại bàn ăn của bạn. Trải nghiệm gọi món nhanh chóng và tiện lợi.",
+            "keywords": "đăng nhập gọi món, quán ăn, bàn ăn, TaplamIT"
+        }
+    },
     "HomePage": {
         "NameRestaurant": "TaplamIT - Nhà hàng",
         "title": "Đa dạng các món ăn",

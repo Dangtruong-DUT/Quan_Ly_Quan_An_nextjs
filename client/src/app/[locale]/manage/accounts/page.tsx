@@ -2,7 +2,14 @@ import AccountTable from "@/app/[locale]/manage/accounts/_components/account-tab
 import AccountTableProvider from "@/app/[locale]/manage/accounts/context/account-table-context";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Locale } from "@/i18n/config";
+import { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+export const metadata: Metadata = {
+    title: "Manage Accounts",
+    description: "Manage your restaurant settings",
+    keywords: "manage, restaurant, settings",
+};
 
 export default async function AccountPage({ params }: { params: Promise<{ locale: string }> }) {
     // Enable static rendering

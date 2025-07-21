@@ -86,7 +86,7 @@ export default function OrderStatics({
                 </Tooltip>
             );
         },
-        [t]
+        [t, getOrderStatus]
     );
 
     return (

@@ -51,6 +51,6 @@ export default function ManageSocket() {
             socket?.off("update-order", onOrderUpdate);
             socket?.off("payment", onPayment);
         };
-    }, [socket, socket?.id, queryClient]);
+    }, [socket, socket?.id, queryClient, getOrderStatus]);
     return null;
 }

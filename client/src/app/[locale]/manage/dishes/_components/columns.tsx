@@ -97,7 +97,7 @@ export function useDishColumns(): ColumnDef<DishItem>[] {
                 },
             },
         ],
-        [t]
+        [t, getDishStatus]
     );
 }
 

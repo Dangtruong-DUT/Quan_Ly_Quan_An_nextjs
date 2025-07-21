@@ -1,6 +1,13 @@
 import OrderCard from "@/app/[locale]/guest/order/order-card";
 import { Locale } from "@/i18n/config";
+import { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+export const metadata: Metadata = {
+    title: "Order",
+    description: "Manage your orders",
+    keywords: "order, restaurant, food",
+};
 
 export default async function OrderPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

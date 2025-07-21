@@ -1,4 +1,23 @@
 {
+    "Metadata": {
+        "title": "Restaurant Management Software| TaplamIT",
+        "description": "TaplamIT helps you run the best Vietnamese restaurant in the world. Manage orders, tables, and staff easily with our all-in-one restaurant management system.",
+        "keywords": "restaurant management software, Vietnamese restaurant, best Vietnamese cuisine, order management, table management, staff management, TaplamIT",
+        "author": {
+            "name": "TaplamIT Team",
+            "url": "https://www.facebook.com/nd.trg281"
+        },
+        "login": {
+            "title": "Login",
+            "description": "Login to your restaurant management system to manage orders, tables, and staff effectively.",
+            "keywords": "login, restaurant management, TaplamIT"
+        },
+        "guestLogin": {
+            "title": "Guest Login",
+            "description": "Login as a guest to access your table and place orders easily.",
+            "keywords": "guest login, table access, order placement"
+        }
+    },
     "HomePage": {
         "NameRestaurant": "TaplamIT - Restaurant",
         "title": "Diverse Dishes",

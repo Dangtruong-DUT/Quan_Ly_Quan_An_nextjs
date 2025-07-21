@@ -1,7 +1,14 @@
 import DashboardMain from "@/app/[locale]/manage/dashboard/dashboard-main";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Locale } from "@/i18n/config";
+import { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+
+export const metadata: Metadata = {
+    title: "Manage Dashboard",
+    description: "Manage your restaurant settings",
+    keywords: "manage, restaurant, settings",
+};
 
 export default async function Dashboard({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

@@ -2,7 +2,14 @@ import DishTable from "@/app/[locale]/manage/dishes/_components/dish-table";
 import DishTableProvider from "@/app/[locale]/manage/dishes/context/DishTableContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Locale } from "@/i18n/config";
+import { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+
+export const metadata: Metadata = {
+    title: "Manage Dishes",
+    description: "Manage your restaurant dishes",
+    keywords: "manage, restaurant, dishes",
+};
 
 export default async function DishesPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

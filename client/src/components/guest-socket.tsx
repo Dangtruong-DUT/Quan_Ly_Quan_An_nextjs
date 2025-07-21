@@ -37,7 +37,7 @@ export function GuestSocket() {
             socket?.off("update-order", onOrderUpdate);
             socket?.off("payment", onPayment);
         };
-    }, [refetchOrder, socket]);
+    }, [refetchOrder, socket, getOrderStatus]);
 
     return null;
 }

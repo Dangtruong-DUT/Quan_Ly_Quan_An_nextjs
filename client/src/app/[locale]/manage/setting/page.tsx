@@ -2,7 +2,14 @@ import ChangePasswordForm from "@/app/[locale]/manage/setting/change-password-fo
 import UpdateProfileForm from "@/app/[locale]/manage/setting/update-profile-form";
 import { Badge } from "@/components/ui/badge";
 import { Locale } from "@/i18n/config";
+import { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+
+export const metadata: Metadata = {
+    title: "Manage Settings",
+    description: "Manage your restaurant settings",
+    keywords: "manage, restaurant, settings",
+};
 
 export default async function Setting({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

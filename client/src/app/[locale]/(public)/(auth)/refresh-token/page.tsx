@@ -1,5 +1,6 @@
 "use client";
 
+import clientRequestAuthApi from "@/api/clientToServer/auth";
 import { handleRefreshToken } from "@/helpers/auth";
 import { useAppStore } from "@/providers/app-provider";
 import { clientSessionToken } from "@/services/storage/clientSessionToken";
@@ -7,6 +8,7 @@ import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
+
 export default function RefreshTokenPage({
     searchParams,
 }: {
@@ -16,21 +18,27 @@ export default function RefreshTokenPage({
     const setRole = useAppStore((state) => state.setRole);
     const router = useRouter();
     useEffect(() => {
-        if (redirect && clientSessionToken.refreshToken && refreshToken === clientSessionToken.refreshToken) {
+        if (clientSessionToken.refreshToken && refreshToken === clientSessionToken.refreshToken) {
             handleRefreshToken({
                 onSuccess: (data) => {
                     const { refreshToken: newRefreshToken } = data.data;
                     const { role } = decodeJwt<TokenPayload>(newRefreshToken);
                     setRole(role);
-                    router.push(redirect);
+                    if (redirect) {
+                        router.push(redirect);
+                    } else {
+                        router.push("/");
+                    }
                 },
                 onError: (error) => {
                     setRole(undefined);
                     router.push("/");
+                    clientRequestAuthApi.logout();
                     console.error("Error during token refresh:", error);
                 },
                 onRefreshTokenExpired: () => {
                     setRole(undefined);
+                    clientRequestAuthApi.logout();
                     router.push("/");
                 },
             });
