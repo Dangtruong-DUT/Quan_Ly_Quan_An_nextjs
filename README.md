@@ -1,3 +1,5 @@
+<img width="1823" height="530" alt="image" src="https://github.com/user-attachments/assets/081dacef-7a91-4505-ac45-a4cd63a4158b" />
+
 # Restaurant Management System — TaplamIT
 
 This is a **web-based restaurant management system** developed by **TaplamIT Team**.  
