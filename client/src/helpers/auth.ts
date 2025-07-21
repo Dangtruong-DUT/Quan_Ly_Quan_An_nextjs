@@ -1,7 +1,7 @@
 import clientRequestAuthApi from "@/api/clientToServer/auth";
 import clientRequestGuestApi from "@/api/clientToServer/guest";
 import { Role } from "@/constants/type";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
 import { RefreshTokenResType } from "@/utils/validation/auth.schema";

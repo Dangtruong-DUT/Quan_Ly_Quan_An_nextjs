@@ -32,3 +32,12 @@ export const WrapperServerCallApi = async <T>({
     }
     return result;
 };
+
+export const generateSlug = ({ text, id }: { text: string; id: string }): string => {
+    return `${removeAccents(text.trim().toLowerCase()).replace(/\s+/g, "-")}-i.${id}`;
+};
+
+export const getIdFromSlug = (slug: string): string => {
+    const match = slug.match(/-i\.(.+)$/);
+    return match ? match[1] : "";
+};

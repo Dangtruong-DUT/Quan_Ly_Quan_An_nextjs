@@ -5,8 +5,8 @@ import { useSocketClient } from "@/hooks/shared/useSocketClient";
 import { useAppStore } from "@/providers/app-provider";
 import { TokenPayload } from "@/types/jwt";
 import { decodeJwt } from "@/utils/jwt";
-import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
+import { useRouter, usePathname } from "@/i18n/navigation";
 
 const EXCLUDE_PATHS = ["/login", "/register", "/logout", "/refresh-token"];
 

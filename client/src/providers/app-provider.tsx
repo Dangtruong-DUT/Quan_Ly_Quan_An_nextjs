@@ -7,7 +7,7 @@ import { RefreshToken } from "@/components/refresh-token";
 import { SocketListener } from "@/components/socket-listener";
 import { AppStore, createAppStore } from "@/stores/stores";
 import { useStore } from "zustand";
-import { clientSessionToken } from "@/service/storage/clientSessionToken";
+import { clientSessionToken } from "@/services/storage/clientSessionToken";
 import { decodeJwt } from "@/utils/jwt";
 import { TokenPayload } from "@/types/jwt";
 

@@ -17,7 +17,7 @@ This directory defines **API routes** for your Next.js application.
 ### 🔑 Key Role
 
 -   Handles **server-side logic**: authentication, database queries, CRUD operations, data validation, etc.
--   Bridges your **frontend** and your **backend services** securely.
+-   Bridges your **frontend** and your **backend servicess** securely.
 -   Ensures sensitive operations run only on the server.
 
 ### 📌 Notes

@@ -1,0 +1,125 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import AutoPagination from "@/components/auto-pagination";
+import { useEffect, useState } from "react";
+import {
+    ColumnFiltersState,
+    SortingState,
+    VisibilityState,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    useReactTable,
+} from "@tanstack/react-table";
+import { Input } from "@/components/ui/input";
+import { TableItem } from "@/app/[locale]/manage/tables/context/TableTableContext";
+import { useTablesColumns } from "@/app/[locale]/manage/orders/_components/tables-dialog/columns";
+import { DataTable } from "@/components/ui/data-table";
+import { useTranslations } from "next-intl";
+import { useGetTables } from "@/hooks/data/useTables";
+import { TableStatus } from "@/constants/type";
+
+const PAGE_SIZE = 10;
+
+export function TablesDialog({ onChoose }: { onChoose: (table: TableItem) => void }) {
+    const t = useTranslations("TablesDialog");
+    const columns = useTablesColumns();
+    const [open, setOpen] = useState(false);
+    const { data: tableDataQuery } = useGetTables();
+    const data = tableDataQuery?.payload.data || [];
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = useState({});
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: PAGE_SIZE,
+    });
+
+    const table = useReactTable({
+        data,
+        columns,
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        onPaginationChange: setPagination,
+        autoResetPageIndex: false,
+        enableMultiRowSelection: false,
+        enableRowSelection: true,
+        state: {
+            sorting,
+            columnFilters,
+            columnVisibility,
+            rowSelection,
+            pagination,
+        },
+    });
+
+    const selectedRow = table.getSelectedRowModel().rows[0];
+
+    useEffect(() => {
+        if (selectedRow) {
+            if (
+                selectedRow.original.status !== TableStatus.Available &&
+                selectedRow.original.status !== TableStatus.Reserved
+            )
+                return;
+            const selectedTable = selectedRow.original as TableItem;
+            table.getSelectedRowModel().rows = [];
+            onChoose(selectedTable);
+            setOpen(false);
+        }
+    }, [selectedRow, onChoose, table]);
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button variant="outline">{t("change")}</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px] max-h-full overflow-auto">
+                <DialogHeader>
+                    <DialogTitle>{t("title")}</DialogTitle>
+                </DialogHeader>
+                <div>
+                    <div className="w-full">
+                        <div className="flex items-center py-4">
+                            <Input
+                                placeholder={t("tableNumber")}
+                                value={(table.getColumn("number")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) => table.getColumn("number")?.setFilterValue(event.target.value)}
+                                className="w-[80px]"
+                            />
+                        </div>
+                        <DataTable columns={columns} table={table} />
+                        <div className="flex items-center justify-end space-x-2 py-4">
+                            <div className="text-xs text-muted-foreground py-4 flex-1 ">
+                                {t("showing")} <strong>{table.getPaginationRowModel().rows.length}</strong> {t("in")}{" "}
+                                <strong>{data.length}</strong> {t("results")}
+                            </div>
+                            <div>
+                                <AutoPagination
+                                    page={table.getState().pagination.pageIndex + 1}
+                                    pageSize={table.getPageCount()}
+                                    onPageChange={(page) =>
+                                        table.setPagination({
+                                            pageIndex: page - 1,
+                                            pageSize: PAGE_SIZE,
+                                        })
+                                    }
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}

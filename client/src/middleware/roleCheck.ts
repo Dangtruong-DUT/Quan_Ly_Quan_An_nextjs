@@ -4,7 +4,7 @@ import { decodeJwt } from "@/utils/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { manaPath, guestPath, onlyOwnerPath } from "./pathCheck";
 
-export function handleRoleAccess(accessToken: string, pathname: string, request: NextRequest) {
+export function handleRoleAccess(accessToken: string, pathname: string, request: NextRequest): NextResponse | null {
     const { role } = decodeJwt<TokenPayload>(accessToken);
 
     const isManaPath = manaPath.some((path) => pathname.startsWith(path));

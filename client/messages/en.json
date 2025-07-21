@@ -1,0 +1,506 @@
+{
+    "Metadata": {
+        "title": "Restaurant Management Software| TaplamIT",
+        "description": "TaplamIT helps you run the best Vietnamese restaurant in the world. Manage orders, tables, and staff easily with our all-in-one restaurant management system.",
+        "keywords": "restaurant management software, Vietnamese restaurant, best Vietnamese cuisine, order management, table management, staff management, TaplamIT",
+        "author": {
+            "name": "TaplamIT Team",
+            "url": "https://www.facebook.com/nd.trg281"
+        },
+        "login": {
+            "title": "Login",
+            "description": "Login to your restaurant management system to manage orders, tables, and staff effectively.",
+            "keywords": "login, restaurant management, TaplamIT"
+        },
+        "guestLogin": {
+            "title": "Guest Login",
+            "description": "Login as a guest to access your table and place orders easily.",
+            "keywords": "guest login, table access, order placement"
+        }
+    },
+    "HomePage": {
+        "NameRestaurant": "TaplamIT - Restaurant",
+        "title": "Diverse Dishes",
+        "description": "Deliciousness, unforgettable moments"
+    },
+    "SwitchLanguage": {
+        "label": "Switch Language",
+        "en": "English",
+        "vi": "Vietnamese"
+    },
+    "LoginPage": {
+        "title": "Login",
+        "description": "Enter your email and password to login to the system",
+        "emailLabel": "Email",
+        "emailPlaceholder": "m@example.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "loginButton": "Login",
+        "googleLoginButton": "Login with Google"
+    },
+    "Common": {
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "confirm": "Confirm"
+    },
+    "Navigation": {
+        "home": "Home",
+        "menu": "Menu",
+        "orders": "Orders",
+        "login": "Login",
+        "manage": "Manage",
+        "logout": "Logout"
+    },
+    "LogoutDialog": {
+        "title": "Are you sure you want to logout",
+        "description": "You will not be able to access the system functions without logging in."
+    },
+    "OauthPage": {
+        "redirecting": "Redirecting to OAuth provider...",
+        "authenticationFailed": "Authentication failed. Please try again."
+    },
+    "GuestLoginPage": {
+        "title": "Guest Order Login",
+        "nameLabel": "Customer Name",
+        "loginButton": "Login",
+        "tokenInvalid": "Token is invalid or expired. Please try again."
+    },
+    "MenuPage": {
+        "title": "🍕 Restaurant Menu",
+        "outOfStock": "Out of Stock",
+        "orderButton": "Order",
+        "items": "items"
+    },
+    "OrderPage": {
+        "title": "🍕 Orders",
+        "noOrders": "You don't have any orders yet.",
+        "unpaid": "Unpaid:",
+        "paid": "Paid:",
+        "totalItems": "Total items:"
+    },
+    "OrderStatus": {
+        "Delivered": "Delivered",
+        "Paid": "Paid",
+        "Pending": "Pending",
+        "Processing": "Processing",
+        "Rejected": "Rejected"
+    },
+    "ManageNavigation": {
+        "dashboard": "Dashboard",
+        "orders": "Orders",
+        "tables": "Tables",
+        "dishes": "Dishes",
+        "accounts": "Employees",
+        "settings": "Settings",
+        "toggleMenu": "Toggle Menu",
+        "navigation": "Navigation",
+        "navigationDescription": "Navigate through the application"
+    },
+    "DropdownAvatar": {
+        "setting": "Settings",
+        "helper": "Helper",
+        "logout": "Logout",
+        "logoutSuccess": "Logout successful"
+    },
+    "AccountsPage": {
+        "title": "Accounts",
+        "description": "Employee Account Management"
+    },
+    "AddEmployee": {
+        "addNewEmployee": "Add new employee",
+        "title": "Add new employee",
+        "description": "Name, email, password are required",
+        "upload": "Upload",
+        "fullName": "Full name",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "addButton": "Add New Employee",
+        "successMessage": "Employee {name} added successfully!"
+    },
+    "AccountTable": {
+        "filterEmails": "Filter emails...",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "AccountColumns": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "fullName": "Full Name",
+        "email": "Email",
+        "role": "Role",
+        "actions": "Actions",
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "DeleteEmployeeDialog": {
+        "title": "Delete this Employee?",
+        "description": "Account {name} will be deleted permanently.",
+        "successMessage": "Employee {name} deleted successfully"
+    },
+    "EditEmployee": {
+        "title": "Update Account",
+        "description": "Name, email, password are required",
+        "upload": "Upload",
+        "fullName": "Full name",
+        "email": "Email",
+        "role": "Role",
+        "changePassword": "Change password",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "saveButton": "Save",
+        "successMessage": "Profile updated successfully"
+    },
+    "DashboardPage": {
+        "title": "Dashboard",
+        "description": "Analytics overview"
+    },
+    "DashboardMain": {
+        "from": "From",
+        "to": "To",
+        "fromDatePlaceholder": "From date",
+        "toDatePlaceholder": "To date",
+        "resetButton": "Reset",
+        "totalRevenue": "Total Revenue",
+        "customers": "Customers",
+        "customerOrders": "Ordered",
+        "orders": "Orders",
+        "paidOrders": "Paid",
+        "servingTables": "Tables Serving"
+    },
+    "RevenueLineChart": {
+        "title": "Revenue",
+        "revenue": "Revenue"
+    },
+    "DishBarChart": {
+        "title": "Top Dishes",
+        "description": "Most ordered",
+        "paidOrders": "Paid orders"
+    },
+    "DishesPage": {
+        "title": "Dishes",
+        "description": "Manage dishes"
+    },
+    "AddDish": {
+        "addNewDish": "Add new dish",
+        "title": "Create New Dish",
+        "dialogDescription": "Name and image are required",
+        "upload": "Upload",
+        "dishName": "Dish name",
+        "price": "Price",
+        "dishDescription": "Description",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "addButton": "Add",
+        "imageRequired": "Please upload an image",
+        "successMessage": "Dish added successfully"
+    },
+    "DishTable": {
+        "filterNames": "Filter by name...",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "DishColumns": {
+        "id": "ID",
+        "image": "Image",
+        "name": "Name",
+        "price": "Price",
+        "dishDescription": "Description",
+        "status": "Status",
+        "actions": "Actions",
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "DeleteDishDialog": {
+        "title": "Delete dish?",
+        "description": "Dish {name} will be deleted permanently. Are you sure you want to continue?",
+        "successMessage": "Dish deleted successfully"
+    },
+    "EditDish": {
+        "title": "Update dish",
+        "dialogDescription": "The following fields are required: Name, image",
+        "upload": "Upload",
+        "dishName": "Dish name",
+        "price": "Price",
+        "dishDescription": "Description",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "saveButton": "Save",
+        "successMessage": "Dish updated successfully"
+    },
+    "OrdersPage": {
+        "title": "Orders",
+        "description": "Manage orders"
+    },
+    "OrderTable": {
+        "fromDatePlaceholder": "From date",
+        "toDatePlaceholder": "To date",
+        "guestNamePlaceholder": "Guest name",
+        "tableNumberPlaceholder": "Table number",
+        "statusPlaceholder": "Status",
+        "addOrder": "Add order",
+        "refresh": "Refresh",
+        "fromText": "From",
+        "toText": "To",
+        "reset": "Reset",
+        "statusLabel": "Status",
+        "allStatus": "All",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "OrderColumns": {
+        "tableNumber": "Table",
+        "guest": "Guest",
+        "orders": "Orders",
+        "price": "Price",
+        "status": "Status",
+        "createdAt": "Created at",
+        "actions": "Actions",
+        "guestDeleted": "Deleted",
+        "paid": "Paid",
+        "pending": "Pending",
+        "processing": "Processing",
+        "rejected": "Rejected",
+        "delivered": "Delivered",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "payOrders": "Pay orders",
+        "orderHandler": "Handler",
+        "selectStatus": "Select status"
+    },
+    "AddOrder": {
+        "title": "Create order",
+        "addOrder": "Add order",
+        "newGuest": "New guest",
+        "existingGuest": "Existing guest",
+        "guestName": "Guest name",
+        "guestNamePlaceholder": "Enter guest name",
+        "phoneNumber": "Phone number",
+        "phoneNumberPlaceholder": "Enter phone number",
+        "tableNumber": "Table number",
+        "tableNumberPlaceholder": "Select table",
+        "selectGuest": "Select guest",
+        "selectGuestPlaceholder": "Select guest",
+        "selectedGuest": "Selected guest",
+        "tableLabel": "Table",
+        "dishName": "Dish name",
+        "price": "Price",
+        "quantity": "Quantity",
+        "totalPrice": "Total price",
+        "submit": "Create order",
+        "orderButton": "Order",
+        "items": "items",
+        "outOfStock": "Out of stock",
+        "pleaseSelectGuest": "Please select a guest or create a new guest.",
+        "successMessage": "Order created successfully"
+    },
+    "EditOrder": {
+        "title": "Update order",
+        "dish": "Dish",
+        "status": "Status",
+        "quantity": "Quantity",
+        "selectDish": "Select dish",
+        "saveButton": "Update",
+        "successMessage": "Order updated successfully"
+    },
+    "OrderStatics": {
+        "tableDetails": "Table details",
+        "guestCount": "guests",
+        "orderCount": "orders",
+        "totalTables": "Total tables",
+        "emptyTable": "Empty table",
+        "occupiedTable": "Occupied table",
+        "ready": "Ready",
+        "serving": "Serving"
+    },
+    "GuestsDialog": {
+        "title": "Select guest",
+        "selectGuest": "Select guest",
+        "fromDate": "From date",
+        "toDate": "To date",
+        "toText": "To",
+        "guestNameFilter": "Guest name",
+        "nameOrIdPlaceholder": "Name or Id",
+        "tableNumber": "Table number",
+        "createdAt": "Created",
+        "refresh": "Refresh",
+        "reset": "Reset",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "Status": {
+        "DishStatus": {
+            "Available": "Available",
+            "Unavailable": "Unavailable",
+            "Hidden": "Hidden"
+        },
+        "OrderStatus": {
+            "Delivered": "Delivered",
+            "Paid": "Paid",
+            "Pending": "Pending",
+            "Processing": "Processing",
+            "Rejected": "Rejected"
+        },
+        "TableStatus": {
+            "Available": "Available",
+            "Reserved": "Reserved",
+            "Hidden": "Hidden"
+        }
+    },
+    "TablesPage": {
+        "title": "Tables",
+        "description": "Manage tables"
+    },
+    "AddTable": {
+        "title": "Add table",
+        "addButton": "Add table",
+        "tableNumber": "Table number",
+        "capacity": "Guest capacity",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "addButtonText": "Add",
+        "successMessage": "Table added successfully"
+    },
+    "EditTable": {
+        "title": "Update table",
+        "tableNumber": "Table number",
+        "capacity": "Capacity (people)",
+        "status": "Status",
+        "selectStatus": "Select status",
+        "changeQRCode": "Change QR Code",
+        "qrCode": "QR Code",
+        "orderUrl": "Order URL",
+        "saveButton": "Save",
+        "successMessage": "Table updated successfully"
+    },
+    "DeleteTable": {
+        "title": "Delete table?",
+        "description": "Table {number} will be permanently deleted",
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "successMessage": "Table deleted successfully"
+    },
+    "TableTable": {
+        "filterPlaceholder": "Filter table number",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "TableColumns": {
+        "tableNumber": "Table number",
+        "capacity": "Capacity",
+        "status": "Status",
+        "qrCode": "QR Code",
+        "actions": "Actions",
+        "openMenu": "Open menu",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "SettingPage": {
+        "title": "Settings",
+        "owner": "Owner"
+    },
+    "QRCodeGenerator": {
+        "tableNumber": "Table: {number}",
+        "scanToOrder": "Scan to order"
+    },
+    "UpdateProfileForm": {
+        "title": "Profile",
+        "name": "Name",
+        "upload": "Upload",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving",
+        "successMessage": "Profile updated successfully"
+    },
+    "ChangePasswordForm": {
+        "title": "Change password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm your new password",
+        "cancel": "Cancel",
+        "save": "Save",
+        "successMessage": "Password changed successfully"
+    },
+    "PrivacyPolicyPage": {
+        "title": "Privacy Policy",
+        "dataCollection": "Data Collection",
+        "dataCollectionDescription": "We collect personal information that you provide when creating an account, placing orders, or contacting us. This information may include your name. Additionally, we also collect some information automatically when you access our website, such as IP address and browser type.",
+        "purposeOfUse": "Purpose of Use",
+        "purposeOfUseDescription": "We use your personal information for the following purposes:",
+        "orderProcessing": "To process your orders: We use your contact and payment information to confirm and process orders, as well as to send invoices and delivery information.",
+        "customerService": "To provide customer service: We use your contact information to answer questions, resolve issues, and provide technical support.",
+        "marketing": "To send marketing information: With your consent, we may use your email address to send information about new products, services, promotions, and special events.",
+        "serviceImprovement": "To improve our services: We use aggregated and anonymous data to analyze trends and improve our services."
+    },
+    "TermsOfServicePage": {
+        "title": "Terms of Service",
+        "introduction": "Introduction",
+        "introductionDescription": "Welcome to our Terms of Service page. By using our services, you agree to comply with the terms and conditions below.",
+        "serviceUsage": "Service Usage",
+        "serviceUsageDescription": "You agree to use our services only for lawful purposes and not to violate any laws. You may not use our services to distribute illegal, harmful content or violate others' privacy rights.",
+        "intellectualProperty": "Intellectual Property",
+        "intellectualPropertyDescription": "All content and materials on our website, including text, images, graphics, logos, and software, are owned by us or our licensors and are protected by intellectual property law.",
+        "termsChanges": "Terms Changes",
+        "termsChangesDescription": "We reserve the right to change these terms of service at any time without prior notice. Your continued use of the service after changes are posted will be considered your acceptance of those changes.",
+        "contact": "Contact",
+        "contactDescription": "If you have any questions about these terms of service, please contact us via email or phone number provided on our website."
+    },
+    "AboutPage": {
+        "title": "About TaplamIT Team",
+        "address": "Address: Da Nang City",
+        "ourStory": "Our Story",
+        "ourStoryDescription": "TaplamIT Team was founded with the mission to provide optimal software solutions, supporting efficient management and operation of restaurants and eateries. We bring together passionate, creative technology engineers who always put customer needs first.",
+        "ourValues": "Our Values",
+        "ourValuesDescription": "We believe that technology is the key to simplifying management processes, saving time and costs for restaurant owners. TaplamIT Team always aims for user-friendly, easy-to-use software products with high applicability, helping customers manage orders, tables, staff, and revenue transparently and efficiently.",
+        "ourCommitment": "Our Commitment",
+        "ourCommitmentDescription": "TaplamIT Team is committed to accompanying restaurants and eateries in their digitalization and sustainable development journey. We are always ready to support, upgrade products, and provide dedicated after-sales service to bring the best experience to customers."
+    },
+    "Footer": {
+        "termsOfService": "Terms of Service",
+        "privacyPolicy": "Privacy Policy",
+        "aboutUs": "About Us"
+    },
+    "TablesDialog": {
+        "title": "Select table",
+        "selectTable": "Select table",
+        "tableNumber": "Table number",
+        "capacity": "Capacity",
+        "status": "Status",
+        "change": "Change",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "DishesDialog": {
+        "title": "Select dish",
+        "selectDish": "Select dish",
+        "change": "Change",
+        "filterName": "Filter name",
+        "dishName": "Dish name",
+        "price": "Price",
+        "status": "Status",
+        "showing": "Showing",
+        "in": "of",
+        "results": "results"
+    },
+    "OrderGuestDetail": {
+        "name": "Name",
+        "table": "Table",
+        "registrationDate": "Registration date",
+        "orders": "Orders",
+        "total": "Total",
+        "unpaid": "Unpaid",
+        "paid": "Paid",
+        "payAllOrders": "Pay all orders",
+        "orderCount": "orders",
+        "created": "Created",
+        "updated": "Updated"
+    }
+}

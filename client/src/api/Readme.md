@@ -18,7 +18,7 @@ src/api/
 
 **Purpose:**
 API functions here are called **directly from the browser**.
-By default, requests will target the **backend server** using the singleton `http` instance from `src/service/api/http.ts`.
+By default, requests will target the **backend server** using the singleton `http` instance from `src/services/api/http.ts`.
 
 -   **Special case:**
 
@@ -32,7 +32,7 @@ By default, requests will target the **backend server** using the singleton `htt
 **Example:**
 
 ```ts
-import http from "@/service/api/http";
+import http from "@/services/api/http";
 import {
     AccountListResType,
     AccountResType,
@@ -75,7 +75,7 @@ Contains API functions **used by the Next.js Server to communicate with the Back
 **Example:**
 
 ```ts
-import http from "@/service/api/http";
+import http from "@/services/api/http";
 import {
     LoginBodyType,
     LoginResType,

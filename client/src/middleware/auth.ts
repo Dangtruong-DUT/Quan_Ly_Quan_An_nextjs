@@ -10,13 +10,14 @@ export function handleInvalidAccessToken(
     accessToken: string | undefined,
     refreshToken: string | undefined,
     pathname: string,
-    request: NextRequest
+    request: NextRequest,
+    locale: string
 ) {
     const isAccessTokenValid = accessToken !== undefined;
     const isAuthenticated = refreshToken !== undefined;
 
     if (!isAccessTokenValid && isAuthenticated) {
-        const url = new URL("/refresh-token", request.url);
+        const url = new URL(`/${locale}/refresh-token`, request.url);
         url.searchParams.set("redirect", pathname);
         url.searchParams.set("refreshToken", refreshToken!);
         return NextResponse.redirect(url);
